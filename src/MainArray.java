@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * Interactive test for ArrayStorage implementation
@@ -15,6 +16,8 @@ public class MainArray {
         while (true) {
             System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
+            System.out.println(Arrays.toString(params));
+            System.out.println(params.length);
             if (params.length < 1 || params.length > 2) {
                 System.out.println("Неверная команда.");
                 continue;
