@@ -5,20 +5,23 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int size = 0;
 
     void clear() {
         for (int i = 0; i < this.size(); i++) {
             storage[i] = null;
         }
+        size = 0;
     }
 
     void save(Resume r) {
         storage[this.size()] = r;
+        size++;
     }
 
     Resume get(String uuid) {
-        for (int i=0; i<this.size(); i++ ) {
-            if (storage[i].uuid == uuid) {
+        for (int i = 0; i < this.size(); i++) {
+            if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
         }
@@ -29,8 +32,10 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         for (int index = 0; index < this.size(); index++) {
-            if (storage[index].uuid == uuid) {
+            if (storage[index].uuid.equals(uuid)) {
                 System.arraycopy(storage, index + 1, storage, index, storage.length - 1 - index);
+                size--;
+                return;
             }
         }
     }
@@ -40,20 +45,13 @@ public class ArrayStorage {
      */
     Resume[] getAll() {
         Resume[] resumes = new Resume[this.size()];
-        for(int i=0; i<resumes.length; i++) {
+        for (int i = 0; i < resumes.length; i++) {
             resumes[i] = storage[i];
         }
         return resumes;
     }
 
     int size() {
-        for (int i = 0; i < storage.length; i++) {
-            if (i==0 && storage[i] == null) {
-                return 0;
-            } else if (i>0 && storage[i] == null) {
-                return i;
-            }
-        }
-        return storage.length;
+        return size;
     }
 }
