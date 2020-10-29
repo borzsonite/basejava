@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+
 /**
  * Test for your ArrayStorage implementation
  */
