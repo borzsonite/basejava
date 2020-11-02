@@ -28,9 +28,14 @@ public class ArrayStorage {
             System.out.println("Resume already exists.");
             return;
         }
-        storage[size] = r;
-        size++;
-        System.out.println("New resume saved.");
+        if(size<storage.length-1) {
+            storage[size] = r;
+            size++;
+            System.out.println("New resume saved.");
+        } else {
+            System.out.println("Not enough space.");
+        }
+
     }
 
 
