@@ -14,9 +14,34 @@ public class ArrayStorage {
         size = 0;
     }
 
+    boolean isExists(Resume r) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(r.uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void save(Resume r) {
-        storage[this.size()] = r;
+        if (size > 0 && isExists(r)) {
+            System.out.println("Resume already exists.");
+            return;
+        }
+        storage[size] = r;
         size++;
+        System.out.println("New resume saved.");
+    }
+
+
+    void update(Resume r) {
+        if (isExists(r)) {
+            storage[this.size()] = r;
+            size++;
+            System.out.println("Resume updated.");
+            return;
+        }
+        System.out.println("Resume doesn't exist.");
     }
 
     Resume get(String uuid) {
@@ -33,11 +58,14 @@ public class ArrayStorage {
     void delete(String uuid) {
         for (int index = 0; index < this.size(); index++) {
             if (storage[index].uuid.equals(uuid)) {
-                System.arraycopy(storage, index + 1, storage, index, storage.length - 1 - index);
+                storage[index] = storage[size - 1];
+                storage[size - 1] = null;
                 size--;
+                System.out.println("Resume deleted.");
                 return;
             }
         }
+        System.out.println("Resume doesn't exist.");
     }
 
     /**
