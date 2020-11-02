@@ -14,21 +14,20 @@ public class ArrayStorage {
         size = 0;
     }
 
-    boolean isExists(Resume r) {
+    int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(r.uuid)) {
-                return true;
+            if (storage[i].uuid.equals(uuid)) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     void save(Resume r) {
-        if (size > 0 && isExists(r)) {
+        int index = getIndex(r.uuid);
+        if (index >= 0) {
             System.out.println("Resume already exists.");
-            return;
-        }
-        if(size<storage.length-1) {
+        } else if (size < storage.length - 1) {
             storage[size] = r;
             size++;
             System.out.println("New resume saved.");
@@ -38,22 +37,19 @@ public class ArrayStorage {
 
     }
 
-
     void update(Resume r) {
-        if (isExists(r)) {
+        if (getIndex(r.uuid) == -1) {
+            System.out.println("Resume doesn't exist.");
+        } else {
             storage[this.size()] = r;
-            size++;
             System.out.println("Resume updated.");
-            return;
         }
-        System.out.println("Resume doesn't exist.");
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < this.size(); i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return storage[i];
-            }
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
         }
         Resume dummyResume = new Resume();
         dummyResume.uuid = uuid;
@@ -61,16 +57,15 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int index = 0; index < this.size(); index++) {
-            if (storage[index].uuid.equals(uuid)) {
-                storage[index] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                System.out.println("Resume deleted.");
-                return;
-            }
+        int index = getIndex(uuid);
+        if (index == -1) {
+            System.out.println("Resume doesn't exist.");
+        } else {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+            System.out.println("Resume deleted.");
         }
-        System.out.println("Resume doesn't exist.");
     }
 
     /**
