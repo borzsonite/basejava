@@ -8,19 +8,10 @@ public class ArrayStorage {
     int size = 0;
 
     void clear() {
-        for (int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
         size = 0;
-    }
-
-    int getIndex(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     void save(Resume r) {
@@ -41,7 +32,7 @@ public class ArrayStorage {
         if (getIndex(r.uuid) == -1) {
             System.out.println("Resume doesn't exist.");
         } else {
-            storage[this.size()] = r;
+            storage[size] = r;
             System.out.println("Resume updated.");
         }
     }
@@ -51,9 +42,7 @@ public class ArrayStorage {
         if (index >= 0) {
             return storage[index];
         }
-        Resume dummyResume = new Resume();
-        dummyResume.uuid = uuid;
-        return dummyResume;
+        return null;
     }
 
     void delete(String uuid) {
@@ -72,7 +61,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] resumes = new Resume[this.size()];
+        Resume[] resumes = new Resume[size];
         for (int i = 0; i < resumes.length; i++) {
             resumes[i] = storage[i];
         }
@@ -81,5 +70,14 @@ public class ArrayStorage {
 
     int size() {
         return size;
+    }
+
+    private int getIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
