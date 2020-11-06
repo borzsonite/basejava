@@ -1,20 +1,24 @@
+package storage;
+
+import model.Resume;
+
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage extends AbstractArrayStorage {
     Resume[] storage = new Resume[10000];
     int size = 0;
 
-    void clear() {
+    public void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
         size = 0;
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         int index = getIndex(r.uuid);
         if (index >= 0) {
             System.out.println("Resume already exists.");
@@ -28,16 +32,16 @@ public class ArrayStorage {
 
     }
 
-    void update(Resume r) {
+    public void update(Resume r) {
         if (getIndex(r.uuid) == -1) {
-            System.out.println("Resume doesn't exist.");
+            System.out.println("Resume" + r.uuid + "doesn't exist.");
         } else {
             storage[size] = r;
-            System.out.println("Resume updated.");
+            System.out.println("Resume" + r.uuid + " updated.");
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
             return storage[index];
@@ -45,34 +49,30 @@ public class ArrayStorage {
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
-            System.out.println("Resume doesn't exist.");
+            System.out.println("Resume " + uuid + " not exist");
         } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-            System.out.println("Resume deleted.");
+            System.out.println("Resume " + uuid + " deleted.");
         }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
-        Resume[] resumes = new Resume[size];
-        for (int i = 0; i < resumes.length; i++) {
-            resumes[i] = storage[i];
-        }
-        return resumes;
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    private int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return i;
