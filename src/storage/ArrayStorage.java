@@ -29,7 +29,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         } else {
             System.out.println("Not enough space.");
         }
-
     }
 
     public void update(Resume r) {
