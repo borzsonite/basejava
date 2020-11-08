@@ -1,25 +1,30 @@
 import model.Resume;
 import storage.ArrayStorage;
+import storage.SortedArrayStorage;
+
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
  * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
         r1.uuid = "uuid1";
         Resume r2 = new Resume();
-        r2.uuid = "uuid2";
+        r2.uuid = "uuid3";
         Resume r3 = new Resume();
-        r3.uuid = "uuid3";
+        r3.uuid = "uuid2";
+        Resume r4 = new Resume();
+        r4.uuid = "uuid3";
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
-        ARRAY_STORAGE.save(r3);
-
+        ARRAY_STORAGE.save(r4);
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.uuid));
         System.out.println("Size: " + ARRAY_STORAGE.size());

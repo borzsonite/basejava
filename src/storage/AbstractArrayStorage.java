@@ -7,7 +7,7 @@ import java.util.Arrays;
 public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10000;
 
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    public Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     public void clear() {
@@ -27,20 +27,25 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume r) {
-        int index = getIndex(r.uuid);
+        int index = getIndex(r.getUuid());
+        System.out.println("get index=" + index);
         if (index >= 0) {
-            System.out.println("Resume already exists.");
+            System.out.println("Resume " + r.getUuid() + " already exist");
         } else if (size < storage.length - 1) {
-            storage[size] = r;
+            if (storage[Math.abs(index) - 1] != null) {
+                storage[Math.abs(index)] = storage[Math.abs(index) - 1];
+            }
+            storage[Math.abs(index) - 1] = r;
+
             size++;
-            System.out.println("New resume saved.");
         } else {
-            System.out.println("Not enough space.");
+            System.out.println("Storage overflow");
         }
     }
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
+        System.out.println(index);
         if (index == -1) {
             System.out.println("Resume " + uuid + " not exist");
             return null;
