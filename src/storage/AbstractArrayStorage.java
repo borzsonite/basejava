@@ -1,42 +1,37 @@
 package storage;
-
 import model.Resume;
-
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
+    protected static final int STORAGE_LIMIT = 10_000;
 
     public Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume r) {
-        if (getIndex(r.uuid) == -1) {
-            System.out.println("Resume" + r.uuid + "doesn't exist.");
+    public void update(Resume resume) {
+        if (getIndex(resume.uuid) == -1) {
+            System.out.println("Resume" + resume.uuid + "doesn't exist.");
         } else {
-            storage[size] = r;
-            System.out.println("Resume" + r.uuid + " updated.");
+            storage[size] = resume;
+            System.out.println("Resume " + resume.uuid + " updated.");
         }
     }
 
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        System.out.println("get index=" + index);
+    public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            System.out.println("Resume " + r.getUuid() + " already exist");
+            System.out.println("Resume " + resume.getUuid() + " already exist");
         } else if (size < storage.length - 1) {
             if (storage[Math.abs(index) - 1] != null) {
                 storage[Math.abs(index)] = storage[Math.abs(index) - 1];
             }
-            storage[Math.abs(index) - 1] = r;
-
+            storage[Math.abs(index) - 1] = resume;
+            System.out.println("Resume " + resume.getUuid() + " saved");
             size++;
         } else {
             System.out.println("Storage overflow");
@@ -45,7 +40,6 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        System.out.println(index);
         if (index == -1) {
             System.out.println("Resume " + uuid + " not exist");
             return null;
