@@ -7,21 +7,8 @@ import model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected void getIndexAndSave(Resume resume) {
+    protected void saveByIndex(Resume resume) {
         storage[size] = resume;
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("Resume " + uuid + " doesn't exist");
-        } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-            System.out.println("Resume " + uuid + " deleted");
-        }
     }
 
     protected int getIndex(String uuid) {
@@ -31,5 +18,11 @@ public class ArrayStorage extends AbstractArrayStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected void deleteByIndex(int index) {
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
     }
 }
