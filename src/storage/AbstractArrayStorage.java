@@ -1,5 +1,7 @@
 package storage;
+
 import model.Resume;
+
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
@@ -14,10 +16,11 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume resume) {
-        if (getIndex(resume.uuid) == -1) {
-            System.out.println("Resume" + resume.uuid + "doesn't exist.");
+        int index = getIndex(resume.uuid);
+        if (index == -1) {
+            System.out.println("Resume " + resume.getUuid() + "doesn't exist.");
         } else {
-            storage[size] = resume;
+            storage[index] = resume;
             System.out.println("Resume " + resume.uuid + " updated.");
         }
     }
@@ -27,16 +30,15 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             System.out.println("Resume " + resume.getUuid() + " already exist");
         } else if (size < storage.length - 1) {
-            if (storage[Math.abs(index) - 1] != null) {
-                storage[Math.abs(index)] = storage[Math.abs(index) - 1];
-            }
-            storage[Math.abs(index) - 1] = resume;
-            System.out.println("Resume " + resume.getUuid() + " saved");
+            getIndexAndSave(resume);
             size++;
+            System.out.println("Resume " + resume.getUuid() + " saved");
         } else {
             System.out.println("Storage overflow");
         }
     }
+
+    abstract void getIndexAndSave(Resume resume);
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
@@ -55,7 +57,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-            System.out.println("Resume " + uuid + " deleted.");
+            System.out.println("Resume " + uuid + " deleted");
         }
     }
 
