@@ -7,7 +7,7 @@ import model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected void saveByIndex(Resume resume) {
+    protected void saveByIndex(Resume resume, int index) {
         storage[size] = resume;
     }
 
@@ -23,6 +23,5 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void deleteByIndex(int index) {
         storage[index] = storage[size - 1];
-        storage[size - 1] = null;
     }
 }
