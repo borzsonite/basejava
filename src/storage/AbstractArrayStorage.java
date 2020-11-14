@@ -5,9 +5,9 @@ import model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 6;
+    protected static final int STORAGE_LIMIT = 10_000;
 
-    public Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     public void clear() {
@@ -17,12 +17,12 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume resume) {
-        int index = getIndex(resume.uuid);
-        if (index == -1) {
-            System.out.println("Resume " + resume.getUuid() + "doesn't exist.");
+        int index = getIndex(resume.getUuid());
+        if (index < 0 ) {
+            System.out.println("Resume " + resume.getUuid() + " doesn't exist.");
         } else {
             storage[index] = resume;
-            System.out.println("Resume " + resume.uuid + " updated.");
+            System.out.println("Resume " + resume.getUuid() + " updated.");
         }
     }
 
@@ -30,12 +30,12 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
             System.out.println("Resume " + resume.getUuid() + " already exist");
-        } else if (size < storage.length) {
+        } else if (storage.length <= size) {
+            System.out.println("Storage overflow");
+        } else {
             saveByIndex(resume, index);
             size++;
             System.out.println("Resume " + resume.getUuid() + " saved");
-        } else {
-            System.out.println("Storage overflow");
         }
     }
 

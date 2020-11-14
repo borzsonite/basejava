@@ -1,9 +1,8 @@
 import model.Resume;
 
-import javax.print.DocFlavor;
 import java.util.Arrays;
 
-public class Test {
+public class Test implements Cloneable {
     int size = 0;
     int STORAGE_LIMIT = 100;
 
@@ -52,6 +51,15 @@ public class Test {
         Test test = new Test();
         test.setArray();
         //System.out.println(test.getIndex("uuid4"));
+
+        int[] array = new int[10];
+        for(int i=0; i<7; i++) {
+            array[i] = i;
+        }
+        System.out.println(Arrays.toString(array));
+        int position = 2;
+        System.arraycopy(array, 2, array, position +1, 7);
+        System.out.println(Arrays.toString(array));
     }
 
     int getIndex(String uuid) {

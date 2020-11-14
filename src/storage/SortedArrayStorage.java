@@ -14,12 +14,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     void saveByIndex(Resume resume, int index) {
-        int position = Math.abs(index);
-        if (storage[position - 1] != null) {
-           Resume[] subArray =  Arrays.copyOfRange(storage, position -1, size);
-           System.arraycopy(subArray, 0, storage, position, subArray.length);
-        }
-        storage[position - 1] = resume;
+        int position = Math.abs(index) - 1;
+        System.arraycopy(storage, position, storage, position + 1, size - position);
+        storage[position] = resume;
     }
 
     @Override
