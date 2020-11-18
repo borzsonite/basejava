@@ -9,14 +9,10 @@ public class Test implements Cloneable {
     private Resume[] storage1 = new Resume[5];
 
     void setArray() {
-        Resume r1 = new Resume();
-        r1.setUuid("uuid1");
-        Resume r2 = new Resume();
-        r2.setUuid("uuid2");
-        Resume r3 = new Resume();
-        r3.setUuid("uuid3");
-        Resume r4 = new Resume();
-        r4.setUuid("uuid4");
+        Resume r1 = new Resume("uuid1");
+        Resume r2 = new Resume("uuid2");
+        Resume r3 = new Resume("uuid3");
+        Resume r4 = new Resume("uuid4");
 
         System.out.println(r1.compareTo(r4));
         Arrays.binarySearch(storage1, 0, 0, r1);
@@ -63,8 +59,7 @@ public class Test implements Cloneable {
     }
 
     int getIndex(String uuid) {
-        Resume keySearch = new Resume();
-        keySearch.setUuid(uuid);
+        Resume keySearch = new Resume(uuid);
         return Arrays.binarySearch(storage1, 0, 4, keySearch);
     }
 
