@@ -1,5 +1,6 @@
 package storage;
 
+import com.sun.org.apache.regexp.internal.RE;
 import exсeption.NotExistStorageException;
 import model.Resume;
 import org.junit.Assert;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 public class AbstractArrayStorageTest {
 
     private Storage storage;
+
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
@@ -29,27 +31,45 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void clear() {
+        storage.clear();
+        Assert.assertTrue(storage.size() == 0);
     }
 
     @Test
     public void update() {
+        Resume resume = new Resume(UUID_1);
+        storage.update(resume);
+        Assert.assertEquals(resume, storage.get(UUID_1));
     }
 
     @Test
     public void save() {
+        Resume resume = new Resume();
+        storage.save(resume);
+        Assert.assertTrue(storage.get(resume.getUuid()) != null);
     }
 
     @Test
     public void get() {
+        Resume[] resumes = storage.getAll();
+        Assert.assertEquals(storage.get(UUID_1), resumes[0]);
+        Assert.assertEquals(storage.get(UUID_2), resumes[1]);
+        Assert.assertEquals(storage.get(UUID_3), resumes[2]);
     }
 
     @Test
     public void delete() {
+        storage.delete(UUID_1);
+        storage.delete(UUID_2);
+        storage.delete(UUID_3);
+        Assert.assertTrue(storage.size() == 0);
+
     }
 
     @Test
     public void getAll() {
-      Assert.assertArrayEquals(storage.storage, Arrays.copyOfRange(storage.storage,0,2) );
+        Resume[] resumes = storage.getAll();
+        Assert.assertArrayEquals(resumes, Arrays.copyOfRange(resumes,0,3) );
     }
 
     @Test
