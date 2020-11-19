@@ -24,7 +24,7 @@ public class AbstractArrayStorageTest {
     private static final String UUID_3 = "uuid3";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         storage.clear();
         storage.save(new Resume(UUID_1));
         storage.save(new Resume(UUID_2));
@@ -34,7 +34,7 @@ public class AbstractArrayStorageTest {
     @Test
     public void clear() {
         storage.clear();
-        Assert.assertTrue(storage.size() == 0);
+        Assert.assertEquals(0, storage.size());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class AbstractArrayStorageTest {
     public void save() {
         Resume resume = new Resume();
         storage.save(resume);
-        Assert.assertTrue(storage.get(resume.getUuid()) != null);
+        Assert.assertNotNull(storage.get(resume.getUuid()));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class AbstractArrayStorageTest {
         storage.delete(UUID_1);
         storage.delete(UUID_2);
         storage.delete(UUID_3);
-        Assert.assertTrue(storage.size() == 0);
+        Assert.assertEquals(0, storage.size());
 
     }
 
@@ -82,22 +82,14 @@ public class AbstractArrayStorageTest {
     @Test(expected = StorageException.class)
     public void storageOverflow() {
 
-        try {
-            for (int i = 0; i < STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-            throw new ArrayIndexOutOfBoundsException(); //имитация переполнения
-        } catch (StorageException e) {
-            throw e;
+        for (int i = 0; i < STORAGE_LIMIT; i++) {
+            storage.save(new Resume());
         }
-
-
+        throw new ArrayIndexOutOfBoundsException(); //имитация переполнения
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void getNotExist() throws Exception {
+    public void getNotExist() {
         storage.get("dummy");
     }
-
-
 }
