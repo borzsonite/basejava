@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
-
 public class AbstractArrayStorageTest {
 
     private Storage storage;
@@ -51,9 +49,7 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        ArrayStorage subArray = (ArrayStorage) storage;
-        System.out.println(subArray[0]);
-
+      Assert.assertArrayEquals(storage.storage, Arrays.copyOfRange(storage.storage,0,2) );
     }
 
     @Test
