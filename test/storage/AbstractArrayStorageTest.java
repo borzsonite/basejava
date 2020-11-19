@@ -1,13 +1,15 @@
 package storage;
 
-import com.sun.org.apache.regexp.internal.RE;
 import exсeption.NotExistStorageException;
+import exсeption.StorageException;
 import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+
+import static storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public class AbstractArrayStorageTest {
 
@@ -69,7 +71,7 @@ public class AbstractArrayStorageTest {
     @Test
     public void getAll() {
         Resume[] resumes = storage.getAll();
-        Assert.assertArrayEquals(resumes, Arrays.copyOfRange(resumes,0,3) );
+        Assert.assertArrayEquals(resumes, Arrays.copyOfRange(resumes, 0, 3));
     }
 
     @Test
@@ -77,8 +79,25 @@ public class AbstractArrayStorageTest {
         Assert.assertEquals(3, storage.size());
     }
 
+    @Test(expected = StorageException.class)
+    public void storageOverflow() {
+
+        try {
+            for (int i = 0; i < STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+            throw new ArrayIndexOutOfBoundsException(); //имитация переполнения
+        } catch (StorageException e) {
+            throw e;
+        }
+
+
+    }
+
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
         storage.get("dummy");
     }
+
+
 }

@@ -1,66 +1,16 @@
 import model.Resume;
 
-import java.util.Arrays;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
-public class Test implements Cloneable {
-    int size = 0;
-    int STORAGE_LIMIT = 100;
-
-    private Resume[] storage1 = new Resume[5];
-
-    void setArray() {
-        Resume r1 = new Resume("uuid1");
-        Resume r2 = new Resume("uuid2");
-        Resume r3 = new Resume("uuid3");
-        Resume r4 = new Resume("uuid4");
-
-        System.out.println(r1.compareTo(r4));
-        Arrays.binarySearch(storage1, 0, 0, r1);
-
-        save(r1);
-        save(r2);
-        save(r3);
-        save(r4);
-
-
-
-        System.out.println(Arrays.toString(storage1));
-       // Arrays.sort(storage1, 0, 4);
-        System.out.println(Arrays.toString(storage1));
-
+public class Test {
+    public static void main(String[] args) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        Resume resume = new Resume("uuid10");
+        Field field = resume.getClass().getDeclaredFields()[0]; // получение 1-го элемента в массиве полей
+        System.out.println(field.getName());
+        field.setAccessible(true); // открыть доступ на изменение final private поля
+        System.out.println(field.get(resume)); // .get возвращает значение поля
+        field.set(resume, "newUuid"); // устанавливает значение поля
+        System.out.println(field.get(resume));
     }
-
-    public void save(Resume r) {
-      //  System.out.println(getIndex(r.getUuid()));
-//        if (getIndex(r.getUuid()) != -1) {
-//            System.out.println("Resume " + r.getUuid() + " already exist");
-//        } else if (size >= STORAGE_LIMIT) {
-//            System.out.println("Storage overflow");
-//        } else {
-//            storage1[size] = r;
-//            size++;
-//        }
-    }
-
-
-    public static void main(String[] args) {
-        Test test = new Test();
-        test.setArray();
-        //System.out.println(test.getIndex("uuid4"));
-
-        int[] array = new int[10];
-        for(int i=0; i<7; i++) {
-            array[i] = i;
-        }
-        System.out.println(Arrays.toString(array));
-        int position = 2;
-        System.arraycopy(array, 2, array, position +1, 7);
-        System.out.println(Arrays.toString(array));
-    }
-
-    int getIndex(String uuid) {
-        Resume keySearch = new Resume(uuid);
-        return Arrays.binarySearch(storage1, 0, 4, keySearch);
-    }
-
 }
