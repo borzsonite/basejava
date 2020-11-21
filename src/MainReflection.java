@@ -1,5 +1,3 @@
-package webapp;
-
 import model.Resume;
 
 import java.lang.reflect.InvocationTargetException;

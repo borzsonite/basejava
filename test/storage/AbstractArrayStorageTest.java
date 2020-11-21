@@ -7,11 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static storage.AbstractArrayStorage.STORAGE_LIMIT;
 
-public class AbstractArrayStorageTest {
+public abstract class AbstractArrayStorageTest {
 
     private Storage storage;
 
@@ -44,6 +42,11 @@ public class AbstractArrayStorageTest {
         Assert.assertEquals(resume, storage.get(UUID_1));
     }
 
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExist() {
+        storage.update(storage.get("dummy"));
+    }
+
     @Test
     public void save() {
         Resume resume = new Resume();
@@ -51,27 +54,35 @@ public class AbstractArrayStorageTest {
         Assert.assertNotNull(storage.get(resume.getUuid()));
     }
 
+    @Test(expected = StorageException.class)
+    public void saveIfOverflow() throws NoSuchFieldException, IllegalAccessException {
+        Resume resume = new Resume("test");
+//        Field sizeField = storage.getClass().getSuperclass().getDeclaredField("size");
+//        sizeField.setAccessible(true);
+//        sizeField.set(storage, STORAGE_LIMIT);
+//        System.out.println(storage.size());
+        storage.save(resume);
+    }
+
     @Test
-    public void get() {
+    public void getAll() {
         Resume[] resumes = storage.getAll();
         Assert.assertEquals(storage.get(UUID_1), resumes[0]);
         Assert.assertEquals(storage.get(UUID_2), resumes[1]);
         Assert.assertEquals(storage.get(UUID_3), resumes[2]);
     }
 
-    @Test
+    @Test(expected = NotExistStorageException.class)
     public void delete() {
         storage.delete(UUID_1);
-        storage.delete(UUID_2);
-        storage.delete(UUID_3);
-        Assert.assertEquals(0, storage.size());
+        storage.get(UUID_1);
 
     }
 
     @Test
-    public void getAll() {
+    public void get() {
         Resume[] resumes = storage.getAll();
-        Assert.assertArrayEquals(resumes, Arrays.copyOfRange(resumes, 0, 3));
+        Assert.assertEquals(storage.get(UUID_1), resumes[0]);
     }
 
     @Test
