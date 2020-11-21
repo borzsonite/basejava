@@ -43,7 +43,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void updateNotExist() {
+    public void updateIfNotExist() {
         storage.update(storage.get("dummy"));
     }
 
@@ -56,12 +56,10 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveIfOverflow() throws NoSuchFieldException, IllegalAccessException {
-        Resume resume = new Resume("test");
-//        Field sizeField = storage.getClass().getSuperclass().getDeclaredField("size");
-//        sizeField.setAccessible(true);
-//        sizeField.set(storage, STORAGE_LIMIT);
-//        System.out.println(storage.size());
-        storage.save(resume);
+        for (int i = 0; i < STORAGE_LIMIT - 2; i++) {
+            Resume resume = new Resume();
+            storage.save(resume);
+        }
     }
 
     @Test
@@ -76,13 +74,22 @@ public abstract class AbstractArrayStorageTest {
     public void delete() {
         storage.delete(UUID_1);
         storage.get(UUID_1);
+    }
 
+    @Test(expected = NotExistStorageException.class)
+    public void deleteIfNotExist() {
+        storage.delete("dummy");
     }
 
     @Test
     public void get() {
         Resume[] resumes = storage.getAll();
         Assert.assertEquals(storage.get(UUID_1), resumes[0]);
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void getIfNotExist() {
+        storage.get("dummy");
     }
 
     @Test
@@ -97,10 +104,5 @@ public abstract class AbstractArrayStorageTest {
             storage.save(new Resume());
         }
         throw new ArrayIndexOutOfBoundsException(); //имитация переполнения
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExist() {
-        storage.get("dummy");
     }
 }
