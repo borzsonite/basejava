@@ -54,7 +54,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = StorageException.class)
-    public void saveIfOverflow() throws NoSuchFieldException, IllegalAccessException {
+    public void saveIfOverflow() {
         for (int i = 0; i < STORAGE_LIMIT - 2; i++) {
             Resume resume = new Resume();
             storage.save(resume);
@@ -64,14 +64,14 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void getAll() {
         Resume[] resumes = storage.getAll();
-        Assert.assertEquals(storage.get(UUID_1), resumes[0]);
-        Assert.assertEquals(storage.get(UUID_2), resumes[1]);
-        Assert.assertEquals(storage.get(UUID_3), resumes[2]);
+        Resume[] testArray = {new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
+        Assert.assertArrayEquals(resumes, testArray);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
         storage.delete(UUID_1);
+        Assert.assertEquals(2, storage.size());
         storage.get(UUID_1);
     }
 
@@ -82,8 +82,9 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() {
-        Resume[] resumes = storage.getAll();
-        Assert.assertEquals(storage.get(UUID_1), resumes[0]);
+        Resume test = new Resume("test");
+        storage.save(test);
+        Assert.assertEquals(storage.get("test"), test);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -96,12 +97,4 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(3, storage.size());
     }
 
-    @Test(expected = StorageException.class)
-    public void storageOverflow() {
-
-        for (int i = 0; i < STORAGE_LIMIT; i++) {
-            storage.save(new Resume());
-        }
-        throw new ArrayIndexOutOfBoundsException(); //имитация переполнения
-    }
 }
