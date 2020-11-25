@@ -56,16 +56,13 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = StorageException.class)
     public void saveIfOverflow() {
         try {
-            int currentSize = storage.size();
-            for (int i = 0; i <= STORAGE_LIMIT - currentSize; i++) {
+            for (int i = storage.size() + 1; i <= STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
-        } catch (Exception e) {
-            if(!(e instanceof StorageException)) {
+        } catch (StorageException e) {
                 Assert.fail("Error while filling..");
-            }
-             throw e;
         }
+        storage.save(new Resume());
     }
 
     @Test
