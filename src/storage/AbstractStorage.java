@@ -5,26 +5,19 @@ import exсeption.NotExistStorageException;
 import exсeption.StorageException;
 import model.Resume;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractStorage {
-    protected static final int STORAGE_LIMIT = 6;
 
    protected List<Resume> storage = new ArrayList<>();
-
-   // protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
 
     public void clear() {
         System.out.println("Clearing all");
         storage.clear();
-        size = 0;
     }
 
     public void update(Resume resume) {
-        int index = storage.indexOf(resume.getUuid());
+        int index = storage.indexOf(resume);
         if (index < 0) {
             throw new NotExistStorageException(resume.getUuid());
         }
@@ -33,19 +26,15 @@ public abstract class AbstractStorage {
     }
 
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
+        int index = storage.indexOf(resume);
         if (index >= 0) {
             throw new ExistStorageException(resume.getUuid());
-        } else if (size < storage.length) {
-            saveByIndex(resume, index);
-            size++;
-            System.out.println("Resume " + resume.getUuid() + " saved");
-        } else {
-            throw new StorageException("Storage overflow", resume.getUuid());
         }
+            saveByIndex(resume);
+            System.out.println("Resume " + resume.getUuid() + " saved");
     }
 
-    abstract void saveByIndex(Resume resume, int index);
+    abstract void saveByIndex(Resume resume);
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
@@ -53,7 +42,7 @@ public abstract class AbstractStorage {
             throw new NotExistStorageException(uuid);
 
         }
-        return storage[index];
+        return storage.get(index);
     }
 
     public void delete(String uuid) {
@@ -62,17 +51,16 @@ public abstract class AbstractStorage {
             throw new NotExistStorageException(uuid);
         }
         deleteByIndex(index);
-        storage[size - 1] = null;
-        size--;
         System.out.println("Resume " + uuid + " deleted");
     }
 
     public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+        Resume[] result = new Resume[storage.size()];
+        return (storage.toArray(result));
     }
 
     public int size() {
-        return size;
+        return storage.size();
     }
 
     protected abstract int getIndex(String uuid);
