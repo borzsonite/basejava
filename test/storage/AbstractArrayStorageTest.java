@@ -60,7 +60,7 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-                Assert.fail("Error while filling..");
+                Assert.fail("Переполнение произошло раньше времени...");
         }
         storage.save(new Resume());
     }
