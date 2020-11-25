@@ -1,4 +1,81 @@
 package storage;
 
-public class AbstractStorage {
+import exсeption.ExistStorageException;
+import exсeption.NotExistStorageException;
+import exсeption.StorageException;
+import model.Resume;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public abstract class AbstractStorage {
+    protected static final int STORAGE_LIMIT = 6;
+
+   protected List<Resume> storage = new ArrayList<>();
+
+   // protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size = 0;
+
+    public void clear() {
+        System.out.println("Clearing all");
+        storage.clear();
+        size = 0;
+    }
+
+    public void update(Resume resume) {
+        int index = storage.indexOf(resume.getUuid());
+        if (index < 0) {
+            throw new NotExistStorageException(resume.getUuid());
+        }
+        storage.set(index, resume);
+        System.out.println("Resume " + resume.getUuid() + " updated.");
+    }
+
+    public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(resume.getUuid());
+        } else if (size < storage.length) {
+            saveByIndex(resume, index);
+            size++;
+            System.out.println("Resume " + resume.getUuid() + " saved");
+        } else {
+            throw new StorageException("Storage overflow", resume.getUuid());
+        }
+    }
+
+    abstract void saveByIndex(Resume resume, int index);
+
+    public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+
+        }
+        return storage[index];
+    }
+
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        deleteByIndex(index);
+        storage[size - 1] = null;
+        size--;
+        System.out.println("Resume " + uuid + " deleted");
+    }
+
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    public int size() {
+        return size;
+    }
+
+    protected abstract int getIndex(String uuid);
+
+    protected abstract void deleteByIndex(int index);
 }
