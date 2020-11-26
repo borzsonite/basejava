@@ -2,10 +2,10 @@ package storage;
 
 import exсeption.ExistStorageException;
 import exсeption.NotExistStorageException;
-import exсeption.StorageException;
 import model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
 
@@ -64,6 +64,5 @@ public abstract class AbstractStorage implements Storage {
     }
 
     protected abstract int getIndex(String uuid);
-
     protected abstract void deleteByIndex(int index);
 }
