@@ -7,7 +7,7 @@ import model.Resume;
 
 import java.util.*;
 
-public abstract class AbstractStorage {
+public abstract class AbstractStorage implements Storage {
 
    protected List<Resume> storage = new ArrayList<>();
 
