@@ -34,7 +34,6 @@ public abstract class AbstractStorage implements Storage {
             System.out.println("Resume " + resume.getUuid() + " saved");
     }
 
-    abstract void saveByIndex(Resume resume);
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
@@ -65,4 +64,6 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
     protected abstract void deleteByIndex(int index);
+    abstract void saveByIndex(Resume resume);
+
 }
