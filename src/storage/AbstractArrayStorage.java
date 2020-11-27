@@ -7,7 +7,7 @@ import model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage implements Storage{
     protected static final int STORAGE_LIMIT = 6;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -41,8 +41,6 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    abstract void saveByIndex(Resume resume, int index);
-
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
@@ -72,6 +70,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int getIndex(String uuid);
-
     protected abstract void deleteByIndex(int index);
+    abstract void saveByIndex(Resume resume, int index);
+
 }
