@@ -8,7 +8,11 @@ public class MainReflection {
         ////////////////Task from HW4///////////////
         Resume resume = new Resume("uuid10");
         Method method = Resume.class.getDeclaredMethod("toString");
+
+        Class clazz = resume.getClass();
+        Method method1 = clazz.getMethod("toString");
         System.out.println(method.invoke(resume));
+        System.out.println(method1.invoke(resume));
     }
 
 }
