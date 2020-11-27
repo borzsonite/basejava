@@ -65,10 +65,20 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
+    public void getIfNotExist() {
+        storage.get("dummy");
+    }
+
+    @Test(expected = NotExistStorageException.class)
     public void delete() {
     storage.delete(UUID_1);
     assertEquals(2,storage.size());
     storage.get(UUID_1);
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void deleteIfNotExist() {
+        storage.delete("dummy");
     }
 
     @Test
