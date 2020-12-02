@@ -17,6 +17,16 @@ public class ArrayStorage extends AbstractArrayStorage {
 //        return -1;
 //    }
 
+    @Override
+    protected Resume proceedGet(Object resumePosition) {
+        return storage[(Integer)resumePosition];
+    }
+
+    @Override
+    protected void proceedDelete(Object resumePosition) {
+        storage[(Integer)resumePosition] = storage[size-1];
+    }
+
         protected void saveByIndex(Resume resume, Object index) {
         storage[(Integer)size] = resume;
     }

@@ -10,15 +10,9 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Object getPosition(String uuid);
     protected abstract void proceedUpdate(Resume resume, Object resumePosition);
     protected abstract void proceedSave(Resume resume, Object resumePosition);
+    protected abstract Resume proceedGet(Object resumePosition);
+    protected abstract void proceedDelete(Object resumePosition);
 
-        public void save(Resume resume) {
-        Object resumePosition = getPosition(resume.getUuid());
-        if (resumePosition == null) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-        proceedSave(resume, resumePosition);
-            System.out.println("Resume " + resume.getUuid() + " saved.");
-    }
 
     public void update(Resume resume) {
         Object resumePosition = getPosition(resume.getUuid());
@@ -28,4 +22,31 @@ public abstract class AbstractStorage implements Storage {
         proceedUpdate(resume, resumePosition);
         System.out.println("Resume " + resume.getUuid() + " updated.");
     }
+
+        public void save(Resume resume) {
+        Object resumePosition = getPosition(resume.getUuid());
+        if (resumePosition != null) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+        proceedSave(resume, resumePosition);
+            System.out.println("Resume " + resume.getUuid() + " saved.");
+    }
+
+        public Resume get(String uuid) {
+       Object resumePosition = getPosition(uuid);
+        if (resumePosition == null) {
+            throw new NotExistStorageException(uuid);
+        }
+        return proceedGet(resumePosition);
+    }
+
+        public void delete(String uuid) {
+        Object resumePosition = getPosition(uuid);
+        if (resumePosition == null) {
+            throw new NotExistStorageException(uuid);
+        }
+        proceedDelete(resumePosition);
+        System.out.println("Resume " + uuid + " deleted");
+    }
+
 }

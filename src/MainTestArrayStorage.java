@@ -7,7 +7,7 @@ import storage.SortedArrayStorage;
  * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ListStorage ARRAY_STORAGE = new ListStorage();
+    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");

@@ -35,13 +35,11 @@ abstract void saveByIndex(Resume resume, Object index);
         storage[(Integer) resumePosition] = resume;
     }
 
-
-
-    //    public void clear() {
-//        System.out.println("Clearing all");
-//        Arrays.fill(storage, 0, size, null);
-//        size = 0;
-//    }
+    public void clear() {
+        System.out.println("Clearing all");
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
 
 //    public void update(Resume resume) {
 //        int index = getIndex(resume.getUuid());
@@ -65,8 +63,6 @@ abstract void saveByIndex(Resume resume, Object index);
 //        }
 //    }
 //
-
-//
 //    public Resume get(String uuid) {
 //        int index = getIndex(uuid);
 //        if (index < 0) {
@@ -87,13 +83,13 @@ abstract void saveByIndex(Resume resume, Object index);
 //        System.out.println("Resume " + uuid + " deleted");
 //    }
 //
-//    public Resume[] getAll() {
-//        return Arrays.copyOfRange(storage, 0, size);
-//    }
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
 //
-//    public int size() {
-//        return size;
-//    }
+    public int size() {
+        return size;
+    }
 //
 //    protected abstract int getIndex(String uuid);
 //    protected abstract void deleteByIndex(int index);
