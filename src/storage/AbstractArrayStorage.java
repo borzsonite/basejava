@@ -13,6 +13,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+abstract void saveByIndex(Resume resume, Object index);
+
     @Override
     protected Object getPosition(String uuid) {
         for(Resume resume: storage) {
@@ -22,6 +24,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
         }
         return null;
     }
+
+    @Override
+    protected void proceedSave(Resume resume, Object resumePosition) {
+        saveByIndex(resume, resumePosition);
+    }
+
+    @Override
+    protected void proceedUpdate(Resume resume, Object resumePosition) {
+        storage[(Integer) resumePosition] = resume;
+    }
+
+
 
     //    public void clear() {
 //        System.out.println("Clearing all");
@@ -51,7 +65,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
 //        }
 //    }
 //
-//    abstract void saveByIndex(Resume resume, int index);
+
 //
 //    public Resume get(String uuid) {
 //        int index = getIndex(uuid);

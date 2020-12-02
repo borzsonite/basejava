@@ -1,4 +1,5 @@
 package storage;
+import exсeption.ExistStorageException;
 import exсeption.NotExistStorageException;
 import model.Resume;
 
@@ -7,14 +8,24 @@ import model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getPosition(String uuid);
-    protected abstract Object proceedUpdate(Resume resume);
+    protected abstract void proceedUpdate(Resume resume, Object resumePosition);
+    protected abstract void proceedSave(Resume resume, Object resumePosition);
+
+        public void save(Resume resume) {
+        Object resumePosition = getPosition(resume.getUuid());
+        if (resumePosition == null) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+        proceedSave(resume, resumePosition);
+            System.out.println("Resume " + resume.getUuid() + " saved.");
+    }
 
     public void update(Resume resume) {
         Object resumePosition = getPosition(resume.getUuid());
         if (resumePosition == null) {
             throw new NotExistStorageException(resume.getUuid());
         }
-        proceedUpdate(resume);
+        proceedUpdate(resume, resumePosition);
         System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 }
