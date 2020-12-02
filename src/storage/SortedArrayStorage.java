@@ -23,10 +23,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
     }
 
-    @Override
-    void saveByIndex(Resume resume) {
 
-    }
 }
 
 
