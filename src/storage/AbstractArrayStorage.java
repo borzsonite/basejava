@@ -17,17 +17,23 @@ abstract void saveByIndex(Resume resume, Object index);
 
     @Override
     protected Object getPosition(String uuid) {
-        for(Resume resume: storage) {
-            if(resume.getUuid().equals(uuid)) {
-                return Arrays.asList(storage).indexOf(resume);
+        for(int i=0; i<size; i++) {
+            if(storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
     protected void proceedSave(Resume resume, Object resumePosition) {
-        saveByIndex(resume, resumePosition);
+        if(size<STORAGE_LIMIT) {
+            saveByIndex(resume, resumePosition);
+            size++;
+        } else {
+            throw new StorageException("Storage overflow!", resume.getUuid());
+        }
+
     }
 
     @Override

@@ -25,6 +25,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void proceedDelete(Object resumePosition) {
         storage[(Integer)resumePosition] = storage[size-1];
+        size--;
     }
 
         protected void saveByIndex(Resume resume, Object index) {

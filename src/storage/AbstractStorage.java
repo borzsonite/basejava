@@ -16,7 +16,7 @@ public abstract class AbstractStorage implements Storage {
 
     public void update(Resume resume) {
         Object resumePosition = getPosition(resume.getUuid());
-        if (resumePosition == null) {
+        if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(resume.getUuid());
         }
         proceedUpdate(resume, resumePosition);
@@ -25,7 +25,7 @@ public abstract class AbstractStorage implements Storage {
 
         public void save(Resume resume) {
         Object resumePosition = getPosition(resume.getUuid());
-        if (resumePosition != null) {
+        if (resumePosition != Integer.valueOf(-1)) {
             throw new ExistStorageException(resume.getUuid());
         }
         proceedSave(resume, resumePosition);
@@ -34,7 +34,7 @@ public abstract class AbstractStorage implements Storage {
 
         public Resume get(String uuid) {
        Object resumePosition = getPosition(uuid);
-        if (resumePosition == null) {
+        if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(uuid);
         }
         return proceedGet(resumePosition);
@@ -42,7 +42,7 @@ public abstract class AbstractStorage implements Storage {
 
         public void delete(String uuid) {
         Object resumePosition = getPosition(uuid);
-        if (resumePosition == null) {
+        if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(uuid);
         }
         proceedDelete(resumePosition);
