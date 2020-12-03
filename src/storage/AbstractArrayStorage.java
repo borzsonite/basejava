@@ -14,6 +14,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     protected int size = 0;
 
 abstract void saveByIndex(Resume resume, Object index);
+abstract void deleteByIndex(Object index);
 
     @Override
     protected Object getPosition(String uuid) {
@@ -33,7 +34,12 @@ abstract void saveByIndex(Resume resume, Object index);
         } else {
             throw new StorageException("Storage overflow!", resume.getUuid());
         }
+    }
 
+    @Override
+    protected void proceedDelete(Object resumePosition) {
+        deleteByIndex(resumePosition);
+        size--;
     }
 
     @Override
