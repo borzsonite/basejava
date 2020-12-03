@@ -29,7 +29,7 @@ public abstract class AbstractStorage implements Storage {
 
         public void save(Resume resume) {
         Object resumePosition = getPosition(resume.getUuid());
-        if (resumePosition >= (Integer)0) {
+        if ((Integer)resumePosition >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
         proceedSave(resume, resumePosition);
