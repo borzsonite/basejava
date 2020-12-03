@@ -8,8 +8,8 @@ import model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getPosition(String uuid);
-    protected abstract void proceedUpdate(Resume resume, Object resumePosition);
-    protected abstract void proceedSave(Resume resume, Object resumePosition);
+    protected abstract void proceedUpdate(Object resumePosition, Resume resume);
+    protected abstract void proceedSave(Object resumePosition, Resume resume);
     protected abstract Resume proceedGet(Object resumePosition);
     protected abstract void proceedDelete(Object resumePosition);
     abstract void saveByIndex(Resume resume, int index);
@@ -23,7 +23,7 @@ public abstract class AbstractStorage implements Storage {
         if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(resume.getUuid());
         }
-        proceedUpdate(resume, resumePosition);
+        proceedUpdate(resumePosition, resume);
         System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 
@@ -32,7 +32,7 @@ public abstract class AbstractStorage implements Storage {
         if ((Integer)resumePosition >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
-        proceedSave(resume, resumePosition);
+        proceedSave(resumePosition, resume);
             System.out.println("Resume " + resume.getUuid() + " saved.");
     }
 

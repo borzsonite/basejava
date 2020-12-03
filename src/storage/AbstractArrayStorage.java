@@ -16,17 +16,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
 
     @Override
     protected Object getPosition(String uuid) {
-        int index = getIndex(uuid);
-        return index;
+        return getIndex(uuid);
     }
 
     @Override
-    protected void proceedUpdate(Resume resume, Object resumePosition) {
+    protected void proceedUpdate(Object resumePosition, Resume resume) {
         storage[(Integer) resumePosition] = resume;
     }
 
     @Override
-    protected void proceedSave(Resume resume, Object resumePosition) {
+    protected void proceedSave(Object resumePosition, Resume resume) {
         if (size < STORAGE_LIMIT) {
             saveByIndex(resume, (Integer) resumePosition);
             size++;
