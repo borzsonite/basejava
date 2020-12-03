@@ -12,6 +12,10 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void proceedSave(Resume resume, Object resumePosition);
     protected abstract Resume proceedGet(Object resumePosition);
     protected abstract void proceedDelete(Object resumePosition);
+    abstract void saveByIndex(Resume resume, int index);
+    abstract void deleteByIndex(int index);
+    protected abstract int getIndex(String uuid);
+
 
 
     public void update(Resume resume) {
@@ -25,7 +29,7 @@ public abstract class AbstractStorage implements Storage {
 
         public void save(Resume resume) {
         Object resumePosition = getPosition(resume.getUuid());
-        if (resumePosition != Integer.valueOf(-1)) {
+        if (resumePosition >= (Integer)0) {
             throw new ExistStorageException(resume.getUuid());
         }
         proceedSave(resume, resumePosition);

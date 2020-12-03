@@ -13,23 +13,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-abstract void saveByIndex(Resume resume, Object index);
-abstract void deleteByIndex(Object index);
 
     @Override
     protected Object getPosition(String uuid) {
-        for(int i=0; i<size; i++) {
-            if(storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
+        int index = getIndex(uuid);
+        return index;
+    }
+
+    @Override
+    protected void proceedUpdate(Resume resume, Object resumePosition) {
+        storage[(Integer) resumePosition] = resume;
     }
 
     @Override
     protected void proceedSave(Resume resume, Object resumePosition) {
-        if(size<STORAGE_LIMIT) {
-            saveByIndex(resume, resumePosition);
+        if (size < STORAGE_LIMIT) {
+            saveByIndex(resume, (Integer) resumePosition);
             size++;
         } else {
             throw new StorageException("Storage overflow!", resume.getUuid());
@@ -38,13 +37,13 @@ abstract void deleteByIndex(Object index);
 
     @Override
     protected void proceedDelete(Object resumePosition) {
-        deleteByIndex(resumePosition);
+        deleteByIndex((Integer) resumePosition);
         size--;
     }
 
     @Override
-    protected void proceedUpdate(Resume resume, Object resumePosition) {
-        storage[(Integer) resumePosition] = resume;
+    protected Resume proceedGet(Object resumePosition) {
+        return storage[(Integer)resumePosition];
     }
 
     public void clear() {
@@ -62,7 +61,7 @@ abstract void deleteByIndex(Object index);
 //        System.out.println("Resume " + resume.getUuid() + " updated.");
 //    }
 
-//    public void save(Resume resume) {
+    //    public void save(Resume resume) {
 //        int index = getIndex(resume.getUuid());
 //        if (index >= 0) {
 //            throw new ExistStorageException(resume.getUuid());
@@ -98,11 +97,9 @@ abstract void deleteByIndex(Object index);
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
-//
+
+    //
     public int size() {
         return size;
     }
-//
-//    protected abstract int getIndex(String uuid);
-//    protected abstract void deleteByIndex(int index);
 }
