@@ -1,11 +1,8 @@
 package storage;
 
-import exсeption.ExistStorageException;
-import exсeption.NotExistStorageException;
 import model.Resume;
-
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -55,7 +52,9 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     void saveByIndex(Resume resume, int index) {
-        storage.add(index, resume);
+        int position = Math.abs(index) - 1;
+        storage.add(position, resume);
+        Collections.sort(storage);
     }
 
     @Override
