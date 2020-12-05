@@ -56,7 +56,26 @@ public abstract class AbstractStorageTest {
     public void save() {
         Resume resume = new Resume();
         storage.save(resume);
-        assertEquals(resume, storage.get(resume.getUuid()));
+        Assert.assertNotNull(storage.get(resume.getUuid()));
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveIfOverflow() {
+        try {
+            for (int i = storage.size() + 1; i <= STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail("Переполнение произошло раньше времени...");
+        }
+        storage.save(new Resume());
+    }
+
+    @Test
+    public void getAll() {
+        Resume[] actualResumes = storage.getAll();
+        Resume[] expectedResumes = {RESUME_1, RESUME_2, RESUME_3};
+        assertArrayEquals(expectedResumes, actualResumes);
     }
 
     @Test
@@ -81,12 +100,6 @@ public abstract class AbstractStorageTest {
         storage.delete("dummy");
     }
 
-    @Test
-    public void getAll() {
-        Resume[] actualResumes = storage.getAll();
-        Resume[] expectedResumes = {RESUME_1, RESUME_2, RESUME_3};
-        assertArrayEquals(expectedResumes, actualResumes);
-    }
 
     @Test
     public void size() {
