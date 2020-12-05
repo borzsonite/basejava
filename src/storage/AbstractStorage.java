@@ -1,4 +1,5 @@
 package storage;
+
 import exсeption.ExistStorageException;
 import exсeption.NotExistStorageException;
 import model.Resume;
@@ -7,19 +8,18 @@ import model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract Object getPosition(String uuid);
+    protected abstract Object getIndex(String uuid);
+
     protected abstract void proceedUpdate(Object resumePosition, Resume resume);
+
     protected abstract void proceedSave(Object resumePosition, Resume resume);
+
     protected abstract Resume proceedGet(Object resumePosition);
+
     protected abstract void proceedDelete(Object resumePosition);
-    abstract void saveByIndex(Resume resume, int index);
-    abstract void deleteByIndex(int index);
-    protected abstract int getIndex(String uuid);
-
-
 
     public void update(Resume resume) {
-        Object resumePosition = getPosition(resume.getUuid());
+        Object resumePosition = getIndex(resume.getUuid());
         if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(resume.getUuid());
         }
@@ -27,25 +27,25 @@ public abstract class AbstractStorage implements Storage {
         System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 
-        public void save(Resume resume) {
-        Object resumePosition = getPosition(resume.getUuid());
-        if ((Integer)resumePosition >= 0) {
+    public void save(Resume resume) {
+        Object resumePosition = getIndex(resume.getUuid());
+        if ((Integer) resumePosition >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
         proceedSave(resumePosition, resume);
-            System.out.println("Resume " + resume.getUuid() + " saved.");
+        System.out.println("Resume " + resume.getUuid() + " saved.");
     }
 
-        public Resume get(String uuid) {
-       Object resumePosition = getPosition(uuid);
+    public Resume get(String uuid) {
+        Object resumePosition = getIndex(uuid);
         if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(uuid);
         }
         return proceedGet(resumePosition);
     }
 
-        public void delete(String uuid) {
-        Object resumePosition = getPosition(uuid);
+    public void delete(String uuid) {
+        Object resumePosition = getIndex(uuid);
         if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(uuid);
         }

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public abstract class AbstractStorageTest {
 
-    private final Storage storage;
+    protected final Storage storage;
 
     String UUID_1 = "uuid1";
     String UUID_2 = "uuid2";
