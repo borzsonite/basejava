@@ -1,14 +1,13 @@
 package storage;
 
 import exсeption.NotExistStorageException;
-import exсeption.StorageException;
 import model.Resume;
-import static org.junit.Assert.*;
-import static storage.AbstractArrayStorage.STORAGE_LIMIT;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
 
@@ -57,18 +56,6 @@ public abstract class AbstractStorageTest {
         Resume resume = new Resume();
         storage.save(resume);
         Assert.assertNotNull(storage.get(resume.getUuid()));
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveIfOverflow() {
-        try {
-            for (int i = storage.size() + 1; i <= STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("Переполнение произошло раньше времени...");
-        }
-        storage.save(new Resume());
     }
 
     @Test

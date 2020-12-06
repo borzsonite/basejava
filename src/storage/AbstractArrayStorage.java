@@ -1,7 +1,5 @@
 package storage;
 
-import exсeption.ExistStorageException;
-import exсeption.NotExistStorageException;
 import exсeption.StorageException;
 import model.Resume;
 
