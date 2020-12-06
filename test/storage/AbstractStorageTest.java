@@ -1,6 +1,8 @@
 package storage;
 
+import exсeption.ExistStorageException;
 import exсeption.NotExistStorageException;
+import exсeption.StorageException;
 import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,6 +59,11 @@ public abstract class AbstractStorageTest {
         storage.save(resume);
         Assert.assertNotNull(storage.get(resume.getUuid()));
         Assert.assertTrue(storage.size() == 4);
+    }
+
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() {
+        storage.save(RESUME_1);
     }
 
     @Test

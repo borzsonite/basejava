@@ -5,7 +5,7 @@ import model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage extends AbstractStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -14,14 +14,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     abstract void deleteByIndex(int index);
 
     @Override
-    protected void proceedUpdate(Object resumePosition, Resume resume) {
-        storage[(Integer) resumePosition] = resume;
+    protected void proceedUpdate(Object index, Resume resume) {
+        storage[(Integer) index] = resume;
     }
 
     @Override
-    protected void proceedSave(Object resumePosition, Resume resume) {
+    protected void proceedSave(Object index, Resume resume) {
         if (size < STORAGE_LIMIT) {
-            saveByIndex(resume, (Integer) resumePosition);
+            saveByIndex(resume, (Integer) index);
             size++;
         } else {
             throw new StorageException("Storage overflow!", resume.getUuid());
@@ -29,14 +29,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     }
 
     @Override
-    protected void proceedDelete(Object resumePosition) {
-        deleteByIndex((Integer) resumePosition);
+    protected void proceedDelete(Object index) {
+        deleteByIndex((Integer) index);
         size--;
     }
 
     @Override
-    protected Resume proceedGet(Object resumePosition) {
-        return storage[(Integer)resumePosition];
+    protected Resume proceedGet(Object index) {
+        return storage[(Integer)index];
     }
 
     public void clear() {
