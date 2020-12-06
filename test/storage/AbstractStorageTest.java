@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -58,7 +60,7 @@ public abstract class AbstractStorageTest {
         Resume resume = new Resume();
         storage.save(resume);
         Assert.assertNotNull(storage.get(resume.getUuid()));
-        Assert.assertTrue(storage.size() == 4);
+        assertEquals(4, storage.size());
     }
 
     @Test(expected = ExistStorageException.class)
@@ -69,6 +71,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAll() {
         Resume[] actualResumes = storage.getAll();
+       // Arrays.sort(actualResumes);
         Resume[] expectedResumes = {RESUME_1, RESUME_2, RESUME_3};
         assertArrayEquals(expectedResumes, actualResumes);
     }
