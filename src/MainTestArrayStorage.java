@@ -1,5 +1,4 @@
 import model.Resume;
-import storage.ListStorage;
 import storage.MapStorage;
 
 public class MainTestArrayStorage {
