@@ -7,17 +7,18 @@ import model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getIndex(String uuid);
+
     protected abstract void proceedUpdate(Object resumePosition, Resume resume);
+
     protected abstract void proceedSave(Object resumePosition, Resume resume);
+
     protected abstract Resume proceedGet(Object resumePosition);
+
     protected abstract void proceedDelete(Object resumePosition);
 
     public void update(Resume resume) {
-        Object resumePosition = getIndex(resume.getUuid());
-        if(isExist(resumePosition, resume.getUuid())) {
-            proceedUpdate(resumePosition, resume);
+            proceedUpdate(isExist(resume.getUuid()), resume);
             System.out.println("Resume " + resume.getUuid() + " updated.");
-        }
     }
 
     public void save(Resume resume) {
@@ -30,25 +31,19 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        Object resumePosition = getIndex(uuid);
-        if(isExist(resumePosition, uuid)) {
-            return proceedGet(resumePosition);
-        }
-        return null;
+        return proceedGet(isExist(uuid));
     }
 
     public void delete(String uuid) {
-        Object resumePosition = getIndex(uuid);
-        if(isExist(resumePosition, uuid)) {
-            proceedDelete(resumePosition);
-            System.out.println("Resume " + uuid + " deleted");
-        }
+        proceedDelete(isExist(uuid));
+        System.out.println("Resume " + uuid + " deleted.");
     }
 
-    private boolean isExist(Object resumePosition, String uuid) {
-        if(resumePosition == Integer.valueOf(-1)) {
+    private Object isExist(String uuid) {
+        Object resumePosition = getIndex(uuid);
+        if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(uuid);
         }
-        return true;
+        return resumePosition;
     }
 }
