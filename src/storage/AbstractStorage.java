@@ -6,7 +6,7 @@ import model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getPosition(String uuid);
 
     protected abstract void proceedUpdate(Object resumePosition, Resume resume);
 
@@ -22,7 +22,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void save(Resume resume) {
-        Object resumePosition = getIndex(resume.getUuid());
+        Object resumePosition = getPosition(resume.getUuid());
         if (resumePosition instanceof String || (Integer) resumePosition >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
@@ -40,7 +40,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object isExist(String uuid) {
-        Object resumePosition = getIndex(uuid);
+        Object resumePosition = getPosition(uuid);
         if (resumePosition == Integer.valueOf(-1)) {
             throw new NotExistStorageException(uuid);
         }

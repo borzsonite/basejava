@@ -9,7 +9,7 @@ public class MapStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new TreeMap<>();
 
     @Override
-    protected Object getIndex(String uuid) {
+    protected Object getPosition(String uuid) {
         if(storage.containsKey(uuid)) {
             return uuid;
         }

@@ -4,8 +4,10 @@ import storage.ListStorage;
 import storage.MapStorage;
 import storage.SortedArrayStorage;
 
+import java.lang.reflect.Array;
+
 public class MainTestArrayStorage {
-    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");
