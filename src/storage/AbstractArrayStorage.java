@@ -10,7 +10,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+
     abstract void saveByIndex(Resume resume, int index);
+
     abstract void deleteByIndex(int index);
 
     @Override
@@ -36,7 +38,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected Resume proceedGet(Object index) {
-        return storage[(Integer)index];
+        return storage[(Integer) index];
     }
 
     public void clear() {

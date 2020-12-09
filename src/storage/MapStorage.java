@@ -10,30 +10,27 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getPosition(String uuid) {
-        if(storage.containsKey(uuid)) {
-            return uuid;
-        }
-        return -1;
+        return storage.containsKey(uuid)?uuid:-1;
     }
 
     @Override
-    protected void proceedUpdate(Object index, Resume resume) {
-        storage.replace((String)index, resume);
+    protected void proceedUpdate(Object key, Resume resume) {
+        storage.replace((String)key, resume);
     }
 
     @Override
-    protected void proceedSave(Object index, Resume resume) {
+    protected void proceedSave(Object key, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume proceedGet(Object index) {
-        return storage.get(index);
+    protected Resume proceedGet(Object key) {
+        return storage.get(key);
     }
 
     @Override
-    protected void proceedDelete(Object index) {
-        storage.remove(index);
+    protected void proceedDelete(Object key) {
+        storage.remove(key);
     }
 
     @Override

@@ -1,10 +1,7 @@
 import model.Resume;
 import storage.ArrayStorage;
-import storage.ListStorage;
 import storage.MapStorage;
 import storage.SortedArrayStorage;
-
-import java.lang.reflect.Array;
 
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
