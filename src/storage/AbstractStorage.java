@@ -6,7 +6,7 @@ import model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract Object getPosition(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract void proceedUpdate(Object resumePosition, Resume resume);
 
@@ -16,34 +16,45 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void proceedDelete(Object resumePosition);
 
+    protected abstract boolean isExist(Object searchKey);
+
     public void update(Resume resume) {
-            proceedUpdate(isExist(resume.getUuid()), resume);
+            Object searchKey = getExistedSearchKey(resume.getUuid());
+            proceedUpdate(searchKey, resume);
             System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 
     public void save(Resume resume) {
-        Object resumePosition = getPosition(resume.getUuid());
-        if (resumePosition.equals(resume.getUuid()) || (Integer) resumePosition >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-        proceedSave(resumePosition, resume);
+        Object searchKey = getNotExistedSearchKey(resume.getUuid());
+        proceedSave(searchKey, resume);
         System.out.println("Resume " + resume.getUuid() + " saved.");
     }
 
     public Resume get(String uuid) {
-        return proceedGet(isExist(uuid));
+        Object searchKey = getExistedSearchKey(uuid);
+        return proceedGet(searchKey);
     }
 
     public void delete(String uuid) {
-        proceedDelete(isExist(uuid));
+        Object searchKey = getExistedSearchKey(uuid);
+        proceedDelete(searchKey);
         System.out.println("Resume " + uuid + " deleted.");
     }
 
-    private Object isExist(String uuid) {
-        Object resumePosition = getPosition(uuid);
-        if (resumePosition == Integer.valueOf(-1)) {
+
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return resumePosition;
+        return searchKey;
+    }
+
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(uuid);
+        }
+        return searchKey;
     }
 }

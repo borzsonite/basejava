@@ -16,6 +16,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     abstract void deleteByIndex(int index);
 
     @Override
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey>=0;
+    }
+
+    @Override
     protected void proceedUpdate(Object index, Resume resume) {
         storage[(Integer) index] = resume;
     }

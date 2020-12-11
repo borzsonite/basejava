@@ -8,6 +8,20 @@ import java.util.List;
 public class ListStorage extends AbstractStorage {
     private List<Resume> storage = new ArrayList<>();
 
+    protected Object getSearchKey(String uuid) {
+        for (int i = 0; i<storage.size(); i++) {
+            if (storage.get(i).getUuid().contains(uuid)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
     @Override
     public void clear() {
         System.out.println("Clearing all");
@@ -44,14 +58,5 @@ public class ListStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
-    }
-
-    protected Object getPosition(String uuid) {
-        for (int i = 0; i<storage.size(); i++) { // по идее, тут бы подошел indexOf, но не придумал как его можно здесь реализовать без цикла, если такая возможность скажи как.
-            if (storage.get(i).getUuid().contains(uuid)) {
-                return i;
-            }
-        }
-        return -1;
     }
 }
