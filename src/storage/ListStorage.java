@@ -23,6 +23,21 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    protected Object getSearchKey(String uuid) {
+        for (int i = 0; i<storage.size(); i++) {
+            if (storage.get(i).getUuid().contains(uuid)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey >=0;
+    }
+
+    @Override
     public void clear() {
         System.out.println("Clearing all");
         storage.clear();
