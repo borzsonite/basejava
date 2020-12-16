@@ -4,8 +4,10 @@ import storage.ListStorage;
 import storage.MapStorage;
 import storage.SortedArrayStorage;
 
+import java.util.List;
+
 public class MainTestArrayStorage {
-    static final MapStorage ARRAY_STORAGE = new MapStorage();
+    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");
@@ -39,7 +41,8 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
+        List<Resume> list = ARRAY_STORAGE.getAllSorted();
+        for (Resume r : list) {
             System.out.println(r);
         }
     }

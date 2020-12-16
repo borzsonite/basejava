@@ -2,6 +2,8 @@ package storage;
 
 import model.Resume;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -43,10 +45,16 @@ public class MapStorage extends AbstractStorage {
     storage.clear();
     }
 
+//    @Override
+//    public Resume[] getAll() {
+//        Resume[] result = new Resume[storage.size()];
+//        return storage.values().toArray(result);
+//    }
+
     @Override
-    public Resume[] getAll() {
-        Resume[] result = new Resume[storage.size()];
-        return storage.values().toArray(result);
+    public List<Resume> getAllSorted() {
+        List<Resume> list = new ArrayList<>(storage.values());
+        return list;
     }
 
     @Override
