@@ -2,17 +2,14 @@ package storage;
 
 import model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new TreeMap<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return storage.containsKey(uuid)?uuid:null;
+        return storage.containsValue(get(uuid))?uuid:null; // как здесь проверить наличие резюме с uuid полученнным в параметрах? Метод get(uuid) приводит к рекурсии
     }
 
     @Override
@@ -42,18 +39,13 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public void clear() {
-    storage.clear();
+        storage.clear();
     }
-
-//    @Override
-//    public Resume[] getAll() {
-//        Resume[] result = new Resume[storage.size()];
-//        return storage.values().toArray(result);
-//    }
 
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = new ArrayList<>(storage.values());
+        list.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
         return list;
     }
 

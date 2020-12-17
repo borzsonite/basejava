@@ -3,9 +3,7 @@ package storage;
 import exсeption.StorageException;
 import model.Resume;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10;
@@ -19,7 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey>=0;
+        return (Integer) searchKey >= 0;
     }
 
     @Override
@@ -54,12 +52,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-//    public Resume[] getAll() {
-//        return Arrays.copyOfRange(storage, 0, size);
-//    }
-
     public List<Resume> getAllSorted() {
-        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+        List<Resume> list = Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+        list.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
+        return list;
     }
 
     public int size() {
