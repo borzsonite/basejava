@@ -9,7 +9,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return storage.containsValue(get(uuid))?uuid:null; // как здесь проверить наличие резюме с uuid полученнным в параметрах? Метод get(uuid) приводит к рекурсии
+        return storage.containsValue(storage.get(uuid))?uuid:null;
     }
 
     @Override

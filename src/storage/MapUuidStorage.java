@@ -9,17 +9,17 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return storage.containsKey(uuid)?uuid:null;
+        return storage.containsKey(uuid) ? uuid : null;
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return searchKey!=null;
+        return searchKey != null;
     }
 
     @Override
     protected void proceedUpdate(Object key, Resume resume) {
-        storage.replace((String)key, resume);
+        storage.replace((String) key, resume);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     public void clear() {
-    storage.clear();
+        storage.clear();
     }
 
     @Override

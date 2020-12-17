@@ -4,6 +4,8 @@ import exсeption.ExistStorageException;
 import exсeption.NotExistStorageException;
 import model.Resume;
 
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getSearchKey(String uuid);
@@ -18,10 +20,12 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object searchKey);
 
+    public abstract List<Resume> getAllSorted();
+
     public void update(Resume resume) {
-            Object searchKey = getExistedSearchKey(resume.getUuid());
-            proceedUpdate(searchKey, resume);
-            System.out.println("Resume " + resume.getUuid() + " updated.");
+        Object searchKey = getExistedSearchKey(resume.getUuid());
+        proceedUpdate(searchKey, resume);
+        System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 
     public void save(Resume resume) {
