@@ -10,7 +10,7 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> storage = new ArrayList<>();
 
     protected Object getSearchKey(String uuid) {
-        for (int i = 0; i<storage.size(); i++) {
+        for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().contains(uuid)) {
                 return i;
             }
@@ -43,19 +43,17 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume proceedGet(Object index) {
-        return storage.get((Integer)index);
+        return storage.get((Integer) index);
     }
 
     @Override
     public void proceedDelete(Object index) {
-        storage.remove(storage.get((Integer)index));
+        storage.remove(storage.get((Integer) index));
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>(storage);
-        list.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
-        return list;
+    public List<Resume> getStorage() {
+        return new ArrayList<>(storage);
     }
 
     @Override

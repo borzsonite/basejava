@@ -4,7 +4,7 @@ import storage.*;
 import java.util.List;
 
 public class MainTestArrayStorage {
-    static final ListStorage ARRAY_STORAGE = new ListStorage();
+    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "Bob");
