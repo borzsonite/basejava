@@ -8,9 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -22,10 +20,14 @@ public abstract class AbstractStorageTest {
     String UUID_1 = "uuid1";
     String UUID_2 = "uuid2";
     String UUID_3 = "uuid3";
+    String FULL_NAME_1 = "Bob";
+    String FULL_NAME_2 = "Alex";
+    String FULL_NAME_3 = "Mike";
 
-    Resume RESUME_1 = new Resume(UUID_1);
-    Resume RESUME_2 = new Resume(UUID_2);
-    Resume RESUME_3 = new Resume(UUID_3);
+
+    Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
+    Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
+    Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -47,7 +49,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1);
+        Resume resume = new Resume(UUID_1, FULL_NAME_1);
         storage.update(resume);
         assertEquals(resume, storage.get(UUID_1));
     }
@@ -71,12 +73,13 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
+    public void getAllSorted() {
         List<Resume> actualResumes = storage.getAllSorted();
         List<Resume> expectedResumes = new ArrayList<>();
         expectedResumes.add(RESUME_1);
         expectedResumes.add(RESUME_2);
         expectedResumes.add(RESUME_3);
+        expectedResumes.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
         assertEquals(expectedResumes, actualResumes);
     }
 

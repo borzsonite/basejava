@@ -3,6 +3,7 @@ package storage;
 import model.Resume;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -50,15 +51,11 @@ public class ListStorage extends AbstractStorage {
         storage.remove(storage.get((Integer)index));
     }
 
-//    @Override
-//    public Resume[] getAll() {
-//        Resume[] result = new Resume[storage.size()];
-//        return storage.toArray(result);
-//    }
-
     @Override
     public List<Resume> getAllSorted() {
-        return storage;
+        List<Resume> list = new ArrayList<>(storage);
+        list.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
+        return list;
     }
 
     @Override
