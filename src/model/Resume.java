@@ -11,7 +11,7 @@ public class Resume implements Comparable<Resume> {
     private String fullName;
 
     public Resume(String fullName) {
-        this.fullName = fullName;
+        this("uuid", fullName);
     }
 
     public Resume(String uuid, String fullName) {
