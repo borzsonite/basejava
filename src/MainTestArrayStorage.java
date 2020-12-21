@@ -1,10 +1,11 @@
 import model.Resume;
+import storage.ArrayStorage;
 import storage.MapResumeStorage;
 
 import java.util.List;
 
 public class MainTestArrayStorage {
-    static final MapResumeStorage ARRAY_STORAGE = new MapResumeStorage();
+    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r7 = new Resume("uuid7", "Alex");
