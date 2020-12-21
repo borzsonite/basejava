@@ -5,7 +5,7 @@ import storage.MapResumeStorage;
 import java.util.List;
 
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final MapResumeStorage ARRAY_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
         Resume r7 = new Resume("uuid7", "Alex");
