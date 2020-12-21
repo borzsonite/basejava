@@ -28,8 +28,8 @@ public class MainCollection {
         map.put(UUID_3, RESUME_3);
         map.put(UUID_4, RESUME_4);
 
-        for(String key: map.keySet())
-        System.out.println(map.get(key));
+        for (String key : map.keySet())
+            System.out.println(map.get(key));
 
     }
 

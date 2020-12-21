@@ -25,7 +25,7 @@ public class Test {
         Iterator<Resume> iterator = resumeList.iterator();
         while (iterator.hasNext()) {
             Resume resume = iterator.next();
-            if(resume.getUuid().contains("uuid2")) {
+            if (resume.getUuid().contains("uuid2")) {
                 System.out.println("got " + resume.getUuid() + "index is " + resumeList.indexOf(resume));
             }
             System.out.println(resumeList.get(1));

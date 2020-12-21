@@ -65,7 +65,10 @@ public abstract class AbstractStorage implements Storage {
 
     public List<Resume> getAllSorted() {
         List<Resume> list = getStorage();
-        list.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
+        Comparator<Resume> sortByNameAndUuidComparator = Comparator.comparing(Resume::getFullName).
+                thenComparing(Resume::getUuid);
+        list.sort(sortByNameAndUuidComparator);
+
         return list;
     }
 }

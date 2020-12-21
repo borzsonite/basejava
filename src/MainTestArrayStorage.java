@@ -1,19 +1,19 @@
 import model.Resume;
-import storage.*;
+import storage.MapResumeStorage;
 
 import java.util.List;
 
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final MapResumeStorage ARRAY_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
+        Resume r7 = new Resume("uuid7", "Alex");
         Resume r1 = new Resume("uuid1", "Bob");
         Resume r2 = new Resume("uuid3", "Alex");
         Resume r3 = new Resume("uuid2", "Kate");
         Resume r4 = new Resume("uuid4", "Jhon");
         Resume r5 = new Resume("uuid6", "Mike");
         Resume r6 = new Resume("uuid5", "Christy");
-        Resume r7 = new Resume("uuid7", "Alex");
 
         ARRAY_STORAGE.save(r2); // uuid3
         ARRAY_STORAGE.save(r6); // uuid5

@@ -2,7 +2,10 @@ package storage;
 
 import model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class MapUuidStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new TreeMap<>();
