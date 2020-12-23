@@ -7,56 +7,56 @@ import model.Resume;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
-    protected abstract Object getSearchKey(String uuid);
+    protected abstract SK getSearchKey(String uuid);
 
-    protected abstract void proceedUpdate(Object resumePosition, Resume resume);
+    protected abstract void proceedUpdate(SK resumePosition, Resume resume);
 
-    protected abstract void proceedSave(Object resumePosition, Resume resume);
+    protected abstract void proceedSave(SK resumePosition, Resume resume);
 
-    protected abstract Resume proceedGet(Object resumePosition);
+    protected abstract Resume proceedGet(SK resumePosition);
 
-    protected abstract void proceedDelete(Object resumePosition);
+    protected abstract void proceedDelete(SK resumePosition);
 
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract boolean isExist(SK searchKey);
 
     public abstract List<Resume> getStorage();
 
     public void update(Resume resume) {
-        Object searchKey = getExistedSearchKey(resume.getUuid());
+        SK searchKey = getExistedSearchKey(resume.getUuid());
         proceedUpdate(searchKey, resume);
         System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 
     public void save(Resume resume) {
-        Object searchKey = getNotExistedSearchKey(resume.getUuid());
+        SK searchKey = getNotExistedSearchKey(resume.getUuid());
         proceedSave(searchKey, resume);
         System.out.println("Resume " + resume.getUuid() + " saved.");
     }
 
     public Resume get(String uuid) {
-        Object searchKey = getExistedSearchKey(uuid);
+        SK searchKey = getExistedSearchKey(uuid);
         return proceedGet(searchKey);
     }
 
     public void delete(String uuid) {
-        Object searchKey = getExistedSearchKey(uuid);
+        SK searchKey = getExistedSearchKey(uuid);
         proceedDelete(searchKey);
         System.out.println("Resume " + uuid + " deleted.");
     }
 
 
-    private Object getExistedSearchKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private SK getExistedSearchKey(String uuid) {
+        SK searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    private Object getNotExistedSearchKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private SK getNotExistedSearchKey(String uuid) {
+        SK searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
