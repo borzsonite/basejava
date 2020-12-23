@@ -17,17 +17,9 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
-    String UUID_1 = "uuid1";
-    String UUID_2 = "uuid2";
-    String UUID_3 = "uuid3";
-    String FULL_NAME_1 = "Bob";
-    String FULL_NAME_2 = "Alex";
-    String FULL_NAME_3 = "Mike";
-
-
-    Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
-    Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
-    Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
+    Resume RESUME_1 = new Resume("uuid1", "Bob");
+    Resume RESUME_2 = new Resume("uuid2", "Alex");
+    Resume RESUME_3 = new Resume("uuid3", "Mike");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -49,9 +41,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume(UUID_1, FULL_NAME_1);
+        Resume resume = new Resume("uuid1", "Bob");
         storage.update(resume);
-        assertEquals(resume, storage.get(UUID_1));
+        assertEquals(resume, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -79,13 +71,14 @@ public abstract class AbstractStorageTest {
         expectedResumes.add(RESUME_1);
         expectedResumes.add(RESUME_2);
         expectedResumes.add(RESUME_3);
-        expectedResumes.sort(Comparator.comparingInt(o -> o.getFullName().charAt(0)));
+        expectedResumes.sort(Comparator.comparing(Resume::getFullName).
+                thenComparing(Resume::getUuid));
         assertEquals(expectedResumes, actualResumes);
     }
 
     @Test
     public void get() {
-        assertEquals(RESUME_1, storage.get(UUID_1));
+        assertEquals(RESUME_1, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -95,9 +88,9 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
-        storage.delete(UUID_1);
+        storage.delete("uuid1");
         assertEquals(2, storage.size());
-        storage.get(UUID_1);
+        storage.get("uuid1");
     }
 
     @Test(expected = NotExistStorageException.class)
