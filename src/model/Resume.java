@@ -1,5 +1,7 @@
 package model;
 
+import sun.swing.SwingUtilities2;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,6 +12,8 @@ public class Resume implements Comparable<Resume> {
 
     private String uuid;
     private String fullName;
+    private Contacts contacts;
+    private Sections sections;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -28,6 +32,19 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Contacts getContacts() {
+        return contacts;
+    }
+
+    public Sections getSections() {
+        return sections;
+    }
+
+    public void setContactsAndSections(Contacts contacts, Sections sections) {
+        this.contacts = contacts;
+        this.sections = sections;
     }
 
     @Override

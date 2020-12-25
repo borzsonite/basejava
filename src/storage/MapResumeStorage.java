@@ -32,12 +32,12 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
 
     @Override
     protected Resume proceedGet(Resume resume) {
-        return (Resume) resume;
+        return resume;
     }
 
     @Override
     protected void proceedDelete(Resume resume) {
-        storage.remove(((Resume) resume).getUuid());
+        storage.remove(resume.getUuid());
     }
 
     @Override
