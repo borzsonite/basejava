@@ -1,58 +1,59 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Sections {
-    Map<SectionType, List<String>> sectionStorage = new TreeMap<>();
+    private Map<SectionType, List<String>> sectionStorage = new TreeMap<>();
+    private Map<SectionType, List<String[]>> sectionArrayStorage = new TreeMap<>();
 
-    public void setPersonal(String description) {
+    public void setPersonal(List<String> description) {
         sectionStorage.put(SectionType.PERSONAL, description);
     }
 
-    public void setObjectives(String description) {
+    public void setObjectives(List<String> description) {
         sectionStorage.put(SectionType.OBJECTIVE, description);
     }
 
-    public void setAchievement(List<String> description) { // список строк
+    public void setAchievement(List<String> description) {
         sectionStorage.put(SectionType.ACHIEVEMENT, description);
     }
 
-    public void setQualification(String description) { // список строк
+    public void setQualification(List<String> description) {
         sectionStorage.put(SectionType.QUALIFICATION, description);
     }
 
-    public void setExperience(String description) {
-        sectionStorage.put(SectionType.EXPERIENCE, description);
+    public void setExperience(List<String[]> description) {
+        sectionArrayStorage.put(SectionType.EXPERIENCE, description);
     }
 
-    public void setEducation(String description) {
-        sectionStorage.put(SectionType.EDUCATION, description);
+    public void setEducation(List<String[]> description) {
+        sectionArrayStorage.put(SectionType.EDUCATION, description);
     }
 
-    public String getPersonal() {
+    public List<String> getPersonal() {
         return sectionStorage.get(SectionType.PERSONAL);
     }
 
-    public String  getObjectives() {
+    public List<String>  getObjectives() {
         return sectionStorage.get(SectionType.OBJECTIVE);
     }
 
-    public String getAchievement() {
+    public List<String> getAchievement() {
         return sectionStorage.get(SectionType.ACHIEVEMENT);
     }
 
-    public String getQualification() {
+    public List<String> getQualification() {
        return sectionStorage.get(SectionType.QUALIFICATION);
     }
 
-    public String getExperience() {
-        return sectionStorage.get(SectionType.EXPERIENCE);
+    public List<String[]> getExperience() {
+        return sectionArrayStorage.get(SectionType.EXPERIENCE);
     }
 
-    public String getEducation() {
-        return sectionStorage.get(SectionType.EDUCATION);
+    public List<String[]> getEducation() {
+        return sectionArrayStorage.get(SectionType.EDUCATION);
     }
-
 }
