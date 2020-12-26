@@ -2,6 +2,9 @@ import model.Contacts;
 import model.Resume;
 import model.Sections;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ResumeTestData {
 
     public static void main(String[] args) {
@@ -9,6 +12,9 @@ public class ResumeTestData {
 
         Contacts contacts = new Contacts();
         Sections sections = new Sections();
+
+        List<String> achievements = new ArrayList<>();
+        achievements.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
 
         contacts.setPhone("233-233-111");
         contacts.setSkype("SkypeID");
@@ -20,7 +26,7 @@ public class ResumeTestData {
 
         sections.setPersonal("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
         sections.setObjectives("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
-        sections.setAchievement("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven.");
+        sections.setAchievement(achievements);
         sections.setQualification("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
         sections.setExperience("10/2013 - Сейчас\tАвтор проекта.\n" + "Создание, организация и проведение Java онлайн проектов и стажировок.");
         sections.setEducation("Coursera\n" + "03/2013 - 05/2013\t\"Functional Programming Principles in Scala\" by Martin Odersky");

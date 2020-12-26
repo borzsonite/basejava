@@ -1,10 +1,11 @@
 package model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Sections {
-    Map<SectionType, String> sectionStorage = new TreeMap<>();
+    Map<SectionType, List<String>> sectionStorage = new TreeMap<>();
 
     public void setPersonal(String description) {
         sectionStorage.put(SectionType.PERSONAL, description);
@@ -14,11 +15,11 @@ public class Sections {
         sectionStorage.put(SectionType.OBJECTIVE, description);
     }
 
-    public void setAchievement(String description) {
+    public void setAchievement(List<String> description) { // список строк
         sectionStorage.put(SectionType.ACHIEVEMENT, description);
     }
 
-    public void setQualification(String description) {
+    public void setQualification(String description) { // список строк
         sectionStorage.put(SectionType.QUALIFICATION, description);
     }
 
