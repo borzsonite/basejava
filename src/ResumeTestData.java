@@ -1,7 +1,6 @@
 import model.Contacts;
 import model.Resume;
 import model.Sections;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,6 @@ public class ResumeTestData {
         sections.setExperience(experience);
         sections.setEducation(education);
 
-
         contacts.setPhone("233-233-111");
         contacts.setSkype("SkypeID");
         contacts.setEmail("user@mail.com");
@@ -69,11 +67,25 @@ public class ResumeTestData {
         System.out.println(testResume.getContacts().getHomepage());
 
         System.out.println("//////////Sections output/////////");
+        System.out.println("==========Personal section========");
         System.out.println(testResume.getSections().getPersonal());
+        System.out.println("==========Objectives section========");
         System.out.println(testResume.getSections().getObjectives());
+        System.out.println("==========Achievement section========");
         System.out.println(testResume.getSections().getAchievement());
+        System.out.println("==========Qualification section========");
         System.out.println(testResume.getSections().getQualification());
-        System.out.println(testResume.getSections().getExperience());
-        System.out.println(testResume.getSections().getEducation());
+        System.out.println("==========Experience section========");
+        for (String[] array: testResume.getSections().getExperience()) {
+            for (String elem: array) {
+                System.out.println(elem);
+            }
+        }
+        System.out.println("==========Education section========");
+        for (String[] array: testResume.getSections().getEducation()) {
+            for (String elem: array) {
+                System.out.println(elem);
+            }
+        }
     }
 }

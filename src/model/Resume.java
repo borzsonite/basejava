@@ -1,7 +1,5 @@
 package model;
 
-import sun.swing.SwingUtilities2;
-
 import java.util.Objects;
 import java.util.UUID;
 
