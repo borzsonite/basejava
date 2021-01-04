@@ -1,11 +1,11 @@
 package model;
 
 public enum SectionType {
-    PERSONAL("Личные качества"),
-    OBJECTIVE("Позиция"),
-    ACHIEVEMENT("Достижения"),
-    QUALIFICATION("Квалификация"),
-    EXPERIENCE("Опыт работы"),
+    PERSONAL("Личные качества"), //String
+    OBJECTIVE("Позиция"), //String
+    ACHIEVEMENT("Достижения"), //String
+    QUALIFICATION("Квалификация"), //String
+    EXPERIENCE("Опыт работы"), //
     EDUCATION("Образование");
 
     private String title;
