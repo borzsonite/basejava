@@ -13,7 +13,6 @@ public class Resume implements Comparable<Resume> {
     private Map<SectionType, AbstractSection> sections = new TreeMap<>();
 
 
-
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
@@ -42,7 +41,11 @@ public class Resume implements Comparable<Resume> {
     }
 
     public List<Experience> getJobExperienceSection() {
-      return (List<Experience>) sections.get(SectionType.EXPERIENCE);
+        return (List<Experience>) sections.get(SectionType.EXPERIENCE).getContent();
+    }
+
+    public List<Experience> getStudyExperienceSection() {
+        return (List<Experience>) sections.get(SectionType.EDUCATION).getContent();
     }
 
     public void setContacts(String phone, String skype, String mail, String linkedin, String github, String stackoverflow, String homepage) {
@@ -53,9 +56,9 @@ public class Resume implements Comparable<Resume> {
         contacts.put(ContactType.GITHUB, github);
         contacts.put(ContactType.STACKOVERFLOW, stackoverflow);
         contacts.put(ContactType.HOMEPAGE, homepage);
-   }
+    }
 
-    public <T>void setSections(SectionType sectionType, AbstractSection<T> content) {
+    public <T> void setSections(SectionType sectionType, AbstractSection<T> content) {
         sections.put(sectionType, content);
     }
 

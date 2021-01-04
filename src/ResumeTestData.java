@@ -1,6 +1,5 @@
 import model.*;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,20 +74,20 @@ public class ResumeTestData {
 
         Experience studyExperience0 = new Experience();
         studyExperience0.setPlace("Coursera");
-        studyExperience0.setDateFrom(2013, 3,1);
-        studyExperience0.setDateTo(2013, 5,1);
+        studyExperience0.setDateFrom(2013, 3, 1);
+        studyExperience0.setDateTo(2013, 5, 1);
         studyExperience0.setContent("\"Functional Programming Principles in Scala\" by Martin Odersky");
 
         Experience studyExperience1 = new Experience();
         studyExperience1.setPlace("Luxoft");
-        studyExperience1.setDateFrom(2011, 3,1);
-        studyExperience1.setDateTo(2011, 4,1);
+        studyExperience1.setDateFrom(2011, 3, 1);
+        studyExperience1.setDateTo(2011, 4, 1);
         studyExperience1.setContent("\tКурс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
 
         Experience studyExperience2 = new Experience();
         studyExperience2.setPlace("Siemens AG");
-        studyExperience2.setDateFrom(2005, 1,1);
-        studyExperience2.setDateTo(2005, 4,1);
+        studyExperience2.setDateFrom(2005, 1, 1);
+        studyExperience2.setDateTo(2005, 4, 1);
         studyExperience2.setContent("3 месяца обучения мобильным IN сетям (Берлин)");
 
         Organisations studyOrganisations = new Organisations();
@@ -102,12 +101,15 @@ public class ResumeTestData {
         System.out.println("============Contacts output============");
         System.out.println(resume.getContacts());
         System.out.println("============Sections output============");
-        for(Map.Entry<SectionType,AbstractSection> entry: resume.getSections().entrySet()) {
+        for (Map.Entry<SectionType, AbstractSection> entry : resume.getSections().entrySet()) {
             System.out.println(entry.getKey() + ":" + entry.getValue());
         }
         System.out.println("============JobExperience output============");
-        List<Experience> experienceList = resume.getJobExperienceSection();
-        for(Experience elem: experienceList) {
+        for (Experience elem : resume.getJobExperienceSection()) {
+            System.out.println(elem.toString());
+        }
+        System.out.println("============StudyExperience output============");
+        for (Experience elem : resume.getStudyExperienceSection()) {
             System.out.println(elem.toString());
         }
     }

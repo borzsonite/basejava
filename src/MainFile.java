@@ -16,7 +16,7 @@ public class MainFile {
         File file1 = new File("./src/storage");
         System.out.println(file1.isDirectory());
 
-        for(String elem: file1.list()) {
+        for (String elem : file1.list()) {
             System.out.println(elem);
         }
 
@@ -38,7 +38,7 @@ public class MainFile {
             }
         }
 
-        try(FileInputStream fis1 = new FileInputStream(file)) {
+        try (FileInputStream fis1 = new FileInputStream(file)) {
             fis1.read();
         } catch (IOException e) {
             e.printStackTrace();

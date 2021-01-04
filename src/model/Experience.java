@@ -43,11 +43,22 @@ public class Experience {
         this.position = position;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
 
-    public String getContent() {
-        return content;
+    @Override
+    public String toString() {
+        return "{" +
+                "place='" + place + '\'' +
+                ", dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo +
+                ", position='" + position + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

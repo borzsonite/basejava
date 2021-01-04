@@ -10,15 +10,15 @@ public enum SectionType {
 
     private String title;
 
-    public String getTitle() {
-        return title;
-    }
-
     SectionType(String title) {
         this.title = title;
     }
 
     public static void main(String[] args) {
         System.out.println(SectionType.ACHIEVEMENT);
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
