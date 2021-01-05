@@ -1,7 +1,7 @@
 import model.SectionType;
 
 public class TestSingleton {
-    private static TestSingleton instance = new TestSingleton();
+    private static final TestSingleton instance = new TestSingleton();
 
     private TestSingleton() {
 
@@ -19,6 +19,6 @@ public class TestSingleton {
     }
 
     public enum Singleton {
-        INSTANCE;
+        INSTANCE
     }
 }

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Contacts {
-    private Map<ContactType, String> contactsStorage = new TreeMap<>();
+    private final Map<ContactType, String> contactsStorage = new TreeMap<>();
 
     public String getPhone() {
         return contactsStorage.get(ContactType.PHONE);

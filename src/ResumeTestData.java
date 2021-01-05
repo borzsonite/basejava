@@ -9,14 +9,13 @@ public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("uuid1", "Bob");
 
-        resume.setContacts(
-                "+7354857387",
-                "SkypeId",
-                "some@mail.com",
-                "LinkedInId",
-                "GitHubId",
-                "StackOverflowId",
-                "www.myHomepage.com");
+        resume.setContacts(ContactType.PHONE, "+7354857387");
+        resume.setContacts(ContactType.SKYPE, "SkypeId");
+        resume.setContacts(ContactType.EMAIL, "some@mail.com");
+        resume.setContacts(ContactType.LINKEDIN, "LinkedInId");
+        resume.setContacts(ContactType.GITHUB, "GitHubId");
+        resume.setContacts(ContactType.STACKOVERFLOW, "StackOverflowId");
+        resume.setContacts(ContactType.HOMEPAGE, "www.myHomepage.com");
 
         SingleLineSection objectiveSingleLineSection = new SingleLineSection();
         objectiveSingleLineSection.setContent("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
@@ -64,13 +63,13 @@ public class ResumeTestData {
         jobExperience2.setPosition("Java архитектор");
         jobExperience2.setContent("Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python");
 
-        Organisations jobOrganisations = new Organisations();
+        Organisation jobOrganisation = new Organisation();
         List<Experience> jobExperienceList = new ArrayList<>();
         jobExperienceList.add(jobExperience0);
         jobExperienceList.add(jobExperience1);
         jobExperienceList.add(jobExperience2);
-        jobOrganisations.setContent(jobExperienceList);
-        resume.setSections(SectionType.EXPERIENCE, jobOrganisations);
+        jobOrganisation.setContent(jobExperienceList);
+        resume.setSections(SectionType.EXPERIENCE, jobOrganisation);
 
         Experience studyExperience0 = new Experience();
         studyExperience0.setPlace("Coursera");
@@ -90,27 +89,19 @@ public class ResumeTestData {
         studyExperience2.setDateTo(2005, 4, 1);
         studyExperience2.setContent("3 месяца обучения мобильным IN сетям (Берлин)");
 
-        Organisations studyOrganisations = new Organisations();
+        Organisation studyOrganisation = new Organisation();
         List<Experience> studyExperienceList = new ArrayList<>();
         studyExperienceList.add(studyExperience0);
         studyExperienceList.add(studyExperience1);
         studyExperienceList.add(studyExperience2);
-        studyOrganisations.setContent(studyExperienceList);
-        resume.setSections(SectionType.EDUCATION, studyOrganisations);
+        studyOrganisation.setContent(studyExperienceList);
+        resume.setSections(SectionType.EDUCATION, studyOrganisation);
 
         System.out.println("============Contacts output============");
         System.out.println(resume.getContacts());
         System.out.println("============Sections output============");
         for (Map.Entry<SectionType, AbstractSection> entry : resume.getSections().entrySet()) {
             System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
-        System.out.println("============JobExperience output============");
-        for (Experience elem : resume.getJobExperienceSection()) {
-            System.out.println(elem.toString());
-        }
-        System.out.println("============StudyExperience output============");
-        for (Experience elem : resume.getStudyExperienceSection()) {
-            System.out.println(elem.toString());
         }
     }
 }
