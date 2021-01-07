@@ -1,18 +1,19 @@
 package model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class OrganisationSection extends Section {
 
-    private final List<Organisation> organisations;
+    private final Map<String, List<Organisation>> organisations;
 
-    public OrganisationSection(List<Organisation> organisations) {
+    public OrganisationSection(Map<String, List<Organisation>> organisations) {
         Objects.requireNonNull(organisations, "organizations must not be null");
         this.organisations = organisations;
     }
 
-    public List<Organisation> getOrganisations() {
+    public Map<String, List<Organisation>> getOrganisations() {
         return organisations;
     }
 
@@ -21,7 +22,7 @@ public class OrganisationSection extends Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganisationSection that = (OrganisationSection) o;
-        return Objects.equals(organisations, that.organisations);
+        return organisations.equals(that.organisations);
     }
 
     @Override

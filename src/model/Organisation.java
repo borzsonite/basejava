@@ -47,8 +47,6 @@ public class Organisation {
         this.endDate = endDate;
         this.title = title;
         this.description = description;
-
-
-
     }
+
 }
