@@ -49,4 +49,12 @@ public class Organisation {
         this.description = description;
     }
 
+    public String getName() {
+        return homepage.getName();
+    }
+
+    public String getUrl() {
+        return homepage.getUrl();
+    }
+
 }

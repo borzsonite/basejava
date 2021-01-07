@@ -6,7 +6,6 @@ import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,7 +19,8 @@ public abstract class AbstractStorageTest {
 
     Resume RESUME_1 = new Resume("uuid1", "Bob");
     Resume RESUME_2 = new Resume("uuid2", "Alex");
-    Resume RESUME_3 = new Resume("uuid3", "Mike");
+   // Resume RESUME_3 = new Resume("uuid3", "Mike");
+    Resume RESUME_3 = new ResumeTestData("uuid1", "Bob").getTestResume();
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
