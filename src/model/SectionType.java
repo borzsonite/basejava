@@ -14,10 +14,6 @@ public enum SectionType {
         this.title = title;
     }
 
-    public static void main(String[] args) {
-        System.out.println(SectionType.ACHIEVEMENT);
-    }
-
     public String getTitle() {
         return title;
     }
