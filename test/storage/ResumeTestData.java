@@ -20,6 +20,11 @@ public class ResumeTestData {
         return testResume;
     }
 
+    public static void main(String[] args) {
+        Resume RESUME_3 = new ResumeTestData("uuid1", "Bob").getTestResume();
+        System.out.println(RESUME_3.getSections(SectionType.EDUCATION));
+    }
+
     static Resume createResume(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
 

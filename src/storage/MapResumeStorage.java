@@ -21,22 +21,22 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected void proceedUpdate(Resume key, Resume resume) {
+    protected void doUpdate(Resume key, Resume resume) {
         storage.replace(resume.getUuid(), resume);
     }
 
     @Override
-    protected void proceedSave(Resume key, Resume resume) {
+    protected void doSave(Resume key, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume proceedGet(Resume resume) {
+    protected Resume doGet(Resume resume) {
         return resume;
     }
 
     @Override
-    protected void proceedDelete(Resume resume) {
+    protected void doDelete(Resume resume) {
         storage.remove(resume.getUuid());
     }
 
