@@ -4,9 +4,7 @@ import model.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ResumeTestData {
 
@@ -51,64 +49,61 @@ public class ResumeTestData {
         qualificationList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
         resume.setSections(SectionType.QUALIFICATION, new ListSection(qualificationList));
 
-        Organisation jobOrganisation1 = new Organisation( // организация которая хранится в в списке мапы OrganisationSection
-                "Java Online Projects", "https://javaops.ru/",
+        PeriodDescriptor periodDescriptor1 = new PeriodDescriptor(
+                "Автор проекта",
+                "Создание, организация и проведение Java онлайн проектов и стажировок.",
                 LocalDate.of(2013, 10, 1),
-                LocalDate.of(2021, 1, 1),
-                "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.");
-        List<Organisation> jobOrganisationsList1 = new ArrayList<>(); // список с организациями для мапы OrganisationSection
-        jobOrganisationsList1.add(jobOrganisation1); // добавляем организацию в список
+                LocalDate.of(2021, 1, 1));
+        List<PeriodDescriptor> periodDescriptorsList1 = new ArrayList<>();
+        periodDescriptorsList1.add(periodDescriptor1);
+        Organisation jobOrganisation1 = new Organisation("Java Online Projects", "https://javaops.ru/", periodDescriptorsList1);
 
-        Organisation jobOrganisation2 = new Organisation( // организация которая хранится в в списке мапы OrganisationSection
-                "Wrike", "https://www.wrike.com/",
+        PeriodDescriptor periodDescriptor2 = new PeriodDescriptor(
+                "Старший разработчик (backend)",
+                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
                 LocalDate.of(2014, 10, 1),
-                LocalDate.of(2016, 1, 1),
-                "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
-        List<Organisation> jobOrganisationsList2 = new ArrayList<>();
-        jobOrganisationsList2.add(jobOrganisation2);
+                LocalDate.of(2016, 1, 1));
+        List<PeriodDescriptor> periodDescriptorsList2 = new ArrayList<>();
+        periodDescriptorsList2.add(periodDescriptor2);
+        Organisation jobOrganisation2 = new Organisation("Wrike", "https://www.wrike.com/", periodDescriptorsList2);
 
-        Map<String, List<Organisation>> jobOrganisationsMap = new HashMap<>();
-        jobOrganisationsMap.put(jobOrganisation1.getName(), jobOrganisationsList1);
-        jobOrganisationsMap.put(jobOrganisation2.getName(), jobOrganisationsList2);
+        List<Organisation> jobOrganisationsList = new ArrayList<>();
+        jobOrganisationsList.add(jobOrganisation1);
+        jobOrganisationsList.add(jobOrganisation2);
 
-        OrganisationSection jobSection = new OrganisationSection(jobOrganisationsMap);
-        resume.setSections(SectionType.EXPERIENCE, jobSection);
+        OrganisationSection jobOrganisationSection = new OrganisationSection(jobOrganisationsList);
 
-        Organisation studyOrganisation1 = new Organisation(
-                "Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
-                "http://www.ifmo.ru/",
-                LocalDate.of(2014, 10, 1),
-                LocalDate.of(2016, 1, 1),
-                "Аспирантура (программист С, С++)", "");
-
-        Organisation studyOrganisation1_1 = new Organisation(
-                studyOrganisation1.getName(),
-                studyOrganisation1.getUrl(),
+        PeriodDescriptor periodDescriptor3 = new PeriodDescriptor(
+                "Аспирантура (программист С, С++)",
+                LocalDate.of(1993, 9, 1),
+                LocalDate.of(1996, 7, 1));
+        PeriodDescriptor periodDescriptor3_1 = new PeriodDescriptor(
+                "Инженер (программист Fortran, C)",
                 LocalDate.of(1987, 9, 1),
-                LocalDate.of(1993, 10, 1),
-                "Инженер (программист Fortran, C)", "");
+                LocalDate.of(1993, 7, 1));
 
-        Organisation studyOrganisation2 = new Organisation(
-                "Заочная физико-техническая школа при МФТИ",
-                "http://www.school.mipt.ru/",
+        List<PeriodDescriptor> periodDescriptorsList3 = new ArrayList<>();
+        periodDescriptorsList3.add(periodDescriptor3);
+        periodDescriptorsList3.add(periodDescriptor3_1);
+        Organisation studyOrganisation1 = new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", periodDescriptorsList3);
+
+        PeriodDescriptor periodDescriptor4 = new PeriodDescriptor(
+                "Аспирантура (программист С, С++)",
                 LocalDate.of(1984, 9, 1),
-                LocalDate.of(1987, 6, 1),
-                "Закончил с отличием", "");
+                LocalDate.of(1987, 6, 1));
+        List<PeriodDescriptor> periodDescriptorsList4 = new ArrayList<>();
+        periodDescriptorsList4.add(periodDescriptor4);
+        Organisation studyOrganisation2 = new Organisation("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", periodDescriptorsList4);
 
-        List<Organisation> studyOrganisationsList1 = new ArrayList<>();
-        studyOrganisationsList1.add(studyOrganisation1);
-        studyOrganisationsList1.add(studyOrganisation1_1);
+        List<Organisation> studyOrganisationsList = new ArrayList<>();
+        studyOrganisationsList.add(studyOrganisation1);
+        studyOrganisationsList.add(studyOrganisation2);
 
-        List<Organisation> studyOrganisationsList2 = new ArrayList<>();
-        studyOrganisationsList1.add(studyOrganisation2);
+        OrganisationSection studyOrganisationSection = new OrganisationSection(studyOrganisationsList);
 
-        Map<String, List<Organisation>> studyOrganisationsMap = new HashMap<>();
-        studyOrganisationsMap.put(studyOrganisation1.getName(), studyOrganisationsList1);
-        studyOrganisationsMap.put(studyOrganisation2.getName(), studyOrganisationsList2);
-
-        OrganisationSection studySection = new OrganisationSection(studyOrganisationsMap);
-        resume.setSections(SectionType.EDUCATION, studySection);
+        resume.setSections(SectionType.EXPERIENCE, jobOrganisationSection);
+        resume.setSections(SectionType.EDUCATION, studyOrganisationSection);
 
         return resume;
-        }
+    }
 }

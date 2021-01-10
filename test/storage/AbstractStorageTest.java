@@ -6,7 +6,6 @@ import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -17,9 +16,10 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
-    Resume RESUME_1 = new ResumeTestData("uuid1", "Bob").getTestResume();
-    Resume RESUME_2 = new ResumeTestData("uuid2", "Alex").getTestResume();
-    Resume RESUME_3 = new ResumeTestData("uuid3", "Mike").getTestResume();
+
+    Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
+    Resume RESUME_2 = ResumeTestData.createResume("uuid2", "Alex");
+    Resume RESUME_3 = ResumeTestData.createResume("uuid3", "Mike");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -41,19 +41,19 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume("uuid1", "Bob");
+        Resume resume = ResumeTestData.createResume("uuid1", "Bob");
         storage.update(resume);
         assertEquals(resume, storage.get("uuid1"));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateIfNotExist() {
-        storage.update(new Resume("dummyUuid", "dummyFullName"));
+        storage.update(ResumeTestData.createResume("dummyUuid", "dummyFullName"));
     }
 
     @Test
     public void save() {
-        Resume resume = new Resume("uuid4", "Mike");
+        Resume resume = ResumeTestData.createResume("uuid4", "Mike");
         storage.save(resume);
         Assert.assertNotNull(storage.get(resume.getUuid()));
         assertEquals(4, storage.size());

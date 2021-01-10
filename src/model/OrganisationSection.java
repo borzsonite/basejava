@@ -1,16 +1,14 @@
 package model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class OrganisationSection extends AbstractSection {
 
-    private final Link link;
     private final List<Organisation> organisations;
-    public OrganisationSection(Link link, List<Organisation> organisations) {
+
+    public OrganisationSection(List<Organisation> organisations) {
         Objects.requireNonNull(organisations, "organizations must not be null");
-        this.link = link;
         this.organisations = organisations;
     }
 
@@ -35,7 +33,6 @@ public class OrganisationSection extends AbstractSection {
     public String toString() {
         return "OrganisationSection{" +
                 "organisations=" + organisations +
-                ", link=" + link +
                 '}';
     }
 }

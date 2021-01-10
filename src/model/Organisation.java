@@ -1,24 +1,16 @@
 package model;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Organisation {
-    private final Link homepage;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+    private final Link link;
+    private final List<PeriodDescriptor> periodDescriptor;
 
-    public Organisation(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(title, "title must not be null");
-        Objects.requireNonNull(startDate, "startDate must not be null");
-        Objects.requireNonNull(endDate, "endDate must not be null");
-        this.homepage = new Link(name, url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+    public Organisation(String name, String url, List<PeriodDescriptor> periodDescriptor) {
+        Objects.requireNonNull(periodDescriptor, "period must not be null");
+        this.link = new Link(name, url);
+        this.periodDescriptor = periodDescriptor;
     }
 
     @Override
@@ -26,35 +18,11 @@ public class Organisation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organisation that = (Organisation) o;
-        return Objects.equals(homepage, that.homepage) &&
-                startDate.equals(that.startDate) &&
-                endDate.equals(that.endDate) &&
-                title.equals(that.title) &&
-                Objects.equals(description, that.description);
+        return Objects.equals(link, that.link) && periodDescriptor.equals(that.periodDescriptor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(homepage, startDate, endDate, title, description);
+        return Objects.hash(link, periodDescriptor);
     }
-
-    @Override
-    public String toString() {
-        return "Organisation{" +
-                "homepage=" + homepage +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    public String getName() {
-        return homepage.getName();
-    }
-
-    public String getUrl() {
-        return homepage.getUrl();
-    }
-
 }
