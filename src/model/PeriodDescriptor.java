@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class PeriodDescriptor {
     private final String title;
-    LocalDate startDate;
-    LocalDate endDate;
-    private String description;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private  String description;
 
     public PeriodDescriptor(String title, String description, LocalDate startDate, LocalDate endDate) {
         this.title = title;

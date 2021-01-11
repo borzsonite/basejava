@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainDirRecursionListing {
     /**
@@ -12,12 +13,11 @@ public class MainDirRecursionListing {
     static void printDirsContent(String dir) throws IOException {
         File file = new File(dir);
         String[] dirs = file.list();
-        for (int i = 0; i < dirs.length; i++) {
+        for (int i = 0; i < Objects.requireNonNull(dirs).length; i++) {
             File file1 = new File(dir + File.separator + dirs[i]);
             if (file1.isFile()) {
-                System.out.println(file1.getCanonicalPath());
+                System.out.println(file1.getName());
             } else {
-                String path = dir + File.separator + dirs[i];
                 printDirsContent(dir + File.separator + dirs[i]); // это разве не рекурсия? вызов метода из самого метода
             }
         }
