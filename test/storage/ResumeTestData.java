@@ -15,11 +15,19 @@ public class ResumeTestData {
     }
 
     public static void main(String[] args) {
+        Resume testResume = ResumeTestData.createResume("uuid1", "Jhon");
+        System.out.println("tel: " + testResume.getContacts(ContactType.PHONE));
+        System.out.println("skype: " + testResume.getContacts(ContactType.SKYPE));
+        System.out.println("mail: " + testResume.getContacts(ContactType.EMAIL));
+        System.out.println("github: " + testResume.getContacts(ContactType.GITHUB));
+        System.out.println("linkedIn: " + testResume.getContacts(ContactType.LINKEDIN));
+        System.out.println("stackoverflow: " + testResume.getContacts(ContactType.STACKOVERFLOW));
+        System.out.println("homepage: " + testResume.getContacts(ContactType.HOMEPAGE));
+
     }
 
     protected static Resume createResume(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
-
         resume.setContacts(ContactType.PHONE, "+7354857387");
         resume.setContacts(ContactType.SKYPE, "SkypeId");
         resume.setContacts(ContactType.EMAIL, "some@mail.com");
