@@ -25,4 +25,9 @@ public class Organisation {
     public int hashCode() {
         return Objects.hash(link, periodDescriptor);
     }
+
+    @Override
+    public String toString() {
+        return link + "" + periodDescriptor;
+    }
 }

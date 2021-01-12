@@ -11,7 +11,7 @@ public class ListSection extends AbstractSection {
         this.items = items;
     }
 
-    List<String> getItems() {
+    public List<String> getItems() {
         return items;
     }
 

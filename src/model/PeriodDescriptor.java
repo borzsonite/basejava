@@ -20,4 +20,12 @@ public class PeriodDescriptor {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    @Override
+    public String toString() {
+        return "Позиция: " + title + '\'' +
+                ", дата начала: " + startDate +
+                ", дата окончания: " + endDate +
+                ", описание: " + description + '\'';
+    }
 }

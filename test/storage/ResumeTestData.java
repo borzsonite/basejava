@@ -8,12 +8,6 @@ import java.util.List;
 
 public class ResumeTestData {
 
-    private Resume testResume;
-
-    public ResumeTestData(String uuid, String name) {
-        this.testResume = createResume(uuid, name);
-    }
-
     public static void main(String[] args) {
         Resume testResume = ResumeTestData.createResume("uuid1", "Jhon");
         System.out.println("tel: " + testResume.getContacts(ContactType.PHONE));
@@ -23,7 +17,22 @@ public class ResumeTestData {
         System.out.println("linkedIn: " + testResume.getContacts(ContactType.LINKEDIN));
         System.out.println("stackoverflow: " + testResume.getContacts(ContactType.STACKOVERFLOW));
         System.out.println("homepage: " + testResume.getContacts(ContactType.HOMEPAGE));
+        System.out.println("Позиция: " + testResume.getSections(SectionType.OBJECTIVE));
+        System.out.println("Личные качества: " + testResume.getSections(SectionType.PERSONAL));
+        System.out.println("Достижения: " + testResume.getSections(SectionType.ACHIEVEMENT));
+        System.out.println("Квалификация: " + testResume.getSections(SectionType.QUALIFICATION));
 
+        System.out.println("Опыт работы:");
+        OrganisationSection organisations = (OrganisationSection) testResume.getSections(SectionType.EXPERIENCE);
+        for(Organisation organisation: organisations.getOrganisations()) {
+            System.out.println(organisation.toString());
+        }
+
+        System.out.println("Опыт учебы:");
+        OrganisationSection organisations1 = (OrganisationSection) testResume.getSections(SectionType.EDUCATION);
+        for(Organisation organisation: organisations1.getOrganisations()) {
+            System.out.println(organisation.toString());
+        }
     }
 
     protected static Resume createResume(String uuid, String name) {
@@ -37,18 +46,18 @@ public class ResumeTestData {
         resume.setContacts(ContactType.HOMEPAGE, "www.myHomepage.com");
 
         resume.setSections(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-        resume.setSections(SectionType.OBJECTIVE, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume.setSections(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         List<String> achievementsList = new ArrayList<>();
-        achievementsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
-        achievementsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
-        achievementsList.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
+        achievementsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n");
+        achievementsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.\n");
+        achievementsList.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.\n");
         resume.setSections(SectionType.ACHIEVEMENT, new ListSection(achievementsList));
 
         List<String> qualificationList = new ArrayList<>();
-        qualificationList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
-        qualificationList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
-        qualificationList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
+        qualificationList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
+        qualificationList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
+        qualificationList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle\n");
         resume.setSections(SectionType.QUALIFICATION, new ListSection(qualificationList));
 
         PeriodDescriptor periodDescriptor1 = new PeriodDescriptor(
