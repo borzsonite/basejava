@@ -10,25 +10,25 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         Resume testResume = ResumeTestData.createResume("uuid1", "Jhon");
-        System.out.println("tel: " + testResume.getContacts(ContactType.PHONE));
-        System.out.println("skype: " + testResume.getContacts(ContactType.SKYPE));
-        System.out.println("mail: " + testResume.getContacts(ContactType.EMAIL));
-        System.out.println("github: " + testResume.getContacts(ContactType.GITHUB));
-        System.out.println("linkedIn: " + testResume.getContacts(ContactType.LINKEDIN));
-        System.out.println("stackoverflow: " + testResume.getContacts(ContactType.STACKOVERFLOW));
-        System.out.println("homepage: " + testResume.getContacts(ContactType.HOMEPAGE));
-        System.out.println("Позиция: " + testResume.getSections(SectionType.OBJECTIVE));
-        System.out.println("Личные качества: " + testResume.getSections(SectionType.PERSONAL));
-        System.out.println("Достижения: " + testResume.getSections(SectionType.ACHIEVEMENT));
-        System.out.println("Квалификация: " + testResume.getSections(SectionType.QUALIFICATION));
+        System.out.println(ContactType.PHONE.getTitle() + testResume.getContacts(ContactType.PHONE));
+        System.out.println(ContactType.SKYPE.getTitle() + testResume.getContacts(ContactType.SKYPE));
+        System.out.println(ContactType.EMAIL.getTitle() + testResume.getContacts(ContactType.EMAIL));
+        System.out.println(ContactType.GITHUB.getTitle() + testResume.getContacts(ContactType.GITHUB));
+        System.out.println(ContactType.LINKEDIN.getTitle() + testResume.getContacts(ContactType.LINKEDIN));
+        System.out.println(ContactType.STACKOVERFLOW.getTitle() + testResume.getContacts(ContactType.STACKOVERFLOW));
+        System.out.println(ContactType.HOMEPAGE + testResume.getContacts(ContactType.HOMEPAGE));
+        System.out.println(SectionType.OBJECTIVE.getTitle() + testResume.getSections(SectionType.OBJECTIVE));
+        System.out.println(SectionType.PERSONAL.getTitle() + testResume.getSections(SectionType.PERSONAL));
+        System.out.println(SectionType.ACHIEVEMENT.getTitle() + testResume.getSections(SectionType.ACHIEVEMENT));
+        System.out.println(SectionType.QUALIFICATION.getTitle() + testResume.getSections(SectionType.QUALIFICATION));
 
-        System.out.println("Опыт работы:");
+        System.out.println(SectionType.EXPERIENCE.getTitle());
         OrganisationSection organisations = (OrganisationSection) testResume.getSections(SectionType.EXPERIENCE);
         for(Organisation organisation: organisations.getOrganisations()) {
             System.out.println(organisation.toString());
         }
 
-        System.out.println("Опыт учебы:");
+        System.out.println(SectionType.EDUCATION.getTitle());
         OrganisationSection organisations1 = (OrganisationSection) testResume.getSections(SectionType.EDUCATION);
         for(Organisation organisation: organisations1.getOrganisations()) {
             System.out.println(organisation.toString());
