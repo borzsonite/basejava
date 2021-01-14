@@ -3,6 +3,7 @@ package storage;
 import model.*;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,13 @@ public class ResumeTestData {
 
         System.out.println(SectionType.EXPERIENCE.getTitle());
         OrganisationSection organisations = (OrganisationSection) testResume.getSections(SectionType.EXPERIENCE);
-        for(Organisation organisation: organisations.getOrganisations()) {
+        for (Organisation organisation : organisations.getOrganisations()) {
             System.out.println(organisation.toString());
         }
 
         System.out.println(SectionType.EDUCATION.getTitle());
         OrganisationSection organisations1 = (OrganisationSection) testResume.getSections(SectionType.EDUCATION);
-        for(Organisation organisation: organisations1.getOrganisations()) {
+        for (Organisation organisation : organisations1.getOrganisations()) {
             System.out.println(organisation.toString());
         }
     }
@@ -48,63 +49,53 @@ public class ResumeTestData {
         resume.setSections(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         resume.setSections(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
-        List<String> achievementsList = new ArrayList<>();
-        achievementsList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n");
-        achievementsList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.\n");
-        achievementsList.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.\n");
-        resume.setSections(SectionType.ACHIEVEMENT, new ListSection(achievementsList));
+        resume.setSections(SectionType.ACHIEVEMENT, new ListSection(
+                "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n",
+                "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.\n",
+                "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.\n"
+        ));
 
-        List<String> qualificationList = new ArrayList<>();
-        qualificationList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
-        qualificationList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
-        qualificationList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle\n");
-        resume.setSections(SectionType.QUALIFICATION, new ListSection(qualificationList));
+        resume.setSections(SectionType.QUALIFICATION, new ListSection(
+                "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n",
+                "Version control: Subversion, Git, Mercury, ClearCase, Perforce\n",
+                "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle\n"
+        ));
 
-        PeriodDescriptor periodDescriptor1 = new PeriodDescriptor(
-                "Автор проекта",
-                "Создание, организация и проведение Java онлайн проектов и стажировок.",
-                LocalDate.of(2013, 10, 1),
-                LocalDate.of(2021, 1, 1));
-        List<PeriodDescriptor> periodDescriptorsList1 = new ArrayList<>();
-        periodDescriptorsList1.add(periodDescriptor1);
-        Organisation jobOrganisation1 = new Organisation("Java Online Projects", "https://javaops.ru/", periodDescriptorsList1);
 
-        PeriodDescriptor periodDescriptor2 = new PeriodDescriptor(
-                "Старший разработчик (backend)",
-                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
-                LocalDate.of(2014, 10, 1),
-                LocalDate.of(2016, 1, 1));
-        List<PeriodDescriptor> periodDescriptorsList2 = new ArrayList<>();
-        periodDescriptorsList2.add(periodDescriptor2);
-        Organisation jobOrganisation2 = new Organisation("Wrike", "https://www.wrike.com/", periodDescriptorsList2);
+        resume.setSections(SectionType.EXPERIENCE,
+                new OrganisationSection(
+                        new Organisation("Java Online Projects", "https://javaops.ru/",
+                                new Organisation.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.")),                         new Organisation("Wrike", "https://www.wrike.com/",
+                                new Organisation.Position(2014, Month.OCTOBER,2016,Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
 
-        List<Organisation> jobOrganisationsList = new ArrayList<>();
-        jobOrganisationsList.add(jobOrganisation1);
-        jobOrganisationsList.add(jobOrganisation2);
+        resume.setSections(SectionType.EDUCATION,
+                new OrganisationSection(
+                        new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
+                                new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null),
+                                new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null))));
 
-        OrganisationSection jobOrganisationSection = new OrganisationSection(jobOrganisationsList);
 
-        PeriodDescriptor periodDescriptor3 = new PeriodDescriptor(
+        Organisation.Position position3 = new Organisation.Position(
                 "Аспирантура (программист С, С++)",
                 LocalDate.of(1993, 9, 1),
                 LocalDate.of(1996, 7, 1));
-        PeriodDescriptor periodDescriptor3_1 = new PeriodDescriptor(
+        Organisation.Position position3_1 = new Organisation.Position(
                 "Инженер (программист Fortran, C)",
                 LocalDate.of(1987, 9, 1),
                 LocalDate.of(1993, 7, 1));
 
-        List<PeriodDescriptor> periodDescriptorsList3 = new ArrayList<>();
-        periodDescriptorsList3.add(periodDescriptor3);
-        periodDescriptorsList3.add(periodDescriptor3_1);
-        Organisation studyOrganisation1 = new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", periodDescriptorsList3);
+        List<Organisation.Position> positionDescriptorsList3 = new ArrayList<>();
+        positionDescriptorsList3.add(position3);
+        positionDescriptorsList3.add(position3_1);
+        Organisation studyOrganisation1 = new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", positionDescriptorsList3);
 
-        PeriodDescriptor periodDescriptor4 = new PeriodDescriptor(
+        Organisation.Position position4 = new Organisation.Position(
                 "Аспирантура (программист С, С++)",
                 LocalDate.of(1984, 9, 1),
                 LocalDate.of(1987, 6, 1));
-        List<PeriodDescriptor> periodDescriptorsList4 = new ArrayList<>();
-        periodDescriptorsList4.add(periodDescriptor4);
-        Organisation studyOrganisation2 = new Organisation("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", periodDescriptorsList4);
+        List<Organisation.Position> positionDescriptorsList4 = new ArrayList<>();
+        positionDescriptorsList4.add(position4);
+        Organisation studyOrganisation2 = new Organisation("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", positionDescriptorsList4);
 
         List<Organisation> studyOrganisationsList = new ArrayList<>();
         studyOrganisationsList.add(studyOrganisation1);
