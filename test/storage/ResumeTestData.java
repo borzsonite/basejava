@@ -2,10 +2,7 @@ package storage;
 
 import model.*;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ResumeTestData {
 
@@ -65,47 +62,16 @@ public class ResumeTestData {
         resume.setSections(SectionType.EXPERIENCE,
                 new OrganisationSection(
                         new Organisation("Java Online Projects", "https://javaops.ru/",
-                                new Organisation.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.")),                         new Organisation("Wrike", "https://www.wrike.com/",
-                                new Organisation.Position(2014, Month.OCTOBER,2016,Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
+                                new Organisation.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.")), new Organisation("Wrike", "https://www.wrike.com/",
+                        new Organisation.Position(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
 
         resume.setSections(SectionType.EDUCATION,
                 new OrganisationSection(
                         new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
                                 new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null),
-                                new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null))));
-
-
-        Organisation.Position position3 = new Organisation.Position(
-                "Аспирантура (программист С, С++)",
-                LocalDate.of(1993, 9, 1),
-                LocalDate.of(1996, 7, 1));
-        Organisation.Position position3_1 = new Organisation.Position(
-                "Инженер (программист Fortran, C)",
-                LocalDate.of(1987, 9, 1),
-                LocalDate.of(1993, 7, 1));
-
-        List<Organisation.Position> positionDescriptorsList3 = new ArrayList<>();
-        positionDescriptorsList3.add(position3);
-        positionDescriptorsList3.add(position3_1);
-        Organisation studyOrganisation1 = new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", positionDescriptorsList3);
-
-        Organisation.Position position4 = new Organisation.Position(
-                "Аспирантура (программист С, С++)",
-                LocalDate.of(1984, 9, 1),
-                LocalDate.of(1987, 6, 1));
-        List<Organisation.Position> positionDescriptorsList4 = new ArrayList<>();
-        positionDescriptorsList4.add(position4);
-        Organisation studyOrganisation2 = new Organisation("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", positionDescriptorsList4);
-
-        List<Organisation> studyOrganisationsList = new ArrayList<>();
-        studyOrganisationsList.add(studyOrganisation1);
-        studyOrganisationsList.add(studyOrganisation2);
-
-        OrganisationSection studyOrganisationSection = new OrganisationSection(studyOrganisationsList);
-
-        resume.setSections(SectionType.EXPERIENCE, jobOrganisationSection);
-        resume.setSections(SectionType.EDUCATION, studyOrganisationSection);
-
+                                new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.OCTOBER, "Инженер (программист Fortran, C))", null)),
+                        new Organisation("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
+                                new Organisation.Position(1984, Month.OCTOBER, 1993, Month.APRIL, "Закончил с отличием", null))));
         return resume;
     }
 }

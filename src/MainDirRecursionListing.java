@@ -7,7 +7,8 @@ public class MainDirRecursionListing {
      * Сделайте рекурсивный обход и вывод имени файлов в каталогах и подкаталогах (корневой каталог- ваш проект)
      */
     public static void main(String[] args) throws IOException {
-        printDirsContent(".");
+        //printDirsContent(".");
+        printDirDeeply(new File("."));
     }
 
     static void printDirsContent(String dir) throws IOException {
@@ -19,6 +20,18 @@ public class MainDirRecursionListing {
                 System.out.println(file1.getName());
             } else {
                 printDirsContent(dir + File.separator + dirs[i]); // это разве не рекурсия? вызов метода из самого метода
+            }
+        }
+    }
+
+    static void printDirDeeply(File dir) {
+        File[] dirs = dir.listFiles();
+        for(File dirList: dirs) {
+            if(dirList.isFile()) {
+                System.out.println("    file: " + dirList.getName());
+            } else if(dirList.isDirectory()) {
+                System.out.println("dir: " + dirList.getName());
+                printDirDeeply(dirList);
             }
         }
     }

@@ -21,7 +21,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract boolean isExist(SK searchKey);
 
-    public abstract List<Resume> getStorage();
+    public abstract List<Resume> doCopyAll();
 
     public void update(Resume resume) {
         SK searchKey = getExistedSearchKey(resume.getUuid());
@@ -64,7 +64,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     public List<Resume> getAllSorted() {
-        List<Resume> list = getStorage();
+        List<Resume> list = doCopyAll();
         Comparator<Resume> sortByNameAndUuidComparator = Comparator.comparing(Resume::getFullName).
                 thenComparing(Resume::getUuid);
         list.sort(sortByNameAndUuidComparator);

@@ -3,8 +3,7 @@ package storage;
 import exсeption.StorageException;
 import model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +22,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-    protected abstract void doWrite(Resume resume, File file) throws IOException;
+    protected abstract void doWrite(Resume resume, OutputStream file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(InputStream file);
 
     @Override
     protected File getSearchKey(String uuid) {
@@ -35,7 +34,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(File file, Resume resume) {
         try {
-            doWrite(resume, file);
+            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
 
         } catch (IOException e) {
             throw new StorageException("IO Exception", file.getName(), e);
@@ -46,27 +45,25 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(File file, Resume resume) {
         try {
             file.createNewFile();
-            doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO Exception", file.getName(), e);
+            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
+        doUpdate(file, resume);
     }
 
     @Override
     protected Resume doGet(File file) {
         try {
-            return doRead(file);
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
-            throw new StorageException("can't get", file.getName(), e);
+            throw new StorageException("File read error", file.getName(), e);
         }
     }
 
     @Override
     protected void doDelete(File file) {
-        try {
-            file.delete();
-        } catch (Exception e) {
-            throw new StorageException("can't delete ", file.getName(), e);
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
         }
     }
 
@@ -76,7 +73,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    public List<Resume> getStorage() {
+    public List<Resume> doCopyAll() {
         List<Resume> resumes = new ArrayList<>();
         for (File file : Objects.requireNonNull(directory.listFiles())) {
             resumes.add(doGet(file));
