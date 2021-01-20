@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import static util.DateUtil.of;
 import static util.DateUtil.NOW;
 
 
-public class Organisation {
+public class Organisation implements Serializable {
     private final Link link;
     private final List<Position> position;
 
@@ -47,7 +48,7 @@ public class Organisation {
         return link + "" + position;
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String title;

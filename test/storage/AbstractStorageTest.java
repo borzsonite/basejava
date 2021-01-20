@@ -6,15 +6,19 @@ import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
 
     protected final Storage storage;
+    protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
 
 
     Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
@@ -42,8 +46,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume resume = ResumeTestData.createResume("uuid1", "Bob");
+       // Resume resume = new Resume("uuid1", "Bob");
         storage.update(resume);
-        assertEquals(resume, storage.get("uuid1"));
+        assertTrue(resume.equals(storage.get("uuid1")));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -75,7 +80,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        assertEquals(RESUME_1, storage.get("uuid1"));
+        assertTrue(RESUME_1.equals(storage.get("uuid1")));
     }
 
     @Test(expected = NotExistStorageException.class)
