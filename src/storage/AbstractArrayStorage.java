@@ -22,12 +22,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void doUpdate(Integer index, Resume resume) {
+    protected void doUpdate(Resume resume, Integer index) {
         storage[index] = resume;
     }
 
     @Override
-    protected void doSave(Integer index, Resume resume) {
+    protected void doSave(Resume resume, Integer index) {
         if (size < STORAGE_LIMIT) {
             saveByIndex(resume, index);
             size++;

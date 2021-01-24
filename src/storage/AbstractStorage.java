@@ -11,9 +11,9 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract SK getSearchKey(String uuid);
 
-    protected abstract void doUpdate(SK resumePosition, Resume resume);
+    protected abstract void doUpdate(Resume resume, SK resumePosition);
 
-    protected abstract void doSave(SK resumePosition, Resume resume);
+    protected abstract void doSave(Resume resume, SK resumePosition);
 
     protected abstract Resume doGet(SK resumePosition);
 
@@ -25,13 +25,13 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     public void update(Resume resume) {
         SK searchKey = getExistedSearchKey(resume.getUuid());
-        doUpdate(searchKey, resume);
+        doUpdate(resume, searchKey);
         System.out.println("Resume " + resume.getUuid() + " updated.");
     }
 
     public void save(Resume resume) {
         SK searchKey = getNotExistedSearchKey(resume.getUuid());
-        doSave(searchKey, resume);
+        doSave(resume, searchKey);
         System.out.println("Resume " + resume.getUuid() + " saved.");
     }
 

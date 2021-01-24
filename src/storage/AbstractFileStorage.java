@@ -32,7 +32,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void doUpdate(File file, Resume resume) {
+    protected void doUpdate(Resume resume, File file) {
         try {
             doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
 
@@ -42,13 +42,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void doSave(File file, Resume resume) {
+    protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
         } catch (IOException e) {
             throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
-        doUpdate(file, resume);
+        doUpdate(resume, file);
     }
 
     @Override
