@@ -19,6 +19,7 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
     protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
+    protected static final String STORAGE_PATH = "C:\\projects\\storage";
 
 
     Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
@@ -45,8 +46,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = ResumeTestData.createResume("uuid1", "Bob");
-       // Resume resume = new Resume("uuid1", "Bob");
+        Resume resume = ResumeTestData.createResume("uuid1", "Bob"); // error
+        //Resume resume = new Resume("uuid1", "Bob"); // ok
         storage.update(resume);
         assertTrue(resume.equals(storage.get("uuid1")));
     }
