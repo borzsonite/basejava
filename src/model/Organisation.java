@@ -30,12 +30,14 @@ public class Organisation implements Serializable {
         this.position = positions;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Organisation)) return false;
         Organisation that = (Organisation) o;
-        return link.equals(that.link) && position.equals(that.position);
+        return Objects.equals(link, that.link) &&
+                Objects.equals(position, that.position);
     }
 
     @Override
@@ -69,19 +71,21 @@ public class Organisation implements Serializable {
             this.description = description;
         }
 
-//        public Position(String title, String description, LocalDate startDate, LocalDate endDate) { //мой конструктор
-//            this.title = title;
-//            this.description = description;
-//            this.startDate = startDate;
-//            this.endDate = endDate;
-//        }
-//
-//        public Position(String title, LocalDate startDate, LocalDate endDate) { //мой конструктор
-//            this.title = title;
-//            this.startDate = startDate;
-//            this.endDate = endDate;
-//        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Position)) return false;
+            Position position = (Position) o;
+            return Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(endDate, position.endDate) &&
+                    Objects.equals(title, position.title) &&
+                    Objects.equals(description, position.description);
+        }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(startDate, endDate, title, description);
+        }
 
         @Override
         public String toString() {
