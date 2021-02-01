@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MainDirRecursionListing {
+public class MainFile {
     /**
      * Сделайте рекурсивный обход и вывод имени файлов в каталогах и подкаталогах (корневой каталог- ваш проект)
      */
