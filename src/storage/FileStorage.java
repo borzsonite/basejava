@@ -24,11 +24,7 @@ public class FileStorage extends AbstractStorage<File> {
         this.strategy = strategy;
     }
 
-    // protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    //  protected abstract Resume doRead(InputStream is) throws IOException;
-
-    @Override
+     @Override
     protected File getSearchKey(String uuid) {
         return new File(directory, uuid);
     }
