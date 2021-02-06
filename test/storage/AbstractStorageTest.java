@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
 
-    protected final Storage storage;
+    protected Storage storage;
     protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
     protected static final String STORAGE_PATH = "C:\\projects\\storage";
 
@@ -28,6 +28,10 @@ public abstract class AbstractStorageTest {
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
+    }
+
+    public AbstractStorageTest(File storageDir, SerializationStrategy strategy) {
+
     }
 
     @Before
