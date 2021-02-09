@@ -4,7 +4,10 @@ import exсeption.StorageException;
 import model.Resume;
 import storage.strategy.SerializationStrategy;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,21 +44,19 @@ public class PathStorage extends AbstractStorage<Path> {
             long size = Files.list(directory).count();
             return (int) size;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StorageException("Storage error", null);
         }
-        return 0;
     }
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(directory + File.separator + uuid);
-
+        return directory.resolve(uuid);
     }
 
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            strategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            strategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", resume.getUuid(), e);
         }
@@ -88,9 +89,9 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doDelete(Path path) {
         try {
-            Files.deleteIfExists(path);
+            Files.delete(path);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StorageException("File delete error ", null);
         }
     }
 
@@ -99,13 +100,12 @@ public class PathStorage extends AbstractStorage<Path> {
         List<Resume> resumes = new ArrayList<>();
         try {
             List<Path> paths = Files.list(directory).collect(Collectors.toList());
-            for (Path path: paths) {
+            for (Path path : paths) {
                 resumes.add(doGet(path));
             }
             return resumes;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StorageException("Storage error", null);
         }
-        return null;
     }
 }

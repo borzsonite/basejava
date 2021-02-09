@@ -99,7 +99,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     protected void checkIfStorageIsNull() {
         if(directory.listFiles() == null) {
-            throw new StorageException("Wrong storage name ", directory.getName());
+            throw new StorageException("Storage error ", directory.getName());
         }
     }
 }
