@@ -6,6 +6,7 @@ import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import storage.strategy.SerializationStrategy;
 
 import java.io.File;
 import java.util.Arrays;
@@ -19,8 +20,6 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
     protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
-    protected static final String STORAGE_PATH = "C:\\projects\\storage";
-
 
     Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
     Resume RESUME_2 = ResumeTestData.createResume("uuid2", "Alex");

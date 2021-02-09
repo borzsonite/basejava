@@ -2,6 +2,7 @@ package storage;
 
 import exсeption.StorageException;
 import model.Resume;
+import storage.strategy.SerializationStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class PathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
     private final SerializationStrategy strategy;
 
@@ -24,10 +25,6 @@ public abstract class PathStorage extends AbstractStorage<Path> {
         }
         this.strategy = strategy;
     }
-
-    //protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    //protected abstract Resume doRead(InputStream is) throws IOException;
 
     @Override
     public void clear() {
@@ -52,6 +49,7 @@ public abstract class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Path getSearchKey(String uuid) {
         return Paths.get(directory + File.separator + uuid);
+
     }
 
     @Override

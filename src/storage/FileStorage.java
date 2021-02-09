@@ -2,6 +2,7 @@ package storage;
 
 import exсeption.StorageException;
 import model.Resume;
+import storage.strategy.SerializationStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -73,7 +74,8 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public List<Resume> doCopyAll() {
         List<Resume> resumes = new ArrayList<>();
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
+        checkIfStorageIsNull();
+        for (File file : directory.listFiles()) {
             resumes.add(doGet(file));
         }
         return resumes;
@@ -81,7 +83,8 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
+        checkIfStorageIsNull();
+        for (File file : directory.listFiles()) {
             if (!file.isDirectory()) {
                 file.delete();
             }
@@ -90,6 +93,13 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        return Objects.requireNonNull(directory.listFiles()).length;
+        checkIfStorageIsNull();
+        return directory.listFiles().length;
+    }
+
+    protected void checkIfStorageIsNull() {
+        if(directory.listFiles() == null) {
+            throw new StorageException("Wrong storage name ", directory.getName());
+        }
     }
 }
