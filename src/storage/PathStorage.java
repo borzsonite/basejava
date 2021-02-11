@@ -6,12 +6,10 @@ import storage.strategy.SerializationStrategy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -89,12 +87,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public List<Resume> doCopyAll() {
-        List<Resume> resumes = new ArrayList<>();
-        List<Path> paths = getStorageList().collect(Collectors.toList());
-        for (Path path : paths) {
-            resumes.add(doGet(path));
-        }
-        return resumes;
+        return getStorageList().map(s -> doGet(s)).collect(Collectors.toList());
     }
 
     protected Stream<Path> getStorageList() {

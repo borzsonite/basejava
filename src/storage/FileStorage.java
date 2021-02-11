@@ -74,7 +74,6 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public List<Resume> doCopyAll() {
         List<Resume> resumes = new ArrayList<>();
-        getStorageList();
         for (File file : getStorageList()) {
             resumes.add(doGet(file));
         }
@@ -92,7 +91,6 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        getStorageList();
         return getStorageList().length;
     }
 
