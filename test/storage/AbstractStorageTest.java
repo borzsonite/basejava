@@ -6,7 +6,6 @@ import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import storage.strategy.SerializationStrategy;
 
 import java.io.File;
 import java.util.Arrays;

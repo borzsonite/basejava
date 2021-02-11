@@ -2,7 +2,7 @@ package storage;
 
 import exсeption.StorageException;
 import model.Resume;
-import storage.strategy.SerializationStrategy;
+import storage.strategy.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,9 +17,9 @@ import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    private final SerializationStrategy strategy;
+    private final StreamSerializer strategy;
 
-    protected PathStorage(String dir, SerializationStrategy strategy) {
+    protected PathStorage(String dir, StreamSerializer strategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -30,12 +30,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        getStorageList().forEach(this::doDelete);
+        getFilesList().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        return (int) getStorageList().count();
+        return (int) getFilesList().count();
     }
 
     @Override
@@ -87,10 +87,10 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public List<Resume> doCopyAll() {
-        return getStorageList().map(s -> doGet(s)).collect(Collectors.toList());
+        return getFilesList().map(s -> doGet(s)).collect(Collectors.toList());
     }
 
-    protected Stream<Path> getStorageList() {
+    protected Stream<Path> getFilesList() {
         try {
             return Files.list(directory);
         } catch (IOException e) {
