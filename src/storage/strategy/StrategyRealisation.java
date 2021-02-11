@@ -2,7 +2,6 @@ package storage.strategy;
 
 import exсeption.StorageException;
 import model.Resume;
-import storage.strategy.SerializationStrategy;
 
 import java.io.*;
 
@@ -10,7 +9,7 @@ public class StrategyRealisation implements SerializationStrategy {
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
-        try(ObjectOutputStream oos = new ObjectOutputStream(os)) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(resume);
         }
     }

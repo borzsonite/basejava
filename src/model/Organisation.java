@@ -6,8 +6,9 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import static util.DateUtil.of;
+
 import static util.DateUtil.NOW;
+import static util.DateUtil.of;
 
 
 public class Organisation implements Serializable {
@@ -25,7 +26,7 @@ public class Organisation implements Serializable {
         this.position = Arrays.asList(positions);
     }
 
-    public Organisation (Link homePage, List<Position> positions) {
+    public Organisation(Link homePage, List<Position> positions) {
         this.link = homePage;
         this.position = positions;
     }
@@ -54,7 +55,7 @@ public class Organisation implements Serializable {
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String title;
-        private  String description;
+        private final String description;
 
         public Position(int startYear, Month startMonth, String title, String description) {
             this(of(startYear, startMonth), NOW, title, description);

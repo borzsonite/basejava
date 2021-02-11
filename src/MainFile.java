@@ -26,10 +26,10 @@ public class MainFile {
 
     static void printDirDeeply(File dir) {
         File[] dirs = dir.listFiles();
-        for(File dirList: dirs) {
-            if(dirList.isFile()) {
+        for (File dirList : dirs) {
+            if (dirList.isFile()) {
                 System.out.println("    file: " + dirList.getName());
-            } else if(dirList.isDirectory()) {
+            } else if (dirList.isDirectory()) {
                 System.out.println("dir: " + dirList.getName());
                 printDirDeeply(dirList);
             }
