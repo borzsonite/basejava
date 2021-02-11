@@ -64,7 +64,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create file ", path.getFileName().toString(), e);
+            throw new StorageException("Couldn't create file ", getFileName(path), e);
         }
         doUpdate(resume, path);
     }
@@ -72,9 +72,9 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return strategy.doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
+            return strategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("Path read error", path.getFileName().toString(), e);
+            throw new StorageException("Path read error", getFileName(path), e);
         }
     }
 
@@ -103,5 +103,9 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Storage error", null);
         }
+    }
+
+    protected String getFileName(Path path) {
+        return path.getFileName().toString();
     }
 }
