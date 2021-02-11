@@ -5,10 +5,10 @@ import model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
-    private List<Resume> storage = new ArrayList<>();
+public class ListStorage extends AbstractStorage<Integer> {
+    private final List<Resume> storage = new ArrayList<>();
 
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().contains(uuid)) {
                 return i;
@@ -18,7 +18,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey != null;
     }
 
@@ -30,28 +30,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void proceedUpdate(Object index, Resume resume) {
-        storage.set((Integer) index, resume);
+    protected void doUpdate(Resume resume, Integer index) {
+        storage.set(index, resume);
     }
 
     @Override
-    public void proceedSave(Object index, Resume resume) {
+    public void doSave(Resume resume, Integer index) {
         storage.add(resume);
 
     }
 
     @Override
-    public Resume proceedGet(Object index) {
-        return storage.get((Integer) index);
+    public Resume doGet(Integer index) {
+        return storage.get(index);
     }
 
     @Override
-    public void proceedDelete(Object index) {
-        storage.remove(storage.get((Integer) index));
+    public void doDelete(Integer index) {
+        storage.remove(storage.get(index));
     }
 
     @Override
-    public List<Resume> getStorage() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(storage);
     }
 
