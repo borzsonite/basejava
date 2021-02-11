@@ -29,10 +29,6 @@ public abstract class AbstractStorageTest {
         this.storage = storage;
     }
 
-    public AbstractStorageTest(File storageDir, SerializationStrategy strategy) {
-
-    }
-
     @Before
     public void setUp() {
         storage.clear();

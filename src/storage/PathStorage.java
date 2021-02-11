@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
@@ -31,21 +32,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
+        getStorageList().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        try {
-            long size = Files.list(directory).count();
-            return (int) size;
-        } catch (IOException e) {
-            throw new StorageException("Storage error", null);
-        }
+        return (int) getStorageList().count();
     }
 
     @Override
@@ -98,12 +90,16 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     public List<Resume> doCopyAll() {
         List<Resume> resumes = new ArrayList<>();
+        List<Path> paths = getStorageList().collect(Collectors.toList());
+        for (Path path : paths) {
+            resumes.add(doGet(path));
+        }
+        return resumes;
+    }
+
+    protected Stream<Path> getStorageList() {
         try {
-            List<Path> paths = Files.list(directory).collect(Collectors.toList());
-            for (Path path : paths) {
-                resumes.add(doGet(path));
-            }
-            return resumes;
+            return Files.list(directory);
         } catch (IOException e) {
             throw new StorageException("Storage error", null);
         }

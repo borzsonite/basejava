@@ -25,7 +25,7 @@ public class FileStorage extends AbstractStorage<File> {
         this.strategy = strategy;
     }
 
-     @Override
+    @Override
     protected File getSearchKey(String uuid) {
         return new File(directory, uuid);
     }
@@ -74,8 +74,8 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public List<Resume> doCopyAll() {
         List<Resume> resumes = new ArrayList<>();
-        checkIfStorageIsNull();
-        for (File file : directory.listFiles()) {
+        getStorageList();
+        for (File file : getStorageList()) {
             resumes.add(doGet(file));
         }
         return resumes;
@@ -83,8 +83,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        checkIfStorageIsNull();
-        for (File file : directory.listFiles()) {
+        for (File file : getStorageList()) {
             if (!file.isDirectory()) {
                 file.delete();
             }
@@ -93,13 +92,14 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        checkIfStorageIsNull();
-        return directory.listFiles().length;
+        getStorageList();
+        return getStorageList().length;
     }
 
-    protected void checkIfStorageIsNull() {
-        if(directory.listFiles() == null) {
+    protected File[] getStorageList() {
+        if (directory.listFiles() == null) {
             throw new StorageException("Storage error ", directory.getName());
         }
+        return directory.listFiles();
     }
 }
