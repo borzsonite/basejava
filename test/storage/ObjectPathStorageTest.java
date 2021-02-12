@@ -1,8 +1,6 @@
 package storage;
 
-import storage.strategy.ObjectStreamSerializer;
-
-import static org.junit.Assert.*;
+import storage.serializer.ObjectStreamSerializer;
 
 public class ObjectPathStorageTest extends AbstractStorageTest {
 

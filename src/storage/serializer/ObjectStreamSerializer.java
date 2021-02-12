@@ -1,4 +1,4 @@
-package storage.strategy;
+package storage.serializer;
 
 import exсeption.StorageException;
 import model.Resume;

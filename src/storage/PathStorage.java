@@ -2,7 +2,7 @@ package storage;
 
 import exсeption.StorageException;
 import model.Resume;
-import storage.strategy.StreamSerializer;
+import storage.serializer.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -87,7 +87,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public List<Resume> doCopyAll() {
-        return getFilesList().map(s -> doGet(s)).collect(Collectors.toList());
+        return getFilesList().map(this::doGet).collect(Collectors.toList());
     }
 
     protected Stream<Path> getFilesList() {

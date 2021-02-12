@@ -21,15 +21,15 @@ public class ResumeTestData {
         System.out.println(SectionType.QUALIFICATION.getTitle() + testResume.getSections(SectionType.QUALIFICATION));
 
         System.out.println(SectionType.EXPERIENCE.getTitle());
-        OrganisationSection organisations = (OrganisationSection) testResume.getSections(SectionType.EXPERIENCE);
-        for (Organisation organisation : organisations.getOrganisations()) {
-            System.out.println(organisation.toString());
+        OrganizationSection organisations = (OrganizationSection) testResume.getSections(SectionType.EXPERIENCE);
+        for (Organization organization : organisations.getOrganisations()) {
+            System.out.println(organization.toString());
         }
 
         System.out.println(SectionType.EDUCATION.getTitle());
-        OrganisationSection organisations1 = (OrganisationSection) testResume.getSections(SectionType.EDUCATION);
-        for (Organisation organisation : organisations1.getOrganisations()) {
-            System.out.println(organisation.toString());
+        OrganizationSection organisations1 = (OrganizationSection) testResume.getSections(SectionType.EDUCATION);
+        for (Organization organization : organisations1.getOrganisations()) {
+            System.out.println(organization.toString());
         }
     }
 
@@ -60,18 +60,18 @@ public class ResumeTestData {
 
 
         resume.setSections(SectionType.EXPERIENCE,
-                new OrganisationSection(
-                        new Organisation("Java Online Projects", "https://javaops.ru/",
-                                new Organisation.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.")), new Organisation("Wrike", "https://www.wrike.com/",
-                        new Organisation.Position(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
+                new OrganizationSection(
+                        new Organization("Java Online Projects", "https://javaops.ru/",
+                                new Organization.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.")), new Organization("Wrike", "https://www.wrike.com/",
+                        new Organization.Position(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
 
         resume.setSections(SectionType.EDUCATION,
-                new OrganisationSection(
-                        new Organisation("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
-                                new Organisation.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null),
-                                new Organisation.Position(1987, Month.SEPTEMBER, 1993, Month.OCTOBER, "Инженер (программист Fortran, C))", null)),
-                        new Organisation("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
-                                new Organisation.Position(1984, Month.OCTOBER, 1993, Month.APRIL, "Закончил с отличием", null))));
+                new OrganizationSection(
+                        new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
+                                new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null),
+                                new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.OCTOBER, "Инженер (программист Fortran, C))", null)),
+                        new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
+                                new Organization.Position(1984, Month.OCTOBER, 1993, Month.APRIL, "Закончил с отличием", null))));
         return resume;
     }
 }

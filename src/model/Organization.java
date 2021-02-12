@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -10,23 +12,26 @@ import java.util.Objects;
 import static util.DateUtil.NOW;
 import static util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Organization implements Serializable {
+    private Link link;
+    private List<Position> position;
 
-public class Organisation implements Serializable {
-    private final Link link;
-    private final List<Position> position;
+    public Organization() {
+    }
 
-    public Organisation(String name, String url, List<Position> position) {
+    public Organization(String name, String url, List<Position> position) {
         Objects.requireNonNull(position, "period must not be null");
         this.link = new Link(name, url);
         this.position = position;
     }
 
-    public Organisation(String name, String url, Position... positions) {
+    public Organization(String name, String url, Position... positions) {
         this.link = new Link(name, url);
         this.position = Arrays.asList(positions);
     }
 
-    public Organisation(Link homePage, List<Position> positions) {
+    public Organization(Link homePage, List<Position> positions) {
         this.link = homePage;
         this.position = positions;
     }
@@ -35,8 +40,8 @@ public class Organisation implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Organisation)) return false;
-        Organisation that = (Organisation) o;
+        if (!(o instanceof Organization)) return false;
+        Organization that = (Organization) o;
         return Objects.equals(link, that.link) &&
                 Objects.equals(position, that.position);
     }
@@ -52,10 +57,13 @@ public class Organisation implements Serializable {
     }
 
     public static class Position implements Serializable {
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String title;
-        private final String description;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private String title;
+        private String description;
+
+        public Position() {
+        }
 
         public Position(int startYear, Month startMonth, String title, String description) {
             this(of(startYear, startMonth), NOW, title, description);
