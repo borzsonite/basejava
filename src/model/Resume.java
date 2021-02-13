@@ -44,15 +44,15 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
-    public String getContacts(ContactType type) {
-        return contacts.get(type);
+    public Map<ContactType, String>  getContacts() {
+        return contacts;
     }
 
     public AbstractSection getSections(SectionType type) {
         return sections.get(type);
     }
 
-    public void setContacts(ContactType contactType, String contact) {
+    public void addContact(ContactType contactType, String contact) {
         contacts.put(contactType, contact);
     }
 

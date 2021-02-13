@@ -8,13 +8,7 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         Resume testResume = ResumeTestData.createResume("uuid1", "Jhon");
-        System.out.println(ContactType.PHONE.getTitle() + testResume.getContacts(ContactType.PHONE));
-        System.out.println(ContactType.SKYPE.getTitle() + testResume.getContacts(ContactType.SKYPE));
-        System.out.println(ContactType.EMAIL.getTitle() + testResume.getContacts(ContactType.EMAIL));
-        System.out.println(ContactType.GITHUB.getTitle() + testResume.getContacts(ContactType.GITHUB));
-        System.out.println(ContactType.LINKEDIN.getTitle() + testResume.getContacts(ContactType.LINKEDIN));
-        System.out.println(ContactType.STACKOVERFLOW.getTitle() + testResume.getContacts(ContactType.STACKOVERFLOW));
-        System.out.println(ContactType.HOMEPAGE + testResume.getContacts(ContactType.HOMEPAGE));
+        System.out.println("Contacts" + testResume.getContacts());
         System.out.println(SectionType.OBJECTIVE.getTitle() + testResume.getSections(SectionType.OBJECTIVE));
         System.out.println(SectionType.PERSONAL.getTitle() + testResume.getSections(SectionType.PERSONAL));
         System.out.println(SectionType.ACHIEVEMENT.getTitle() + testResume.getSections(SectionType.ACHIEVEMENT));
@@ -35,13 +29,13 @@ public class ResumeTestData {
 
     protected static Resume createResume(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
-        resume.setContacts(ContactType.PHONE, "+7354857387");
-        resume.setContacts(ContactType.SKYPE, "SkypeId");
-        resume.setContacts(ContactType.EMAIL, "some@mail.com");
-        resume.setContacts(ContactType.LINKEDIN, "LinkedInId");
-        resume.setContacts(ContactType.GITHUB, "GitHubId");
-        resume.setContacts(ContactType.STACKOVERFLOW, "StackOverflowId");
-        resume.setContacts(ContactType.HOMEPAGE, "www.myHomepage.com");
+        resume.addContact(ContactType.PHONE, "+7354857387");
+        resume.addContact(ContactType.SKYPE, "SkypeId");
+        resume.addContact(ContactType.EMAIL, "some@mail.com");
+        resume.addContact(ContactType.LINKEDIN, "LinkedInId");
+        resume.addContact(ContactType.GITHUB, "GitHubId");
+        resume.addContact(ContactType.STACKOVERFLOW, "StackOverflowId");
+        resume.addContact(ContactType.HOMEPAGE, "www.myHomepage.com");
 
         resume.setSections(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         resume.setSections(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
