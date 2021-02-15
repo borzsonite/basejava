@@ -23,6 +23,10 @@ public class ListSection extends AbstractSection {
         return items;
     }
 
+    public void addItem(String item) {
+        this.items.add(item);
+    }
+
     @Override
     public String toString() {
         return items.toString();

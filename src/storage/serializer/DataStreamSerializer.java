@@ -1,11 +1,14 @@
 package storage.serializer;
 
 
-import model.ContactType;
-import model.Resume;
+import model.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import static model.SectionType.*;
 
 public class DataStreamSerializer implements StreamSerializer {
 
@@ -21,6 +24,19 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getValue());
             }
             // TODO implements sections
+            dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
+            dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
+
+            ListSection  achievements = (ListSection) r.getSection(ACHIEVEMENT);
+            dos.writeInt(achievements.getItems().size());
+            for(String elem: achievements.getItems()) {
+                dos.writeUTF(elem);
+            }
+//
+//            ListSection  qualification = (ListSection) r.getSection(QUALIFICATION);
+//            for(String elem: qualification.getItems()) {
+//                dos.writeUTF(elem);
+//            }
         }
     }
 
@@ -35,6 +51,15 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             // TODO implements sections
+            resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
+            resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
+            int achievementListSize = dis.readInt();
+            ListSection listSection = new ListSection();
+            for(int i = 0; i<achievementListSize; i++) {
+                listSection.addItem(dis.readUTF());
+            }
+            resume.setSection(ACHIEVEMENT, listSection);
+//            resume.setSection(QUALIFICATION, new ListSection(dis.readUTF()));
             return resume;
         }
     }
