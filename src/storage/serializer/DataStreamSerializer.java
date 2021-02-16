@@ -1,11 +1,11 @@
 package storage.serializer;
 
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import model.*;
 
 import java.io.*;
-import java.time.Period;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,13 +47,20 @@ public class DataStreamSerializer implements StreamSerializer {
 
             // OrganizationSection write
             OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
-                for(Organization organization: experience.getOrganisations()) {
-                    dos.writeUTF(organization.getLink().getName());
-                    dos.writeUTF(organization.getLink().getUrl());
-                    for(Organization.Position position: organization.getPosition()) {
-                        dos.writeUTF(position.);
-                    }
+            for (Organization organization : experience.getOrganisations()) {
+                dos.writeInt(experience.getOrganisations().size()); // orgs number
+                dos.writeUTF(organization.getLink().getName());
+                dos.writeUTF(organization.getLink().getUrl());
+                for (Organization.Position position : organization.getPosition()) {
+                    dos.writeInt(organization.getPosition().size()); // pos number
+                    dos.writeInt(position.getStartDate().getYear());
+                    dos.writeInt(position.getStartDate().getMonth().getValue());
+                    dos.writeInt(position.getEndDate().getYear());
+                    dos.writeInt(position.getEndDate().getMonth().getValue());
+                    dos.writeUTF(position.getTitle());
+                    dos.writeUTF(position.getDescription());
                 }
+            }
         }
     }
 
@@ -89,7 +96,16 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             resume.setSection(QUALIFICATION, qualificationSection);
 
+            // OrganizationSection read
+            int organizationSectionSize = dis.readInt();
+            Link link = new Link((String) dis.readUTF(), (String) dis.readUTF());
+            int positionSectionSize = dis.readInt();
+            List<Organization> organizationList = new ArrayList<>();
+            List<Organization.Position> positionList = new ArrayList<>();
+            for (int i = 0; i < positionSectionSize; i++) {
+                positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
 
+            }
 
             return resume;
         }

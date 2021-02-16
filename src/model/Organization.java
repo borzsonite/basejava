@@ -111,6 +111,22 @@ public class Organization implements Serializable {
             return description;
         }
 
+        public void setStartDate(LocalDate startDate) {
+            this.startDate = startDate;
+        }
+
+        public void setEndDate(LocalDate endDate) {
+            this.endDate = endDate;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
