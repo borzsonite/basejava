@@ -20,6 +20,14 @@ public class Organization implements Serializable {
     private Link link;
     private List<Position> position;
 
+    public Link getLink() {
+        return link;
+    }
+
+    public List<Position> getPosition() {
+        return position;
+    }
+
     public Organization() {
     }
 
@@ -59,6 +67,7 @@ public class Organization implements Serializable {
         return link + "" + position;
     }
 
+
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
@@ -84,6 +93,22 @@ public class Organization implements Serializable {
             this.endDate = Objects.requireNonNull(endDate);
             this.title = Objects.requireNonNull(title);
             this.description = description;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         @Override

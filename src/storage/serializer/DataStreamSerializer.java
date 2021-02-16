@@ -1,13 +1,13 @@
 package storage.serializer;
 
 
-import model.ContactType;
-import model.ListSection;
-import model.Resume;
-import model.TextSection;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import model.*;
 
 import java.io.*;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static model.SectionType.*;
@@ -27,23 +27,33 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             // TODO implements sections
 
-            // TestSection read
+            // TestSection write
             dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
             dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
 
-            // AchievementsSection read
+            // AchievementsSection write
             ListSection achievements = (ListSection) r.getSection(ACHIEVEMENT);
             dos.writeInt(achievements.getItems().size());
             for (String elem : achievements.getItems()) {
                 dos.writeUTF(elem);
             }
 
-            // QualificationSection read
+            // QualificationSection write
             ListSection qualification = (ListSection) r.getSection(QUALIFICATION);
             dos.writeInt(qualification.getItems().size());
             for (String elem : qualification.getItems()) {
                 dos.writeUTF(elem);
             }
+
+            // OrganizationSection write
+            OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
+                for(Organization organization: experience.getOrganisations()) {
+                    dos.writeUTF(organization.getLink().getName());
+                    dos.writeUTF(organization.getLink().getUrl());
+                    for(Organization.Position position: organization.getPosition()) {
+                        dos.writeUTF(position.);
+                    }
+                }
         }
     }
 
@@ -59,11 +69,11 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             // TODO implements sections
 
-            // TestSection write
+            // TestSection read
             resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
             resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
 
-            // AchievementsSection write
+            // AchievementsSection read
             int achievementListSize = dis.readInt();
             ListSection achievementSection = new ListSection(new ArrayList<>());
             for (int i = 0; i < achievementListSize; i++) {
@@ -71,13 +81,15 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             resume.setSection(ACHIEVEMENT, achievementSection);
 
-            // QualificationSection write
+            // QualificationSection read
             int qualificationListSize = dis.readInt();
             ListSection qualificationSection = new ListSection(new ArrayList<>());
             for (int i = 0; i < qualificationListSize; i++) {
                 qualificationSection.addItem(dis.readUTF());
             }
             resume.setSection(QUALIFICATION, qualificationSection);
+
+
 
             return resume;
         }
