@@ -1,11 +1,13 @@
 package storage.serializer;
 
 
-import model.*;
+import model.ContactType;
+import model.ListSection;
+import model.Resume;
+import model.TextSection;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static model.SectionType.*;
@@ -24,19 +26,24 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getValue());
             }
             // TODO implements sections
+
+            // TestSection read
             dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
             dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
 
-            ListSection  achievements = (ListSection) r.getSection(ACHIEVEMENT);
+            // AchievementsSection read
+            ListSection achievements = (ListSection) r.getSection(ACHIEVEMENT);
             dos.writeInt(achievements.getItems().size());
-            for(String elem: achievements.getItems()) {
+            for (String elem : achievements.getItems()) {
                 dos.writeUTF(elem);
             }
-//
-//            ListSection  qualification = (ListSection) r.getSection(QUALIFICATION);
-//            for(String elem: qualification.getItems()) {
-//                dos.writeUTF(elem);
-//            }
+
+            // QualificationSection read
+            ListSection qualification = (ListSection) r.getSection(QUALIFICATION);
+            dos.writeInt(qualification.getItems().size());
+            for (String elem : qualification.getItems()) {
+                dos.writeUTF(elem);
+            }
         }
     }
 
@@ -51,15 +58,27 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             // TODO implements sections
+
+            // TestSection write
             resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
             resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
+
+            // AchievementsSection write
             int achievementListSize = dis.readInt();
-            ListSection listSection = new ListSection();
-            for(int i = 0; i<achievementListSize; i++) {
-                listSection.addItem(dis.readUTF());
+            ListSection achievementSection = new ListSection(new ArrayList<>());
+            for (int i = 0; i < achievementListSize; i++) {
+                achievementSection.addItem(dis.readUTF());
             }
-            resume.setSection(ACHIEVEMENT, listSection);
-//            resume.setSection(QUALIFICATION, new ListSection(dis.readUTF()));
+            resume.setSection(ACHIEVEMENT, achievementSection);
+
+            // QualificationSection write
+            int qualificationListSize = dis.readInt();
+            ListSection qualificationSection = new ListSection(new ArrayList<>());
+            for (int i = 0; i < qualificationListSize; i++) {
+                qualificationSection.addItem(dis.readUTF());
+            }
+            resume.setSection(QUALIFICATION, qualificationSection);
+
             return resume;
         }
     }
