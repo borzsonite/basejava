@@ -47,18 +47,18 @@ public class DataStreamSerializer implements StreamSerializer {
 
             // OrganizationSection write
             OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
-            for (Organization organization : experience.getOrganisations()) {
-                dos.writeInt(experience.getOrganisations().size()); // orgs number
-                dos.writeUTF(organization.getLink().getName());
-                dos.writeUTF(organization.getLink().getUrl());
+            for (Organization organization : experience.getOrganisations()) { // итерируем по List<Organizations>
+                dos.writeInt(experience.getOrganisations().size()); // orgs number 1
+                dos.writeUTF(organization.getLink().getName()); // 2
+                dos.writeUTF(organization.getLink().getUrl()); // 3
                 for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(organization.getPosition().size()); // pos number
-                    dos.writeInt(position.getStartDate().getYear());
-                    dos.writeInt(position.getStartDate().getMonth().getValue());
-                    dos.writeInt(position.getEndDate().getYear());
-                    dos.writeInt(position.getEndDate().getMonth().getValue());
-                    dos.writeUTF(position.getTitle());
-                    dos.writeUTF(position.getDescription());
+                    dos.writeInt(organization.getPosition().size()); // pos number // 4
+                    dos.writeInt(position.getStartDate().getYear()); // 5
+                    dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
+                    dos.writeInt(position.getEndDate().getYear()); // 7
+                    dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
+                    dos.writeUTF(position.getTitle()); // 9
+                    dos.writeUTF(position.getDescription()); // 10
                 }
             }
         }
@@ -97,15 +97,22 @@ public class DataStreamSerializer implements StreamSerializer {
             resume.setSection(QUALIFICATION, qualificationSection);
 
             // OrganizationSection read
-            int organizationSectionSize = dis.readInt();
-            Link link = new Link((String) dis.readUTF(), (String) dis.readUTF());
-            int positionSectionSize = dis.readInt();
+            int organizationSectionSize = dis.readInt(); // 1
+            Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
+            int positionSectionSize = dis.readInt(); // 4
             List<Organization> organizationList = new ArrayList<>();
             List<Organization.Position> positionList = new ArrayList<>();
-            for (int i = 0; i < positionSectionSize; i++) {
-                positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
 
+            for (int i = 0; i < organizationSectionSize; i++) {
+                for (int k = 0; k < positionSectionSize; k++) {
+                    positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
+                }
+                Organization organization = new Organization(link, positionList);
+                organizationList.add(organization);
             }
+            OrganizationSection organizationSection = new OrganizationSection(organizationList);
+            resume.setSection(SectionType.EXPERIENCE, organizationSection);
+
 
             return resume;
         }
