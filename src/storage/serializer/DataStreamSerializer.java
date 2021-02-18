@@ -47,18 +47,37 @@ public class DataStreamSerializer implements StreamSerializer {
 
             // OrganizationSection write
             OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
+            dos.writeInt(experience.getOrganisations().size()); // orgs number 1
+            System.out.println("orgs num: " + experience.getOrganisations().size());
+
             for (Organization organization : experience.getOrganisations()) { // итерируем по List<Organizations>
-                dos.writeInt(experience.getOrganisations().size()); // orgs number 1
                 dos.writeUTF(organization.getLink().getName()); // 2
-                dos.writeUTF(organization.getLink().getUrl()); // 3
+                System.out.println("org name: " + organization.getLink().getName());
+
+                dos.writeUTF(organization.getLink().getUrl()); //
+                System.out.println("org url: " + organization.getLink().getUrl());
+
                 for (Organization.Position position : organization.getPosition()) {
                     dos.writeInt(organization.getPosition().size()); // pos number // 4
+                    System.out.println("pos num: " + organization.getPosition().size());
+
                     dos.writeInt(position.getStartDate().getYear()); // 5
+                    System.out.println("Start date year: " + position.getStartDate().getYear());
+
                     dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
+                    System.out.println("Start date month: " + position.getStartDate().getMonth().getValue());
+
                     dos.writeInt(position.getEndDate().getYear()); // 7
+                    System.out.println("End date year: " + position.getEndDate().getYear());
+
                     dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
+                    System.out.println("End date month: " + position.getEndDate().getMonth().getValue());
+
                     dos.writeUTF(position.getTitle()); // 9
+                    System.out.println("Pos title: " + position.getTitle());
+
                     dos.writeUTF(position.getDescription()); // 10
+                    System.out.println("pos description: " + position.getDescription());
                 }
             }
         }
@@ -98,12 +117,14 @@ public class DataStreamSerializer implements StreamSerializer {
 
             // OrganizationSection read
             int organizationSectionSize = dis.readInt(); // 1
-            Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
-            int positionSectionSize = dis.readInt(); // 4
+
+
             List<Organization> organizationList = new ArrayList<>();
             List<Organization.Position> positionList = new ArrayList<>();
 
             for (int i = 0; i < organizationSectionSize; i++) {
+                Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
+                int positionSectionSize = dis.readInt(); // 4
                 for (int k = 0; k < positionSectionSize; k++) {
                     positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
                 }
