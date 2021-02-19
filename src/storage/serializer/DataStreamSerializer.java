@@ -48,9 +48,26 @@ public class DataStreamSerializer implements StreamSerializer {
             // OrganizationSection write
             OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
             dos.writeInt(experience.getOrganisations().size()); // orgs number 1
-            System.out.println("orgs num: " + experience.getOrganisations().size());
-
             for (Organization organization : experience.getOrganisations()) { // итерируем по List<Organizations>
+                dos.writeUTF(organization.getLink().getName()); // 2
+                dos.writeUTF(organization.getLink().getUrl()); //
+                for (Organization.Position position : organization.getPosition()) {
+                    dos.writeInt(organization.getPosition().size()); // pos number // 4
+                    dos.writeInt(position.getStartDate().getYear()); // 5
+                    dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
+                    dos.writeInt(position.getEndDate().getYear()); // 7
+                    dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
+                    dos.writeUTF(position.getTitle()); // 9
+                    dos.writeUTF(position.getDescription()); // 10
+                }
+            }
+
+            // EducationSection write
+            OrganizationSection education = (OrganizationSection) r.getSection(EDUCATION);
+            dos.writeInt(education.getOrganisations().size()); // orgs number 1
+            System.out.println("orgs num: " + education.getOrganisations().size());
+
+            for (Organization organization : education.getOrganisations()) { // итерируем по List<Organizations>
                 dos.writeUTF(organization.getLink().getName()); // 2
                 System.out.println("org name: " + organization.getLink().getName());
 
@@ -117,10 +134,7 @@ public class DataStreamSerializer implements StreamSerializer {
 
             // OrganizationSection read
             int organizationSectionSize = dis.readInt(); // 1
-
-
             List<Organization> organizationList = new ArrayList<>();
-
 
             for (int i = 0; i < organizationSectionSize; i++) {
                 List<Organization.Position> positionList = new ArrayList<>();
