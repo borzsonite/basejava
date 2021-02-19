@@ -60,8 +60,8 @@ public class ResumeTestData {
                             new Organization.Position(2013, Month.OCTOBER, 2021, Month.JANUARY,"Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.")),
                         new Organization("Wrike", "https://www.wrike.com/",
                             new Organization.Position(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
-
-/*        resume.setSection(SectionType.EDUCATION,
+/*
+        resume.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
                                 new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null),

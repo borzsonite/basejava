@@ -120,9 +120,10 @@ public class DataStreamSerializer implements StreamSerializer {
 
 
             List<Organization> organizationList = new ArrayList<>();
-            List<Organization.Position> positionList = new ArrayList<>();
+
 
             for (int i = 0; i < organizationSectionSize; i++) {
+                List<Organization.Position> positionList = new ArrayList<>();
                 Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
                 int positionSectionSize = dis.readInt(); // 4
                 for (int k = 0; k < positionSectionSize; k++) {

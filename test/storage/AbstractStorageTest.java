@@ -21,8 +21,8 @@ public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
 
     Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
-//    Resume RESUME_2 = ResumeTestData.createResume("uuid2", "Alex");
-//    Resume RESUME_3 = ResumeTestData.createResume("uuid3", "Mike");
+    Resume RESUME_2 = ResumeTestData.createResume("uuid2", "Alex");
+    Resume RESUME_3 = ResumeTestData.createResume("uuid3", "Mike");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -32,8 +32,8 @@ public abstract class AbstractStorageTest {
     public void setUp() {
         storage.clear();
         storage.save(RESUME_1);
-//        storage.save(RESUME_2);
-//        storage.save(RESUME_3);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
     }
 
     @Test
