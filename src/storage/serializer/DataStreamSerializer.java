@@ -45,14 +45,15 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(elem);
             }
 
-            // OrganizationSection write
+            // ExperienceSection write
             OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
             dos.writeInt(experience.getOrganisations().size()); // orgs number 1
             for (Organization organization : experience.getOrganisations()) { // итерируем по List<Organizations>
                 dos.writeUTF(organization.getLink().getName()); // 2
                 dos.writeUTF(organization.getLink().getUrl()); //
+                dos.writeInt(organization.getPosition().size()); // pos number // 4
+
                 for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(organization.getPosition().size()); // pos number // 4
                     dos.writeInt(position.getStartDate().getYear()); // 5
                     dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
                     dos.writeInt(position.getEndDate().getYear()); // 7
@@ -65,36 +66,18 @@ public class DataStreamSerializer implements StreamSerializer {
             // EducationSection write
             OrganizationSection education = (OrganizationSection) r.getSection(EDUCATION);
             dos.writeInt(education.getOrganisations().size()); // orgs number 1
-            System.out.println("orgs num: " + education.getOrganisations().size());
 
             for (Organization organization : education.getOrganisations()) { // итерируем по List<Organizations>
                 dos.writeUTF(organization.getLink().getName()); // 2
-                System.out.println("org name: " + organization.getLink().getName());
-
                 dos.writeUTF(organization.getLink().getUrl()); //
-                System.out.println("org url: " + organization.getLink().getUrl());
-
+                dos.writeInt(organization.getPosition().size()); // pos number // 4
                 for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(organization.getPosition().size()); // pos number // 4
-                    System.out.println("pos num: " + organization.getPosition().size());
-
                     dos.writeInt(position.getStartDate().getYear()); // 5
-                    System.out.println("Start date year: " + position.getStartDate().getYear());
-
                     dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
-                    System.out.println("Start date month: " + position.getStartDate().getMonth().getValue());
-
                     dos.writeInt(position.getEndDate().getYear()); // 7
-                    System.out.println("End date year: " + position.getEndDate().getYear());
-
                     dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
-                    System.out.println("End date month: " + position.getEndDate().getMonth().getValue());
-
                     dos.writeUTF(position.getTitle()); // 9
-                    System.out.println("Pos title: " + position.getTitle());
-
                     dos.writeUTF(position.getDescription()); // 10
-                    System.out.println("pos description: " + position.getDescription());
                 }
             }
         }
@@ -132,11 +115,11 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             resume.setSection(QUALIFICATION, qualificationSection);
 
-            // OrganizationSection read
-            int organizationSectionSize = dis.readInt(); // 1
-            List<Organization> organizationList = new ArrayList<>();
+            // ExperienceSection read
+            int experienceSectionSize = dis.readInt(); // 1
+            List<Organization> experienceList = new ArrayList<>();
 
-            for (int i = 0; i < organizationSectionSize; i++) {
+            for (int i = 0; i < experienceSectionSize; i++) {
                 List<Organization.Position> positionList = new ArrayList<>();
                 Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
                 int positionSectionSize = dis.readInt(); // 4
@@ -144,10 +127,28 @@ public class DataStreamSerializer implements StreamSerializer {
                     positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
                 }
                 Organization organization = new Organization(link, positionList);
-                organizationList.add(organization);
+                experienceList.add(organization);
             }
-            OrganizationSection organizationSection = new OrganizationSection(organizationList);
-            resume.setSection(SectionType.EXPERIENCE, organizationSection);
+            OrganizationSection experienceSection = new OrganizationSection(experienceList);
+            resume.setSection(SectionType.EXPERIENCE, experienceSection);
+
+            // EducationSection read
+            int educationSectionSize = dis.readInt(); // 1
+            List<Organization> educationList = new ArrayList<>();
+
+            for (int i = 0; i < educationSectionSize; i++) {
+                List<Organization.Position> positionList = new ArrayList<>();
+                Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
+                int positionSectionSize = dis.readInt(); // 4
+                for (int k = 0; k < positionSectionSize; k++) {
+                    positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
+                }
+                Organization organization = new Organization(link, positionList);
+                educationList.add(organization);
+            }
+            OrganizationSection educationSection = new OrganizationSection(educationList);
+            resume.setSection(EDUCATION, educationSection);
+
 
 
             return resume;

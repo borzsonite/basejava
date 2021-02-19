@@ -64,10 +64,10 @@ public class ResumeTestData {
         resume.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
-                                new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", null),
-                                new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.OCTOBER, "Инженер (программист Fortran, C))", null)),
+                                new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.OCTOBER, "Аспирантура (программист С, С++)", ""),
+                                new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.OCTOBER, "Инженер (программист Fortran, C))", "")),
                         new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
-                                new Organization.Position(1984, Month.OCTOBER, 1993, Month.APRIL, "Закончил с отличием", null))));
+                                new Organization.Position(1984, Month.OCTOBER, 1993, Month.APRIL, "Закончил с отличием", ""))));
 
         return resume;
     }
