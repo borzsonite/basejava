@@ -25,27 +25,22 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
-            // TODO implements sections
 
-            // TestSection write
             dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
             dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
 
-            // AchievementsSection write
             ListSection achievements = (ListSection) r.getSection(ACHIEVEMENT);
             dos.writeInt(achievements.getItems().size());
             for (String elem : achievements.getItems()) {
                 dos.writeUTF(elem);
             }
 
-            // QualificationSection write
             ListSection qualification = (ListSection) r.getSection(QUALIFICATION);
             dos.writeInt(qualification.getItems().size());
             for (String elem : qualification.getItems()) {
                 dos.writeUTF(elem);
             }
 
-            // ExperienceEducationSection write
             experienceEducationSectionWrite(EXPERIENCE, dos, r);
             experienceEducationSectionWrite(EDUCATION, dos, r);
         }
@@ -61,13 +56,10 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            // TODO implements sections
 
-            // TestSection read
             resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
             resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
 
-            // AchievementsSection read
             int achievementListSize = dis.readInt();
             ListSection achievementSection = new ListSection(new ArrayList<>());
             for (int i = 0; i < achievementListSize; i++) {
@@ -75,7 +67,6 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             resume.setSection(ACHIEVEMENT, achievementSection);
 
-            // QualificationSection read
             int qualificationListSize = dis.readInt();
             ListSection qualificationSection = new ListSection(new ArrayList<>());
             for (int i = 0; i < qualificationListSize; i++) {
@@ -91,40 +82,37 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     protected void experienceEducationSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
-        // EducationSection write
         OrganizationSection education = (OrganizationSection) r.getSection(sectionType);
 
         try {
-            dos.writeInt(education.getOrganisations().size()); // orgs number 1
-            for (Organization organization : education.getOrganisations()) { // итерируем по List<Organizations>
-                dos.writeUTF(organization.getLink().getName()); // 2
-                dos.writeUTF(organization.getLink().getUrl()); //
-                dos.writeInt(organization.getPosition().size()); // pos number // 4
+            dos.writeInt(education.getOrganisations().size());
+            for (Organization organization : education.getOrganisations()) {
+                dos.writeUTF(organization.getLink().getName());
+                dos.writeUTF(organization.getLink().getUrl());
+                dos.writeInt(organization.getPosition().size());
                 for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(position.getStartDate().getYear()); // 5
-                    dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
-                    dos.writeInt(position.getEndDate().getYear()); // 7
-                    dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
-                    dos.writeUTF(position.getTitle()); // 9
-                    dos.writeUTF(position.getDescription()); // 10
+                    dos.writeInt(position.getStartDate().getYear());
+                    dos.writeInt(position.getStartDate().getMonth().getValue());
+                    dos.writeInt(position.getEndDate().getYear());
+                    dos.writeInt(position.getEndDate().getMonth().getValue());
+                    dos.writeUTF(position.getTitle());
+                    dos.writeUTF(position.getDescription());
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     protected OrganizationSection experienceEducationSectionsRead(DataInputStream dis) {
-        int experienceSectionSize = 0; // 1
+        int experienceSectionSize = 0;
         try {
             experienceSectionSize = dis.readInt();
             List<Organization> experienceList = new ArrayList<>();
             for (int i = 0; i < experienceSectionSize; i++) {
                 List<Organization.Position> positionList = new ArrayList<>();
-                Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
-                int positionSectionSize = dis.readInt(); // 4
+                Link link = new Link(dis.readUTF(), dis.readUTF());
+                int positionSectionSize = dis.readInt();
                 for (int k = 0; k < positionSectionSize; k++) {
                     positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
                 }
