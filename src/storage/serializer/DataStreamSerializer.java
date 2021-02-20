@@ -45,41 +45,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(elem);
             }
 
-            // ExperienceSection write
-            OrganizationSection experience = (OrganizationSection) r.getSection(EXPERIENCE);
-            dos.writeInt(experience.getOrganisations().size()); // orgs number 1
-            for (Organization organization : experience.getOrganisations()) { // итерируем по List<Organizations>
-                dos.writeUTF(organization.getLink().getName()); // 2
-                dos.writeUTF(organization.getLink().getUrl()); //
-                dos.writeInt(organization.getPosition().size()); // pos number // 4
-
-                for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(position.getStartDate().getYear()); // 5
-                    dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
-                    dos.writeInt(position.getEndDate().getYear()); // 7
-                    dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
-                    dos.writeUTF(position.getTitle()); // 9
-                    dos.writeUTF(position.getDescription()); // 10
-                }
-            }
-
-            // EducationSection write
-            OrganizationSection education = (OrganizationSection) r.getSection(EDUCATION);
-            dos.writeInt(education.getOrganisations().size()); // orgs number 1
-
-            for (Organization organization : education.getOrganisations()) { // итерируем по List<Organizations>
-                dos.writeUTF(organization.getLink().getName()); // 2
-                dos.writeUTF(organization.getLink().getUrl()); //
-                dos.writeInt(organization.getPosition().size()); // pos number // 4
-                for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(position.getStartDate().getYear()); // 5
-                    dos.writeInt(position.getStartDate().getMonth().getValue()); // 6
-                    dos.writeInt(position.getEndDate().getYear()); // 7
-                    dos.writeInt(position.getEndDate().getMonth().getValue()); // 8
-                    dos.writeUTF(position.getTitle()); // 9
-                    dos.writeUTF(position.getDescription()); // 10
-                }
-            }
+            // ExperienceEducationSection write
+            experienceEducationSectionWrite(EXPERIENCE, dos, r);
+            experienceEducationSectionWrite(EDUCATION, dos, r);
         }
     }
 
