@@ -67,14 +67,14 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-//    @Test
-//    public void getAllSorted() {
-//        List<Resume> actualResumes = storage.getAllSorted();
-//        List<Resume> expectedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
-//            expectedResumes.sort(Comparator.comparing(Resume::getFullName).
-//                thenComparing(Resume::getUuid));
-//        assertEquals(expectedResumes, actualResumes);
-//    }
+    @Test
+    public void getAllSorted() {
+        List<Resume> actualResumes = storage.getAllSorted();
+        List<Resume> expectedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+            expectedResumes.sort(Comparator.comparing(Resume::getFullName).
+                thenComparing(Resume::getUuid));
+        assertEquals(expectedResumes, actualResumes);
+    }
 
     @Test
     public void get() {

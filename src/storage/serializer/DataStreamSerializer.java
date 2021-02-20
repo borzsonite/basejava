@@ -28,21 +28,11 @@ public class DataStreamSerializer implements StreamSerializer {
 
             dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
             dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
-
-            ListSection achievements = (ListSection) r.getSection(ACHIEVEMENT);
-            dos.writeInt(achievements.getItems().size());
-            for (String elem : achievements.getItems()) {
-                dos.writeUTF(elem);
-            }
-
-            ListSection qualification = (ListSection) r.getSection(QUALIFICATION);
-            dos.writeInt(qualification.getItems().size());
-            for (String elem : qualification.getItems()) {
-                dos.writeUTF(elem);
-            }
-
+            listSectionWrite(ACHIEVEMENT, r, dos);
+            listSectionWrite(QUALIFICATION, r, dos);
             experienceEducationSectionWrite(EXPERIENCE, dos, r);
             experienceEducationSectionWrite(EDUCATION, dos, r);
+
         }
     }
 
@@ -73,7 +63,6 @@ public class DataStreamSerializer implements StreamSerializer {
                 qualificationSection.addItem(dis.readUTF());
             }
             resume.setSection(QUALIFICATION, qualificationSection);
-
             resume.setSection(EXPERIENCE, experienceEducationSectionsRead(dis));
             resume.setSection(EDUCATION, experienceEducationSectionsRead(dis));
 
@@ -102,6 +91,19 @@ public class DataStreamSerializer implements StreamSerializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void listSectionWrite(SectionType sectionType, Resume r, DataOutputStream dos) {
+        ListSection achievements = (ListSection) r.getSection(sectionType);
+        try {
+            dos.writeInt(achievements.getItems().size());
+            for (String elem : achievements.getItems()) {
+                dos.writeUTF(elem);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     protected OrganizationSection experienceEducationSectionsRead(DataInputStream dis) {
