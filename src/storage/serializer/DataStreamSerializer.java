@@ -115,13 +115,17 @@ public class DataStreamSerializer implements StreamSerializer {
             }
             resume.setSection(QUALIFICATION, qualificationSection);
 
+            resume.setSection(EXPERIENCE, experienceEducationSectionsRead(dis));
+            resume.setSection(EDUCATION, experienceEducationSectionsRead(dis));
 
-            ///////////////////////////////////////////////////////////
-
-            // ExperienceSection read
-            int experienceSectionSize = dis.readInt(); // 1
+            return resume;
+        }
+    }
+    protected OrganizationSection experienceEducationSectionsRead(DataInputStream dis) {
+        int experienceSectionSize = 0; // 1
+        try {
+            experienceSectionSize = dis.readInt();
             List<Organization> experienceList = new ArrayList<>();
-
             for (int i = 0; i < experienceSectionSize; i++) {
                 List<Organization.Position> positionList = new ArrayList<>();
                 Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
@@ -132,34 +136,10 @@ public class DataStreamSerializer implements StreamSerializer {
                 Organization organization = new Organization(link, positionList);
                 experienceList.add(organization);
             }
-            OrganizationSection experienceSection = new OrganizationSection(experienceList);
-
-
-            resume.setSection(SectionType.EXPERIENCE, experienceSection);
-
-            // EducationSection read
-            int educationSectionSize = dis.readInt(); // 1
-            List<Organization> educationList = new ArrayList<>();
-
-            for (int i = 0; i < educationSectionSize; i++) {
-                List<Organization.Position> positionList = new ArrayList<>();
-                Link link = new Link((String) dis.readUTF(), (String) dis.readUTF()); // 2, 3
-                int positionSectionSize = dis.readInt(); // 4
-                for (int k = 0; k < positionSectionSize; k++) {
-                    positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
-                }
-                Organization organization = new Organization(link, positionList);
-                educationList.add(organization);
-            }
-            OrganizationSection educationSection = new OrganizationSection(educationList);
-            resume.setSection(EDUCATION, educationSection);
-
-
-
-            return resume;
+            return new OrganizationSection(experienceList);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-    protected OrganizationSection experienceEducationSectionsRead(DataInputStream dis) {
         return null;
     }
 }
