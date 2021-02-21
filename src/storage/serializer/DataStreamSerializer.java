@@ -50,19 +50,20 @@ public class DataStreamSerializer implements StreamSerializer {
             resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
             resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
 
-            int achievementListSize = dis.readInt();
-            ListSection achievementSection = new ListSection(new ArrayList<>());
-            for (int i = 0; i < achievementListSize; i++) {
-                achievementSection.addItem(dis.readUTF());
-            }
-            resume.setSection(ACHIEVEMENT, achievementSection);
+//            int achievementListSize = dis.readInt();
+//            ListSection achievementSection = new ListSection(new ArrayList<>());
+//            for (int i = 0; i < achievementListSize; i++) {
+//                achievementSection.addItem(dis.readUTF());
+//            }
 
-            int qualificationListSize = dis.readInt();
-            ListSection qualificationSection = new ListSection(new ArrayList<>());
-            for (int i = 0; i < qualificationListSize; i++) {
-                qualificationSection.addItem(dis.readUTF());
-            }
-            resume.setSection(QUALIFICATION, qualificationSection);
+//            int qualificationListSize = dis.readInt();
+//            ListSection qualificationSection = new ListSection(new ArrayList<>());
+//            for (int i = 0; i < qualificationListSize; i++) {
+//                qualificationSection.addItem(dis.readUTF());
+//            }
+
+            resume.setSection(ACHIEVEMENT, listSectionRead(dis));
+            resume.setSection(QUALIFICATION, listSectionRead(dis));
             resume.setSection(EXPERIENCE, experienceEducationSectionsRead(dis));
             resume.setSection(EDUCATION, experienceEducationSectionsRead(dis));
 
@@ -122,6 +123,20 @@ public class DataStreamSerializer implements StreamSerializer {
                 experienceList.add(organization);
             }
             return new OrganizationSection(experienceList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    protected ListSection listSectionRead(DataInputStream dis) {
+        int achievementListSize = 0;
+        try {
+            achievementListSize = dis.readInt();
+            ListSection achievementSection = new ListSection(new ArrayList<>());
+            for (int i = 0; i < achievementListSize; i++) {
+                achievementSection.addItem(dis.readUTF());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
