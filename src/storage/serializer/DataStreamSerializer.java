@@ -28,8 +28,8 @@ public class DataStreamSerializer implements StreamSerializer {
 
             dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
             dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
-            listSectionWrite(ACHIEVEMENT, r, dos);
-            listSectionWrite(QUALIFICATION, r, dos);
+            listSectionWrite(ACHIEVEMENT, dos, r);
+            listSectionWrite(QUALIFICATION, dos, r);
             experienceEducationSectionWrite(EXPERIENCE, dos, r);
             experienceEducationSectionWrite(EDUCATION, dos, r);
 
@@ -93,7 +93,7 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected void listSectionWrite(SectionType sectionType, Resume r, DataOutputStream dos) {
+    protected void listSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
         ListSection achievements = (ListSection) r.getSection(sectionType);
         try {
             dos.writeInt(achievements.getItems().size());
