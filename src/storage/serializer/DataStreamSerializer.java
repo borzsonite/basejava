@@ -21,6 +21,7 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(r.getFullName());
             Map<ContactType, String> contacts = r.getContacts();
             dos.writeInt(contacts.size());
+
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
@@ -32,7 +33,6 @@ public class DataStreamSerializer implements StreamSerializer {
             listSectionWrite(QUALIFICATION, dos, r);
             experienceEducationSectionWrite(EXPERIENCE, dos, r);
             experienceEducationSectionWrite(EDUCATION, dos, r);
-
         }
     }
 
@@ -49,19 +49,6 @@ public class DataStreamSerializer implements StreamSerializer {
 
             resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
             resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
-
-//            int achievementListSize = dis.readInt();
-//            ListSection achievementSection = new ListSection(new ArrayList<>());
-//            for (int i = 0; i < achievementListSize; i++) {
-//                achievementSection.addItem(dis.readUTF());
-//            }
-
-//            int qualificationListSize = dis.readInt();
-//            ListSection qualificationSection = new ListSection(new ArrayList<>());
-//            for (int i = 0; i < qualificationListSize; i++) {
-//                qualificationSection.addItem(dis.readUTF());
-//            }
-
             resume.setSection(ACHIEVEMENT, listSectionRead(dis));
             resume.setSection(QUALIFICATION, listSectionRead(dis));
             resume.setSection(EXPERIENCE, experienceEducationSectionsRead(dis));
@@ -73,7 +60,6 @@ public class DataStreamSerializer implements StreamSerializer {
 
     protected void experienceEducationSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
         OrganizationSection education = (OrganizationSection) r.getSection(sectionType);
-
         try {
             dos.writeInt(education.getOrganisations().size());
             for (Organization organization : education.getOrganisations()) {
@@ -104,7 +90,6 @@ public class DataStreamSerializer implements StreamSerializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     protected OrganizationSection experienceEducationSectionsRead(DataInputStream dis) {
@@ -137,6 +122,7 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < achievementListSize; i++) {
                 achievementSection.addItem(dis.readUTF());
             }
+            return achievementSection;
         } catch (IOException e) {
             e.printStackTrace();
         }
