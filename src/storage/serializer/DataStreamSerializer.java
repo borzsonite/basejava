@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static model.SectionType.*;
-
 public class DataStreamSerializer implements StreamSerializer {
 
     @Override
@@ -45,12 +43,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
 
-            resume.setSection(PERSONAL, new TextSection(dis.readUTF()));
-            resume.setSection(OBJECTIVE, new TextSection(dis.readUTF()));
-            resume.setSection(ACHIEVEMENT, listSectionRead(dis));
-            resume.setSection(QUALIFICATION, listSectionRead(dis));
-            resume.setSection(EXPERIENCE, experienceEducationSectionsRead(dis));
-            resume.setSection(EDUCATION, experienceEducationSectionsRead(dis));
+            for (SectionType sectionType : SectionType.values()) {
+                resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
+            }
 
             return resume;
         }
@@ -104,39 +99,52 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected OrganizationSection experienceEducationSectionsRead(DataInputStream dis) {
-        int experienceSectionSize = 0;
-        try {
-            experienceSectionSize = dis.readInt();
-            List<Organization> experienceList = new ArrayList<>();
-            for (int i = 0; i < experienceSectionSize; i++) {
-                List<Organization.Position> positionList = new ArrayList<>();
-                Link link = new Link(dis.readUTF(), dis.readUTF());
-                int positionSectionSize = dis.readInt();
-                for (int k = 0; k < positionSectionSize; k++) {
-                    positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
+    protected AbstractSection abstractSectionRead(DataInputStream dis, SectionType sectionType) {
+        switch (sectionType) {
+            case PERSONAL:
+            case OBJECTIVE:
+                try {
+                    return new TextSection(dis.readUTF());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                Organization organization = new Organization(link, positionList);
-                experienceList.add(organization);
-            }
-            return new OrganizationSection(experienceList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+                break;
 
-    protected ListSection listSectionRead(DataInputStream dis) {
-        int achievementListSize = 0;
-        try {
-            achievementListSize = dis.readInt();
-            ListSection achievementSection = new ListSection(new ArrayList<>());
-            for (int i = 0; i < achievementListSize; i++) {
-                achievementSection.addItem(dis.readUTF());
-            }
-            return achievementSection;
-        } catch (IOException e) {
-            e.printStackTrace();
+            case ACHIEVEMENT:
+            case QUALIFICATION:
+                int achievementListSize = 0;
+                try {
+                    achievementListSize = dis.readInt();
+                    ListSection achievementSection = new ListSection(new ArrayList<>());
+                    for (int i = 0; i < achievementListSize; i++) {
+                        achievementSection.addItem(dis.readUTF());
+                    }
+                    return achievementSection;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case EXPERIENCE:
+            case EDUCATION:
+                int experienceSectionSize = 0;
+                try {
+                    experienceSectionSize = dis.readInt();
+                    List<Organization> experienceList = new ArrayList<>();
+                    for (int i = 0; i < experienceSectionSize; i++) {
+                        List<Organization.Position> positionList = new ArrayList<>();
+                        Link link = new Link(dis.readUTF(), dis.readUTF());
+                        int positionSectionSize = dis.readInt();
+                        for (int k = 0; k < positionSectionSize; k++) {
+                            positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
+                        }
+                        Organization organization = new Organization(link, positionList);
+                        experienceList.add(organization);
+                    }
+                    return new OrganizationSection(experienceList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
         return null;
     }
