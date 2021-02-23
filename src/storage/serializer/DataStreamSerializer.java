@@ -44,7 +44,12 @@ public class DataStreamSerializer implements StreamSerializer {
             }
 
             for (SectionType sectionType : SectionType.values()) {
-                resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
+                try {
+                    resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
+                } catch (IOException e) {
+                    System.out.println("Почему не выводиться эта строка, когода секции не заполнены???");
+                }
+
             }
 
             return resume;
@@ -99,52 +104,39 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected AbstractSection abstractSectionRead(DataInputStream dis, SectionType sectionType) {
+    protected AbstractSection abstractSectionRead(DataInputStream dis, SectionType sectionType) throws IOException {
         switch (sectionType) {
             case PERSONAL:
             case OBJECTIVE:
-                try {
-                    return new TextSection(dis.readUTF());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
+                return new TextSection(dis.readUTF());
 
             case ACHIEVEMENT:
             case QUALIFICATION:
                 int achievementListSize = 0;
-                try {
-                    achievementListSize = dis.readInt();
-                    ListSection achievementSection = new ListSection(new ArrayList<>());
-                    for (int i = 0; i < achievementListSize; i++) {
-                        achievementSection.addItem(dis.readUTF());
-                    }
-                    return achievementSection;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                achievementListSize = dis.readInt();
+                ListSection achievementSection = new ListSection(new ArrayList<>());
+                for (int i = 0; i < achievementListSize; i++) {
+                    achievementSection.addItem(dis.readUTF());
                 }
-                break;
+                return achievementSection;
 
             case EXPERIENCE:
             case EDUCATION:
                 int experienceSectionSize = 0;
-                try {
-                    experienceSectionSize = dis.readInt();
-                    List<Organization> experienceList = new ArrayList<>();
-                    for (int i = 0; i < experienceSectionSize; i++) {
-                        List<Organization.Position> positionList = new ArrayList<>();
-                        Link link = new Link(dis.readUTF(), dis.readUTF());
-                        int positionSectionSize = dis.readInt();
-                        for (int k = 0; k < positionSectionSize; k++) {
-                            positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
-                        }
-                        Organization organization = new Organization(link, positionList);
-                        experienceList.add(organization);
+                experienceSectionSize = dis.readInt();
+                List<Organization> experienceList = new ArrayList<>();
+                for (int i = 0; i < experienceSectionSize; i++) {
+                    List<Organization.Position> positionList = new ArrayList<>();
+                    Link link = new Link(dis.readUTF(), dis.readUTF());
+                    int positionSectionSize = dis.readInt();
+                    for (int k = 0; k < positionSectionSize; k++) {
+                        positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
                     }
-                    return new OrganizationSection(experienceList);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Organization organization = new Organization(link, positionList);
+                    experienceList.add(organization);
                 }
+                return new OrganizationSection(experienceList);
+
         }
         return null;
     }
