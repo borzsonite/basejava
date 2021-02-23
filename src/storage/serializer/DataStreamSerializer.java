@@ -27,12 +27,10 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getValue());
             }
 
-            dos.writeUTF(((TextSection) r.getSection(PERSONAL)).getContent());
-            dos.writeUTF(((TextSection) r.getSection(OBJECTIVE)).getContent());
-            listSectionWrite(ACHIEVEMENT, dos, r);
-            listSectionWrite(QUALIFICATION, dos, r);
-            experienceEducationSectionWrite(EXPERIENCE, dos, r);
-            experienceEducationSectionWrite(EDUCATION, dos, r);
+            Map<SectionType, AbstractSection> sections = r.getAllSections();
+            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+                abstractSectionWrite(entry.getKey(), dos, r);
+            }
         }
     }
 
@@ -58,37 +56,51 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected void experienceEducationSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
-        OrganizationSection education = (OrganizationSection) r.getSection(sectionType);
-        try {
-            dos.writeInt(education.getOrganisations().size());
-            for (Organization organization : education.getOrganisations()) {
-                dos.writeUTF(organization.getLink().getName());
-                dos.writeUTF(organization.getLink().getUrl());
-                dos.writeInt(organization.getPosition().size());
-                for (Organization.Position position : organization.getPosition()) {
-                    dos.writeInt(position.getStartDate().getYear());
-                    dos.writeInt(position.getStartDate().getMonth().getValue());
-                    dos.writeInt(position.getEndDate().getYear());
-                    dos.writeInt(position.getEndDate().getMonth().getValue());
-                    dos.writeUTF(position.getTitle());
-                    dos.writeUTF(position.getDescription());
+    protected void abstractSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
+        switch (sectionType) {
+            case PERSONAL:
+            case OBJECTIVE:
+                try {
+                    dos.writeUTF(((TextSection) r.getSection(sectionType)).getContent());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+                break;
 
-    protected void listSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
-        ListSection achievements = (ListSection) r.getSection(sectionType);
-        try {
-            dos.writeInt(achievements.getItems().size());
-            for (String elem : achievements.getItems()) {
-                dos.writeUTF(elem);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            case ACHIEVEMENT:
+            case QUALIFICATION:
+                ListSection achievements = (ListSection) r.getSection(sectionType);
+                try {
+                    dos.writeInt(achievements.getItems().size());
+                    for (String elem : achievements.getItems()) {
+                        dos.writeUTF(elem);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case EXPERIENCE:
+            case EDUCATION:
+                OrganizationSection organizationSection = (OrganizationSection) r.getSection(sectionType);
+                try {
+                    dos.writeInt(organizationSection.getOrganisations().size());
+                    for (Organization organization : organizationSection.getOrganisations()) {
+                        dos.writeUTF(organization.getLink().getName());
+                        dos.writeUTF(organization.getLink().getUrl());
+                        dos.writeInt(organization.getPosition().size());
+                        for (Organization.Position position : organization.getPosition()) {
+                            dos.writeInt(position.getStartDate().getYear());
+                            dos.writeInt(position.getStartDate().getMonth().getValue());
+                            dos.writeInt(position.getEndDate().getYear());
+                            dos.writeInt(position.getEndDate().getMonth().getValue());
+                            dos.writeUTF(position.getTitle());
+                            dos.writeUTF(position.getDescription());
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
