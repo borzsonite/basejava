@@ -20,8 +20,8 @@ public abstract class AbstractStorageTest {
     protected Storage storage;
     protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
 
-    //Resume RESUME_1 = new Resume("uuid1", "Bob");
-    Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
+    Resume RESUME_1 = new Resume("uuid1", "Bob");
+    //Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
     Resume RESUME_2 = ResumeTestData.createResume("uuid2", "Alex");
     Resume RESUME_3 = ResumeTestData.createResume("uuid3", "Mike");
 
