@@ -3,6 +3,7 @@ package storage.serializer;
 
 import model.*;
 
+import javax.imageio.IIOException;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
@@ -48,65 +49,56 @@ public class DataStreamSerializer implements StreamSerializer {
 
             int sectionsSize = dis.readInt();
             for (int i=0; i<sectionsSize; i++) {
-                try {
                     SectionType sectionType = SectionType.valueOf(dis.readUTF());
                     resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
-                } catch (IOException e) {
-                }
+
             }
 
             return resume;
         }
     }
 
-    protected void abstractSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) {
+    protected void abstractSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) throws IOException {
         switch (sectionType) {
             case PERSONAL:
             case OBJECTIVE:
-                try {
                     dos.writeUTF(((TextSection) r.getSection(sectionType)).getContent());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 break;
 
             case ACHIEVEMENT:
             case QUALIFICATION:
                 ListSection listSection = (ListSection) r.getSection(sectionType);
-                try {
-
-                    dos.writeInt(listSection.getItems().size());
-                    for (String elem : listSection.getItems()) {
+                List<String> listSectionsItems = listSection.getItems();
+                    dos.writeInt(listSectionsItems.size());
+                    for (String elem : listSectionsItems) {
                         dos.writeUTF(elem);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 break;
 
             case EXPERIENCE:
             case EDUCATION:
                 OrganizationSection organizationSection = (OrganizationSection) r.getSection(sectionType);
-                try {
-                    dos.writeInt(organizationSection.getOrganisations().size());
-                    for (Organization organization : organizationSection.getOrganisations()) {
-                        dos.writeUTF(organization.getLink().getName());
-                        dos.writeUTF(organization.getLink().getUrl());
+                List<Organization> organizations = organizationSection.getOrganisations();
+                    dos.writeInt(organizations.size());
+                    for (Organization organization : organizations) {
+                        Link link = organization.getLink();
+                        dos.writeUTF(link.getName());
+                        dos.writeUTF(link.getUrl()!=null?link.getUrl():"");
                         dos.writeInt(organization.getPosition().size());
 
                         for (Organization.Position position : organization.getPosition()) {
-                            dos.writeInt(position.getStartDate().getYear());
-                            dos.writeInt(position.getStartDate().getMonth().getValue());
-                            dos.writeInt(position.getEndDate().getYear());
-                            dos.writeInt(position.getEndDate().getMonth().getValue());
+                            writeDate(dos, position.getStartDate());
+                            writeDate(dos, position.getEndDate());
                             dos.writeUTF(position.getTitle());
-                            dos.writeUTF(position.getDescription());
+                            dos.writeUTF(position.getDescription()!=null?position.getDescription():"");
                         }
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
         }
+    }
+
+    protected void writeDate(DataOutputStream dos, LocalDate localDate) throws IOException{
+        dos.writeInt(localDate.getYear());
+        dos.writeInt(localDate.getMonth().getValue());
     }
 
     protected AbstractSection abstractSectionRead(DataInputStream dis, SectionType sectionType) throws IOException {
@@ -117,8 +109,7 @@ public class DataStreamSerializer implements StreamSerializer {
 
             case ACHIEVEMENT:
             case QUALIFICATION:
-                int achievementListSize = 0;
-                achievementListSize = dis.readInt();
+               int achievementListSize = dis.readInt();
                 ListSection achievementSection = new ListSection(new ArrayList<>());
                 for (int i = 0; i < achievementListSize; i++) {
                     achievementSection.addItem(dis.readUTF());
@@ -127,15 +118,20 @@ public class DataStreamSerializer implements StreamSerializer {
 
             case EXPERIENCE:
             case EDUCATION:
-                int experienceSectionSize = 0;
-                experienceSectionSize = dis.readInt();
+               int experienceSectionSize = dis.readInt();
                 List<Organization> experienceList = new ArrayList<>();
                 for (int i = 0; i < experienceSectionSize; i++) {
                     List<Organization.Position> positionList = new ArrayList<>();
-                    Link link = new Link(dis.readUTF(), dis.readUTF());
+                    String name = dis.readUTF();
+                    String url = dis.readUTF();
+                    Link link = new Link(name, url==null?"":url);
                     int positionSectionSize = dis.readInt();
                     for (int k = 0; k < positionSectionSize; k++) {
-                        positionList.add(new Organization.Position(LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1), dis.readUTF(), dis.readUTF()));
+                        LocalDate startDate = readDate(dis);
+                        LocalDate endDate = readDate(dis);
+                        String title = dis.readUTF();
+                        String description = dis.readUTF();
+                        positionList.add(new Organization.Position(startDate, endDate, title, description==""?null:description));
                     }
                     Organization organization = new Organization(link, positionList);
                     experienceList.add(organization);
@@ -143,5 +139,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 return new OrganizationSection(experienceList);
         }
         return null;
+    }
+
+    protected LocalDate readDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1);
     }
 }
