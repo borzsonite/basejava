@@ -25,7 +25,6 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(entry.getValue());
             }
 
-
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             dos.writeInt(sections.size());
             for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
@@ -50,9 +49,7 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < sectionsSize; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
-
             }
-
             return resume;
         }
     }
@@ -81,8 +78,9 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeInt(organizations.size());
                 for (Organization organization : organizations) {
                     Link link = organization.getLink();
+                    String url = link.getUrl();
                     dos.writeUTF(link.getName());
-                    dos.writeUTF(link.getUrl() != null ? link.getUrl() : "");
+                    dos.writeUTF(url != null ? url : "");
                     dos.writeInt(organization.getPosition().size());
 
                     for (Organization.Position position : organization.getPosition()) {
