@@ -18,12 +18,17 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
             Map<ContactType, String> contacts = r.getContacts();
-
             dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            }
+
+            WriteCollection<ContactType, String> writeContacts = (contactsMap, dataOutputStream) -> {
+                for (Map.Entry<ContactType, String> entry : contactsMap.entrySet()) {
+                    dataOutputStream.writeUTF(String.valueOf(entry.getKey()));
+                    dataOutputStream.writeUTF(entry.getValue());
+                }
+            };
+
+            writeWithException(contacts, writeContacts, dos);
+
 
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             dos.writeInt(sections.size());
@@ -140,5 +145,9 @@ public class DataStreamSerializer implements StreamSerializer {
 
     protected LocalDate readDate(DataInputStream dis) throws IOException {
         return LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1);
+    }
+
+    protected <K, V> void writeWithException(Map<K, V> map, WriteCollection<K, V> action, DataOutputStream dos) throws IOException {
+        action.accept(map, dos);
     }
 }
