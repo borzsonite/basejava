@@ -6,7 +6,10 @@ import model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializer {
 
@@ -18,7 +21,8 @@ public class DataStreamSerializer implements StreamSerializer {
             Map<ContactType, String> contacts = r.getContacts();
 
             Writable<String> writeContacts = (contact) -> dos.writeUTF(contact);
-            writeWithException(contacts.values(), writeContacts, dos);
+            writeWithException(contacts.keySet(), contacts.values(), writeContacts, dos);
+            contacts.keySet();
 
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             dos.writeInt(sections.size());
@@ -137,12 +141,14 @@ public class DataStreamSerializer implements StreamSerializer {
         return LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1);
     }
 
-    protected <T> void writeWithException(Collection<T> collection, Writable<T> action, DataOutputStream dos) throws IOException {
-       int size = collection.size();
-       dos.writeInt(size);
-       List<T> list = new ArrayList<>(collection);
-       for(int i=0; i<size; i++) {
-           action.accept(list.get(i));
-       }
+    protected <K, T> void writeWithException(Collection<K> keys, Collection<T> values, Writable<T> action, DataOutputStream dos) throws IOException {
+        int size = values.size();
+        dos.writeInt(size);
+        List<K> keySet = new ArrayList<>(keys);
+        List<T> list = new ArrayList<>(values);
+        for (int i = 0; i < size; i++) {
+            dos.writeUTF(String.valueOf(keySet.get(i)));
+            action.accept(list.get(i));
+        }
     }
 }
