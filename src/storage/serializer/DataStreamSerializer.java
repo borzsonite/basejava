@@ -26,11 +26,19 @@ public class DataStreamSerializer implements StreamSerializer {
             }, dos);
 
             Map<SectionType, AbstractSection> sections = r.getAllSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                abstractSectionWrite(entry.getKey(), dos, r);
-            }
+           // dos.writeInt(sections.size());
+//            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+//                dos.writeUTF(entry.getKey().name());
+//                abstractSectionWrite(entry.getKey(), dos, r);
+//            }
+            // вместо цикла вызывается метод в который передается entrySet map'ы, лямбда, dos
+            writeWithException(sections.entrySet(), new Writable<Map.Entry<SectionType, AbstractSection>>() {
+                @Override
+                public void accept(Map.Entry<SectionType, AbstractSection> collectionElement) throws IOException {
+                    abstractSectionWrite(collectionElement, dos);
+                }
+            }, dos);
+
         }
     }
 
@@ -54,16 +62,17 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected void abstractSectionWrite(SectionType sectionType, DataOutputStream dos, Resume r) throws IOException {
-        switch (sectionType) {
+    protected <T> void abstractSectionWrite(Map.Entry<SectionType, AbstractSection> collection, DataOutputStream dos) throws IOException {
+        switch (collection.getKey()) {
             case PERSONAL:
             case OBJECTIVE:
-                dos.writeUTF(((TextSection) r.getSection(sectionType)).getContent());
+                //dos.writeUTF(((TextSection) r.getSection(sectionType)).getContent());
+                dos.writeUTF(String.valueOf(collection.getValue()));
                 break;
 
             case ACHIEVEMENT:
             case QUALIFICATION:
-                ListSection listSection = (ListSection) r.getSection(sectionType);
+                ListSection listSection = (ListSection) collection.getValue();
                 List<String> listSectionsItems = listSection.getItems();
                 dos.writeInt(listSectionsItems.size());
                 for (String elem : listSectionsItems) {
@@ -73,7 +82,7 @@ public class DataStreamSerializer implements StreamSerializer {
 
             case EXPERIENCE:
             case EDUCATION:
-                OrganizationSection organizationSection = (OrganizationSection) r.getSection(sectionType);
+                OrganizationSection organizationSection = (OrganizationSection) collection.getValue();
                 List<Organization> organizations = organizationSection.getOrganisations();
                 dos.writeInt(organizations.size());
                 for (Organization organization : organizations) {
