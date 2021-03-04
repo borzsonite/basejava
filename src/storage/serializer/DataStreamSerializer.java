@@ -17,12 +17,20 @@ public class DataStreamSerializer implements StreamSerializer {
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(r.getUuid());
+            System.out.println("write:"+ r.getUuid());
             dos.writeUTF(r.getFullName());
+            System.out.println("write:" + r.getFullName());
             Map<ContactType, String> contacts = r.getContacts();
 
-            Writable<String> writeContacts = (contact) -> dos.writeUTF(contact);
-            writeWithException(contacts.keySet(), contacts.values(), writeContacts, dos);
-            contacts.keySet();
+            writeWithException(contacts.entrySet(), new Writable<Map.Entry<ContactType, String>>() {
+                @Override
+                public void accept(Map.Entry<ContactType, String> collectionElement) throws IOException {
+                    dos.writeUTF(String.valueOf(collectionElement.getKey()));
+                    System.out.println("write"+ String.valueOf(collectionElement.getKey()));
+                    dos.writeUTF(collectionElement.getValue());
+                    System.out.println("write" + collectionElement.getValue());
+                }
+            }, dos);
 
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             dos.writeInt(sections.size());
@@ -141,14 +149,10 @@ public class DataStreamSerializer implements StreamSerializer {
         return LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1);
     }
 
-    protected <K, T> void writeWithException(Collection<K> keys, Collection<T> values, Writable<T> action, DataOutputStream dos) throws IOException {
+    protected <T> void writeWithException(Collection<T> values, Writable<T> action, DataOutputStream dos) throws IOException {
         int size = values.size();
-        dos.writeInt(size);
-        List<K> keySet = new ArrayList<>(keys);
-        List<T> list = new ArrayList<>(values);
-        for (int i = 0; i < size; i++) {
-            dos.writeUTF(String.valueOf(keySet.get(i)));
-            action.accept(list.get(i));
+        for(T elem: values) {
+            action.accept(elem);
         }
     }
 }
