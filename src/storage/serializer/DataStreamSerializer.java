@@ -39,16 +39,28 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readWithException(dis, resume, r -> r.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
-            int sectionsSize = dis.readInt();
-            for (int i = 0; i < sectionsSize; i++) {
-                SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
-            }
+//            int size = dis.readInt();
+//            for (int i = 0; i < size; i++) {
+//                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
+//            }
+
+            readWithException(dis, resume, new Readable() {
+                @Override
+                public void accept(Resume r) throws IOException {
+                    SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                    r.setSection(sectionType, abstractSectionRead(dis, sectionType));
+                }
+            });
+
+//            int sectionsSize = dis.readInt();
+//            for (int i = 0; i < sectionsSize; i++) {
+//                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+//                resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
+//            }
+
+
             return resume;
         }
     }
@@ -99,8 +111,9 @@ public class DataStreamSerializer implements StreamSerializer {
 
             case ACHIEVEMENT:
             case QUALIFICATION:
-                int achievementListSize = dis.readInt();
                 ListSection achievementSection = new ListSection(new ArrayList<>());
+
+                int achievementListSize = dis.readInt();
                 for (int i = 0; i < achievementListSize; i++) {
                     achievementSection.addItem(dis.readUTF());
                 }
@@ -140,6 +153,13 @@ public class DataStreamSerializer implements StreamSerializer {
         dos.writeInt(size);
         for (T elem : collection) {
             action.accept(elem);
+        }
+    }
+
+    protected <T> void readWithException(DataInputStream dis, Resume r, Readable action) throws IOException {
+        int size = dis.readInt();
+        for(int i=0; i<size; i++) {
+            action.accept(r);
         }
     }
 }
