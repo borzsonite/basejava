@@ -39,20 +39,26 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readWithException(dis, resume, r -> r.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+
+            readWithException(dis, new Readable() {
+                @Override
+                public void accept() throws IOException {
+                    resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
+                }
+            });
+
+            readWithException(dis, new Readable() {
+                @Override
+                public void accept() throws IOException {
+                    SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                    resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
+                }
+            });
 
 //            int size = dis.readInt();
 //            for (int i = 0; i < size; i++) {
 //                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
 //            }
-
-            readWithException(dis, resume, new Readable() {
-                @Override
-                public void accept(Resume r) throws IOException {
-                    SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                    r.setSection(sectionType, abstractSectionRead(dis, sectionType));
-                }
-            });
 
 //            int sectionsSize = dis.readInt();
 //            for (int i = 0; i < sectionsSize; i++) {
@@ -113,32 +119,60 @@ public class DataStreamSerializer implements StreamSerializer {
             case QUALIFICATION:
                 ListSection achievementSection = new ListSection(new ArrayList<>());
 
-                int achievementListSize = dis.readInt();
-                for (int i = 0; i < achievementListSize; i++) {
-                    achievementSection.addItem(dis.readUTF());
-                }
+//                int achievementListSize = dis.readInt();
+//                for (int i = 0; i < achievementListSize; i++) {
+//                    achievementSection.addItem(dis.readUTF());
+//                }
+                readWithException(dis, new Readable() {
+                    @Override
+                    public void accept() throws IOException {
+                        achievementSection.addItem(dis.readUTF());
+                    }
+                });
                 return achievementSection;
 
             case EXPERIENCE:
             case EDUCATION:
-                int experienceSectionSize = dis.readInt();
                 List<Organization> experienceList = new ArrayList<>();
-                for (int i = 0; i < experienceSectionSize; i++) {
-                    List<Organization.Position> positionList = new ArrayList<>();
-                    String name = dis.readUTF();
-                    String url = dis.readUTF();
-                    Link link = new Link(name, url.equals("") ? null : url);
-                    int positionSectionSize = dis.readInt();
-                    for (int k = 0; k < positionSectionSize; k++) {
-                        LocalDate startDate = readDate(dis);
-                        LocalDate endDate = readDate(dis);
-                        String title = dis.readUTF();
-                        String description = dis.readUTF();
-                        positionList.add(new Organization.Position(startDate, endDate, title, description.equals("") ? null : description));
+                readWithException(dis, new Readable() {
+                    @Override
+                    public void accept() throws IOException {
+                        List<Organization.Position> positionList = new ArrayList<>();
+                        String name = dis.readUTF();
+                        String url = dis.readUTF();
+                        Link link = new Link(name, url.equals("") ? null : url);
+                        readWithException(dis, new Readable() {
+                            @Override
+                            public void accept() throws IOException {
+                                LocalDate startDate = readDate(dis);
+                                LocalDate endDate = readDate(dis);
+                                String title = dis.readUTF();
+                                String description = dis.readUTF();
+                                positionList.add(new Organization.Position(startDate, endDate, title, description.equals("") ? null : description));
+                            }
+                        });
+                        Organization organization = new Organization(link, positionList);
+                        experienceList.add(organization);
                     }
-                    Organization organization = new Organization(link, positionList);
-                    experienceList.add(organization);
-                }
+
+                });
+
+//                for (int i = 0; i < experienceSectionSize; i++) {
+//                    List<Organization.Position> positionList = new ArrayList<>();
+//                    String name = dis.readUTF();
+//                    String url = dis.readUTF();
+//                    Link link = new Link(name, url.equals("") ? null : url);
+//                    int positionSectionSize = dis.readInt();
+//                    for (int k = 0; k < positionSectionSize; k++) {
+//                        LocalDate startDate = readDate(dis);
+//                        LocalDate endDate = readDate(dis);
+//                        String title = dis.readUTF();
+//                        String description = dis.readUTF();
+//                        positionList.add(new Organization.Position(startDate, endDate, title, description.equals("") ? null : description));
+//                    }
+//                    Organization organization = new Organization(link, positionList);
+//                    experienceList.add(organization);
+//                }
                 return new OrganizationSection(experienceList);
         }
         return null;
@@ -156,10 +190,10 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected <T> void readWithException(DataInputStream dis, Resume r, Readable action) throws IOException {
+    protected <T> void readWithException(DataInputStream dis, Readable action) throws IOException {
         int size = dis.readInt();
         for(int i=0; i<size; i++) {
-            action.accept(r);
+            action.accept();
         }
     }
 }
