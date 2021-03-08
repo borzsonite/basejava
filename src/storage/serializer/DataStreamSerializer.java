@@ -21,13 +21,13 @@ public class DataStreamSerializer implements StreamSerializer {
             Map<ContactType, String> contacts = r.getContacts();
 
             writeWithException(dos, contacts.entrySet(), collectionElement -> {
-                dos.writeUTF(String.valueOf(collectionElement.getKey()));
+                dos.writeUTF(collectionElement.getKey().name());
                 dos.writeUTF(collectionElement.getValue());
             });
 
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             writeWithException(dos, sections.entrySet(), collectionElement -> {
-                dos.writeUTF(String.valueOf(collectionElement.getKey()));
+                dos.writeUTF(collectionElement.getKey().name());
                 abstractSectionWrite(collectionElement, dos);
             });
         }
@@ -51,7 +51,7 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected <T> void abstractSectionWrite(Map.Entry<SectionType, AbstractSection> collection, DataOutputStream dos) throws IOException {
+    protected void abstractSectionWrite(Map.Entry<SectionType, AbstractSection> collection, DataOutputStream dos) throws IOException {
         switch (collection.getKey()) {
             case PERSONAL:
             case OBJECTIVE:
@@ -138,7 +138,7 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    protected <T> void readWithException(DataInputStream dis, Readable action) throws IOException {
+    protected void readWithException(DataInputStream dis, Readable action) throws IOException {
         int size = dis.readInt();
         for(int i=0; i<size; i++) {
             action.accept();
