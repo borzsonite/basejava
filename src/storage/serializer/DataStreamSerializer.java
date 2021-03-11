@@ -21,13 +21,13 @@ public class DataStreamSerializer implements StreamSerializer {
             Map<ContactType, String> contacts = r.getContacts();
 
             writeWithException(dos, contacts.entrySet(), collectionElement -> {
-                dos.writeUTF(String.valueOf(collectionElement.getKey()));
+                dos.writeUTF(collectionElement.getKey().name());
                 dos.writeUTF(collectionElement.getValue());
             });
 
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             writeWithException(dos, sections.entrySet(), collectionElement -> {
-                dos.writeUTF(String.valueOf(collectionElement.getKey()));
+                dos.writeUTF(collectionElement.getKey().name());
                 abstractSectionWrite(collectionElement, dos);
             });
         }
@@ -39,21 +39,19 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
 
-            int sectionsSize = dis.readInt();
-            for (int i = 0; i < sectionsSize; i++) {
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+
+            readWithException(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 resume.setSection(sectionType, abstractSectionRead(dis, sectionType));
-            }
+            });
+
             return resume;
         }
     }
 
-    protected <T> void abstractSectionWrite(Map.Entry<SectionType, AbstractSection> collection, DataOutputStream dos) throws IOException {
+    protected void abstractSectionWrite(Map.Entry<SectionType, AbstractSection> collection, DataOutputStream dos) throws IOException {
         switch (collection.getKey()) {
             case PERSONAL:
             case OBJECTIVE:
@@ -99,33 +97,30 @@ public class DataStreamSerializer implements StreamSerializer {
 
             case ACHIEVEMENT:
             case QUALIFICATION:
-                int achievementListSize = dis.readInt();
                 ListSection achievementSection = new ListSection(new ArrayList<>());
-                for (int i = 0; i < achievementListSize; i++) {
-                    achievementSection.addItem(dis.readUTF());
-                }
+
+                readWithException(dis, () -> achievementSection.addItem(dis.readUTF()));
                 return achievementSection;
 
             case EXPERIENCE:
             case EDUCATION:
-                int experienceSectionSize = dis.readInt();
                 List<Organization> experienceList = new ArrayList<>();
-                for (int i = 0; i < experienceSectionSize; i++) {
+                readWithException(dis, () -> {
                     List<Organization.Position> positionList = new ArrayList<>();
                     String name = dis.readUTF();
                     String url = dis.readUTF();
                     Link link = new Link(name, url.equals("") ? null : url);
-                    int positionSectionSize = dis.readInt();
-                    for (int k = 0; k < positionSectionSize; k++) {
+                    readWithException(dis, () -> {
                         LocalDate startDate = readDate(dis);
                         LocalDate endDate = readDate(dis);
                         String title = dis.readUTF();
                         String description = dis.readUTF();
                         positionList.add(new Organization.Position(startDate, endDate, title, description.equals("") ? null : description));
-                    }
+                    });
                     Organization organization = new Organization(link, positionList);
                     experienceList.add(organization);
-                }
+                });
+
                 return new OrganizationSection(experienceList);
         }
         return null;
@@ -140,6 +135,13 @@ public class DataStreamSerializer implements StreamSerializer {
         dos.writeInt(size);
         for (T elem : collection) {
             action.accept(elem);
+        }
+    }
+
+    protected void readWithException(DataInputStream dis, Readable action) throws IOException {
+        int size = dis.readInt();
+        for(int i=0; i<size; i++) {
+            action.accept();
         }
     }
 }
