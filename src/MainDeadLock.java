@@ -2,21 +2,25 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MainDeadLock {
+    static int counter;
 
     public static void main(String[] args) throws InterruptedException {
-        DeadLockRunner dlr = new DeadLockRunner();
+        Lock lockA = new ReentrantLock();
+        Lock lockB = new ReentrantLock();
 
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dlr.processThis();
+        Thread thread1 = new Thread(() -> {
+            try {
+                deadLockExecutor(lockA, lockB);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
-        Thread thread2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dlr.processThat();
+        Thread thread2 = new Thread(() -> {
+            try {
+                deadLockExecutor(lockB, lockA);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
@@ -26,38 +30,21 @@ public class MainDeadLock {
         thread1.join();
         thread2.join();
 
-        System.out.println(dlr.getCounter());
+        System.out.println(counter);
+    }
+
+    static void deadLockExecutor(Lock lockA, Lock lockB) throws InterruptedException {
+        lockA.lock();
+        Thread.sleep(500);
+        lockB.lock();
+
+        for(int i=0; i<10000; i++) {
+            counter++;
+        }
+
+        lockA.unlock();
+        lockB.unlock();
     }
 
 }
-
-    class DeadLockRunner {
-        private int counter;
-        private Lock lockA = new ReentrantLock();
-        private Lock lockB = new ReentrantLock();
-
-        public void processThis() {
-            lockA.lock();
-            lockB.lock();
-            for(int i=0; i<10000; i++) {
-                counter++;
-            }
-            lockA.unlock();
-            lockB.unlock();
-        }
-
-        public void processThat() {
-            lockB.lock();
-            lockA.lock();
-            for(int i=0; i<10000; i++) {
-                counter++;
-            }
-            lockA.unlock();
-            lockB.unlock();
-        }
-
-        public int getCounter() {
-            return counter;
-        }
-    }
 
