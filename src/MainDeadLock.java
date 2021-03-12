@@ -1,9 +1,7 @@
-package util;
-
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DeadLockExample {
+public class MainDeadLock {
 
     public static void main(String[] args) throws InterruptedException {
         DeadLockRunner dlr = new DeadLockRunner();
