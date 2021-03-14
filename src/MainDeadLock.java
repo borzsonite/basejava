@@ -1,49 +1,38 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class MainDeadLock {
     static int counter;
 
-    public static void main(String[] args) throws InterruptedException {
-        Lock lockA = new ReentrantLock();
-        Lock lockB = new ReentrantLock();
+    public static void main(String[] args) {
+
+        String lockA = "lockA";
+        String lockB = "lockB";
 
         Thread thread1 = new Thread(() -> {
-            try {
-                deadLockExecutor(lockA, lockB);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            deadLockExecutor(lockA, lockB);
         });
 
         Thread thread2 = new Thread(() -> {
-            try {
-                deadLockExecutor(lockB, lockA);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            deadLockExecutor(lockB, lockA);
         });
 
         thread1.start();
         thread2.start();
-
-        thread1.join();
-        thread2.join();
-
-        System.out.println(counter);
     }
 
-    static void deadLockExecutor(Lock lockA, Lock lockB) throws InterruptedException {
-        lockA.lock();
-        Thread.sleep(500);
-        lockB.lock();
+    static void deadLockExecutor(String lockA, String lockB) {
+        System.out.println("Thread " + Thread.currentThread().getName() + " is trying to get " + lockA + " inside outer block");
+        synchronized (lockA) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Thread " + Thread.currentThread().getName() + " got " + lockA + " inside outer block");
 
-        for(int i=0; i<10000; i++) {
-            counter++;
+            System.out.println("Thread " + Thread.currentThread().getName() + " is trying to get " + lockB + " inside inner block");
+            synchronized (lockB) {
+                System.out.println("Thread " + Thread.currentThread().getName() + " got " + lockB + " inside inner block");
+            }
         }
-
-        lockA.unlock();
-        lockB.unlock();
     }
 
 }
