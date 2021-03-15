@@ -28,7 +28,37 @@ public class DataStreamSerializer implements StreamSerializer {
             Map<SectionType, AbstractSection> sections = r.getAllSections();
             writeWithException(dos, sections.entrySet(), collectionElement -> {
                 dos.writeUTF(collectionElement.getKey().name());
-                abstractSectionWrite(collectionElement, dos);
+                switch (collectionElement.getKey()) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        dos.writeUTF(String.valueOf(collectionElement.getValue()));
+                        break;
+
+                    case ACHIEVEMENT:
+                    case QUALIFICATION:
+                        List<String> listSectionsItems = ((ListSection) collectionElement.getValue()).getItems();
+                        writeWithException(dos, listSectionsItems, dos::writeUTF);
+                        break;
+
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        OrganizationSection organizationSection = (OrganizationSection) collectionElement.getValue();
+                        List<Organization> organizations = organizationSection.getOrganisations();
+                        writeWithException(dos, organizations, element -> {
+                            Link link = element.getLink();
+                            String url = link.getUrl();
+                            dos.writeUTF(link.getName());
+                            dos.writeUTF(url != null ? url : "");
+
+                            writeWithException(dos, element.getPosition(), collectionElement1 -> {
+                                writeDate(dos, collectionElement1.getStartDate());
+                                writeDate(dos, collectionElement1.getEndDate());
+                                dos.writeUTF(collectionElement1.getTitle());
+                                dos.writeUTF(collectionElement1.getDescription() != null ? collectionElement1.getDescription() : "");
+                            });
+                        });
+                }
+
             });
         }
     }
@@ -48,39 +78,6 @@ public class DataStreamSerializer implements StreamSerializer {
             });
 
             return resume;
-        }
-    }
-
-    protected void abstractSectionWrite(Map.Entry<SectionType, AbstractSection> collection, DataOutputStream dos) throws IOException {
-        switch (collection.getKey()) {
-            case PERSONAL:
-            case OBJECTIVE:
-                dos.writeUTF(String.valueOf(collection.getValue()));
-                break;
-
-            case ACHIEVEMENT:
-            case QUALIFICATION:
-                List<String> listSectionsItems = ((ListSection) collection.getValue()).getItems();
-                writeWithException(dos, listSectionsItems, dos::writeUTF);
-                break;
-
-            case EXPERIENCE:
-            case EDUCATION:
-                OrganizationSection organizationSection = (OrganizationSection) collection.getValue();
-                List<Organization> organizations = organizationSection.getOrganisations();
-                writeWithException(dos, organizations, collectionElement -> {
-                    Link link = collectionElement.getLink();
-                    String url = link.getUrl();
-                    dos.writeUTF(link.getName());
-                    dos.writeUTF(url != null ? url : "");
-
-                    writeWithException(dos, collectionElement.getPosition(), collectionElement1 -> {
-                        writeDate(dos, collectionElement1.getStartDate());
-                        writeDate(dos, collectionElement1.getEndDate());
-                        dos.writeUTF(collectionElement1.getTitle());
-                        dos.writeUTF(collectionElement1.getDescription() != null ? collectionElement1.getDescription() : "");
-                    });
-                });
         }
     }
 
