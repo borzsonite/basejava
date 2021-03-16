@@ -1,18 +1,19 @@
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
 public class MainStreams {
     public static void main(String[] args) {
-        int[] array = {9,8};
-        minValue(array);
+        int[] array = {1,2,3,3,2,3};
+        System.out.println(minValue(array));
     }
 
     static int minValue(int[] values) {
-        AtomicInteger res = new AtomicInteger();
-        Arrays.stream(values).distinct().sorted().forEach((s)-> {
-            res.set(10 * res.get() + s);
-        });
+       return Arrays.stream(values).distinct().sorted().reduce(0, (acc, x) -> (10 * acc + x));
+    }
 
-        return res.get();
+    static List<Integer> oddOrEven(List<Integer> integers) {
+        integers.stream()
+        return new ArrayList<>();
     }
 }
