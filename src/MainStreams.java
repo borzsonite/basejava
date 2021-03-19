@@ -15,10 +15,10 @@ public class MainStreams {
 
 
     static List<Integer> oddOrEven(List<Integer> integers) {
-
+        int sum = integers.stream().reduce(0, Integer::sum);
         return integers.stream()
                 .filter(x -> {
-                    if (integers.stream().reduce(0, Integer::sum) % 2 == 0) {
+                    if (sum % 2 == 0) {
                         return x % 2 == 0;
                     }
                     return x % 2 != 0;
