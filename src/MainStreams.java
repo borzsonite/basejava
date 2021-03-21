@@ -6,7 +6,7 @@ public class MainStreams {
     public static void main(String[] args) {
 
         System.out.println(minValue(new int[]{1, 2, 3, 3, 2, 3}));
-        System.out.println(oddOrEven(Arrays.asList(8,9,1)));
+        System.out.println(oddOrEven(Arrays.asList(8, 9, 1, 1, 2)));
     }
 
     static int minValue(int[] values) {
@@ -19,7 +19,7 @@ public class MainStreams {
         int sum = integers.stream().reduce(0, Integer::sum);
 
         return integers.stream()
-                .filter(x -> sum % 2 == 0 && x % 2 ==0 || sum % 2 != 0 && x % 2 != 0)
+                .filter(x -> sum % 2 == x % 2)
                 .collect(Collectors.toList());
     }
 }
