@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>model</OriginalElement>
+  <nodes>
+    <node x="47.5" y="13.0">model.ContactType</node>
+    <node x="434.0" y="0.0">model.SectionType</node>
+    <node x="353.0" y="387.0">model.Sections</node>
+    <node x="0.0" y="374.0">model.Contacts</node>
+    <node x="172.25" y="852.0">model.Resume</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="model.Resume" target="model.Contacts">
+      <point x="-134.625" y="-188.0" />
+      <point x="217.125" y="827.0" />
+      <point x="83.25" y="827.0" />
+      <point x="-83.25" y="214.0" />
+    </edge>
+    <edge source="model.Contacts" target="model.ContactType">
+      <point x="-83.25" y="-214.0" />
+      <point x="83.25" y="349.0" />
+      <point x="107.0" y="349.0" />
+      <point x="-59.5" y="149.0" />
+    </edge>
+    <edge source="model.Sections" target="model.SectionType">
+      <point x="-100.75" y="-201.0" />
+      <point x="453.75" y="349.0" />
+      <point x="492.5" y="349.0" />
+      <point x="-58.5" y="162.0" />
+    </edge>
+    <edge source="model.Resume" target="model.Sections">
+      <point x="134.625" y="-188.0" />
+      <point x="486.375" y="827.0" />
+      <point x="655.25" y="827.0" />
+      <point x="100.75" y="201.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="146.5" y="643.5" />
+  <SelectedNodes>
+    <node>model.ContactType</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
