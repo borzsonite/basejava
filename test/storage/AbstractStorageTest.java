@@ -1,5 +1,7 @@
 package storage;
 
+import com.sun.deploy.config.Config;
+import db_config.Dbconfig;
 import exсeption.ExistStorageException;
 import exсeption.NotExistStorageException;
 import model.Resume;
@@ -18,7 +20,8 @@ import static org.junit.Assert.assertTrue;
 public abstract class AbstractStorageTest {
 
     protected Storage storage;
-    protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
+   // protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
+   protected static final File STORAGE_DIR = Dbconfig.get().getStorageDir();
 
     //Resume RESUME_1 = new Resume("uuid1", "Bob");
     Resume RESUME_1 = ResumeTestData.createResume("uuid1", "Bob");
